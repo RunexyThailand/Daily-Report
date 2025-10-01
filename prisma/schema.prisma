@@ -11,10 +11,14 @@ model User {
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
+  password      String?   
   emailVerified DateTime?
   image         String?
+
+  // OAuth sessions/accounts (สำหรับอนาคต)
   accounts      Account[]
   sessions      Session[]
+
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
@@ -25,6 +29,7 @@ model Account {
   type              String
   provider          String
   providerAccountId String
+
   refresh_token     String?   @db.Text
   access_token      String?   @db.Text
   expires_at        Int?
@@ -55,6 +60,7 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+/* ตัวอย่างตารางธุรกิจของคุณ */
 model Post {
   id        String   @id @default(cuid())
   title     String
