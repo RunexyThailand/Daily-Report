@@ -1,25 +1,15 @@
-"use client";
-import { useState } from "react";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { getAuth } from "@/server/auth";
+import { redirect } from "next/navigation";
+import LoginForm from "./LoginForm"; // แยก form เป็น client component
 
-export default function LoginPage() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const router = useRouter();
+export default async function LoginPage() {
+  const session = await getAuth();
 
-    async function handleLogin() {
-        const res = await signIn("credentials", { redirect: false, email, password });
-        if (res?.ok) router.push("/(protected)/dashboard");
-        else alert("Invalid credentials");
-    }
+  // ถ้า login แล้ว → redirect ไป dashboard
+  if (session?.user) {
+    redirect("/protected/dashboard");
+  }
 
-    return (
-        <main style={{ padding: 24 }}>
-            <h1>Login</h1>
-            <input value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" />
-            <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" />
-            <button onClick={handleLogin}>Sign in</button>
-        </main>
-    );
+  // ถ้ายังไม่ได้ login → แสดง form
+  return <LoginForm />;
 }

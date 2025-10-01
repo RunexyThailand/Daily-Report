@@ -3,10 +3,10 @@ export { default } from "next-auth/middleware";
 
 // ระบุเส้นทางที่ต้องการป้องกัน
 export const config = {
-    matcher: [
-        "/",                  // ✅ ป้องกันหน้า root
-        "/dashboard/:path*",  // ป้องกัน /dashboard และ subpath
-        "/admin/:path*",      // ป้องกัน /admin
-        "/settings/:path*",   // ป้องกัน /settings
-    ],
+  matcher: [
+    "/", // ✅ ป้องกันหน้า root
+    "/dashboard/:path*", // ป้องกัน /dashboard และ subpath
+    "/admin/:path*", // ป้องกัน /admin
+    "/settings/:path*", // ป้องกัน /settings
+  ],
 };
