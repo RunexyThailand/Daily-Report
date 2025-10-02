@@ -1,0 +1,8 @@
+{
+  "LoginPage": {
+    "title": "ログイン",
+    "description": "ログインページ",
+    "signIn": "サインイン",
+    "signingIn": "サインイン中..."
+  }
+}

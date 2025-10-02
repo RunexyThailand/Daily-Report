@@ -3,7 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 
 // --- ถ้าใช้ Prisma + bcrypt ให้ปลดคอมเมนต์ด้านล่าง ---
 import { prisma } from "@/server/db";
-// import bcrypt from "bcryptjs";
+import bcrypt from "bcryptjs";
 
 export const authOptions: NextAuthOptions = {
   session: { strategy: "jwt" },
@@ -22,22 +22,22 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const user = await prisma.user.findUnique({
-          where: { email: credentials?.email },
-        });
+        // const user = await prisma.user.findUnique({
+        //   where: { email: credentials?.email },
+        // });
 
-        console.log(user);
+        // console.log(user);
 
-        if (
-          credentials?.email === "demo@example.com" &&
-          credentials?.password === "demo1234"
-        ) {
-          return {
-            id: "1",
-            name: "Demo User",
-            email: "demo@example.com",
-          };
-        }
+        // if (
+        //   credentials?.email === "demo@example.com" &&
+        //   credentials?.password === "demo1234"
+        // ) {
+        //   return {
+        //     id: "1",
+        //     name: "Demo User",
+        //     email: "demo@example.com",
+        //   };
+        // }
 
         // ✅ ตัวอย่างจริงกับฐานข้อมูล
         /*

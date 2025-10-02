@@ -1,0 +1,8 @@
+{
+  "LoginPage": {
+    "title": "Login",
+    "description": "Login page",
+    "signIn": "Sign In",
+    "signingIn": "Signing In..."
+  }
+}

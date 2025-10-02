@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useTranslations } from "next-intl";
 
 const LoginSchema = Yup.object({
   email: Yup.string()
@@ -20,9 +21,30 @@ const LoginSchema = Yup.object({
 });
 
 export default function LoginForm() {
+  const t = useTranslations("LoginPage");
   const router = useRouter();
+  const [locale, setLocale] = useState("en");
   const [serverError, setServerError] = useState<string | null>(null);
+  useEffect(() => {
+    const cookieLocale = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("NEXT_LOCALE="))
+      ?.split("=")[1];
+    if (cookieLocale) {
+      setLocale(cookieLocale);
+    } else {
+      const browserLang = navigator.language.split("-")[0];
+      setLocale(browserLang);
+      document.cookie = `NEXT_LOCALE=${browserLang};`;
+      router.refresh();
+    }
+  }, [router]);
 
+  const changeLanguage = (lng: string) => {
+    setLocale(lng);
+    document.cookie = `NEXT_LOCALE=${lng};`;
+    router.refresh();
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 p-4">
       <Card className="p-0 w-full max-w-2xl border-slate-200 dark:border-slate-800">
@@ -43,12 +65,16 @@ export default function LoginForm() {
             <div className="flex justify-end w-full px-5 py-4 font-bold space-x-2">
               <Badge
                 onClick={() => {
-                  console.log("EN");
+                  changeLanguage("en");
                 }}
                 variant="secondary"
                 className="w-10 cursor-pointer"
                 // style={{ backgroundColor: "#234868", color: "#ea330b" }}
-                style={{ backgroundColor: "#ea330b", color: "#ffffff" }}
+                style={
+                  locale === "en"
+                    ? { backgroundColor: "#ea330b", color: "#ffffff" }
+                    : {}
+                }
               >
                 EN
               </Badge>
@@ -56,8 +82,13 @@ export default function LoginForm() {
                 variant="secondary"
                 className="w-10 cursor-pointer"
                 onClick={() => {
-                  console.log("JP");
+                  changeLanguage("jp");
                 }}
+                style={
+                  locale === "jp"
+                    ? { backgroundColor: "#ea330b", color: "#ffffff" }
+                    : {}
+                }
               >
                 JP
               </Badge>
@@ -141,13 +172,12 @@ export default function LoginForm() {
                         disabled={isSubmitting}
                         className="w-full"
                       >
-                        {isSubmitting ? "กำลังเข้าสู่ระบบ..." : "เข้าสู่ระบบ"}
+                        {isSubmitting ? t("signingIn") : t("signIn")}
                       </Button>
                     </Form>
                   )}
                 </Formik>
               </CardContent>
-
               <CardFooter className="justify-center">
                 <p className="text-xs text-slate-500">
                   © {new Date().getFullYear()} Runexy. All rights reserved.
