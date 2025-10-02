@@ -22,38 +22,6 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        // const user = await prisma.user.findUnique({
-        //   where: { email: credentials?.email },
-        // });
-
-        // console.log(user);
-
-        // if (
-        //   credentials?.email === "demo@example.com" &&
-        //   credentials?.password === "demo1234"
-        // ) {
-        //   return {
-        //     id: "1",
-        //     name: "Demo User",
-        //     email: "demo@example.com",
-        //   };
-        // }
-
-        // ✅ ตัวอย่างจริงกับฐานข้อมูล
-        /*
-                        if (!credentials?.email || !credentials?.password) return null;
-                
-                        const user = await prisma.user.findUnique({
-                          where: { email: credentials.email },
-                        });
-                        if (!user || !user.passwordHash) return null;
-                
-                        const ok = await bcrypt.compare(credentials.password, user.passwordHash);
-                        if (!ok) return null;
-                
-                        return { id: user.id, name: user.name ?? user.email, email: user.email };
-                        */
-
         if (!credentials?.email || !credentials?.password) return null;
         const user = await prisma.user.findUnique({
           where: { email: credentials.email, is_active: true },
@@ -73,6 +41,20 @@ export const authOptions: NextAuthOptions = {
   ],
 
   callbacks: {
+    async redirect({ url, baseUrl }) {
+      // บังคับให้กลับไป /protected/dashboard หลัง login สำเร็จ
+      // แต่ถ้ามี callbackUrl ที่เป็น internal ให้เคารพด้วย
+      try {
+        const u = new URL(url);
+        const b = new URL(baseUrl);
+        const isInternal = u.origin === b.origin;
+        if (isInternal) {
+          // ถ้า callbackUrl เป็น internal และตั้งมาแล้ว ก็ใช้เลย
+          if (u.pathname && u.pathname !== "/login") return u.toString();
+        }
+      } catch {}
+      return `${baseUrl}/dashboard`;
+    },
     async jwt({ token, user }) {
       // ตอน login ครั้งแรก user จะไม่เป็น undefined
       if (user?.id) {

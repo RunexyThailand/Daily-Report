@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 import superjson from "superjson";
 import { httpBatchLink } from "@trpc/client";
+import { LayoutProvider } from "@/components/layout/layout-provider";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   // React Query client
@@ -26,7 +27,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <LayoutProvider>{children}</LayoutProvider>
+      </QueryClientProvider>
     </trpc.Provider>
   );
 }
