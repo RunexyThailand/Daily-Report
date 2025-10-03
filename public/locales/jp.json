@@ -3,6 +3,14 @@
     "title": "ログイン",
     "description": "ログインページ",
     "signIn": "サインイン",
-    "signingIn": "サインイン中..."
+    "signingIn": "サインイン中...",
+    "invalidEmailFormat": "無効なメール形式",
+    "emailRequired": "メールは必須です",
+    "passwordRequired": "パスワードは必須です",
+    "InvalidCredentials": "無効なメールまたはパスワード"
+  },
+  "DailyReportPage": {
+    "title": "日次報告",
+    "description": "日次報告ページ"
   }
 }

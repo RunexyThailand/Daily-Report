@@ -2,7 +2,6 @@ import { getAuth } from "@/server/auth";
 import { redirect } from "next/navigation";
 import LoginForm from "./LoginForm"; // แยก form เป็น client component
 import { Metadata } from "next";
-import { AbstractIntlMessages } from "next-intl";
 import { getMessages } from "next-intl/server";
 
 export async function generateMetadata({
@@ -10,7 +9,7 @@ export async function generateMetadata({
 }: {
   params: { locale: string };
 }): Promise<Metadata> {
-  const messages: AbstractIntlMessages = await getMessages({ locale });
+  const messages = await getMessages({ locale });
 
   return {
     title: messages.LoginPage.title,

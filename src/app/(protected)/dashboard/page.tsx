@@ -1,12 +1,12 @@
 "use client"; // 👈 ต้องประกาศว่าเป็น Client Component
 
-import { signOut } from "next-auth/react";
+import { useTranslations } from "next-intl";
 
 export default function DashboardPage() {
+  const t = useTranslations("DailyReportPage");
   return (
     <div className="text-red-500">
-      <h1>Dashboard</h1>
-      <button onClick={() => signOut({ callbackUrl: "/login" })}>Logout</button>
+      <h1>{t("title")}</h1>
     </div>
   );
 }

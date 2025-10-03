@@ -13,18 +13,18 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useTranslations } from "next-intl";
 
-const LoginSchema = Yup.object({
-  email: Yup.string()
-    .email("Invalid email format")
-    .required("Please enter your email"),
-  password: Yup.string().required("Please enter your password"),
-});
-
 export default function LoginForm() {
   const t = useTranslations("LoginPage");
   const router = useRouter();
   const [locale, setLocale] = useState("en");
   const [serverError, setServerError] = useState<string | null>(null);
+  const LoginSchema = Yup.object({
+    email: Yup.string()
+      .email(t("invalidEmailFormat"))
+      .required(t("emailRequired")),
+    password: Yup.string().required(t("passwordRequired")),
+  });
+
   useEffect(() => {
     const cookieLocale = document.cookie
       .split("; ")
@@ -105,12 +105,11 @@ export default function LoginForm() {
                       email: values.email,
                       password: values.password,
                     });
-                    setSubmitting(false);
-
                     if (res?.ok) {
                       router.push("/protected/dashboard");
                     } else {
-                      setServerError("อีเมลหรือรหัสผ่านไม่ถูกต้อง");
+                      setSubmitting(false);
+                      setServerError(t("InvalidCredentials"));
                     }
                   }}
                 >

@@ -20,14 +20,39 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { signOut } from "next-auth/react";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export function Topbar({ className }: { className?: string }) {
+  const [locale, setLocale] = useState("en");
+  const router = useRouter();
   const { toggleSidebar } = useLayout();
   const pathname = usePathname();
 
   // helper: เช็ค active
   const isActive = (href: string) =>
     pathname === href || pathname.startsWith(href + "/");
+
+  useEffect(() => {
+    const cookieLocale = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("NEXT_LOCALE="))
+      ?.split("=")[1];
+    if (cookieLocale) {
+      setLocale(cookieLocale);
+    } else {
+      const browserLang = navigator.language.split("-")[0];
+      setLocale(browserLang);
+      document.cookie = `NEXT_LOCALE=${browserLang};`;
+      router.refresh();
+    }
+  }, [router]);
+
+  const changeLanguage = (lng: string) => {
+    setLocale(lng);
+    document.cookie = `NEXT_LOCALE=${lng};`;
+    router.refresh();
+  };
   return (
     <header className={cn("sticky top-0 z-40 w-full bg-[#234868]", className)}>
       <div className="flex justify-between items-center">
@@ -88,10 +113,15 @@ export function Topbar({ className }: { className?: string }) {
           <div className="flex justify-end w-full font-bold space-x-2">
             <Badge
               onClick={() => {
-                console.log("EN");
+                changeLanguage("en");
               }}
               variant="secondary"
-              className="w-10 cursor-pointer bg-[#ea330b] text-[#ffffff]"
+              className="w-10 cursor-pointer"
+              style={
+                locale === "en"
+                  ? { backgroundColor: "#ea330b", color: "#ffffff" }
+                  : {}
+              }
             >
               EN
             </Badge>
@@ -99,8 +129,13 @@ export function Topbar({ className }: { className?: string }) {
               variant="secondary"
               className="w-10 cursor-pointer"
               onClick={() => {
-                console.log("JP");
+                changeLanguage("jp");
               }}
+              style={
+                locale === "jp"
+                  ? { backgroundColor: "#ea330b", color: "#ffffff" }
+                  : {}
+              }
             >
               JP
             </Badge>

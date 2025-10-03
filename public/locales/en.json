@@ -3,6 +3,14 @@
     "title": "Login",
     "description": "Login page",
     "signIn": "Sign In",
-    "signingIn": "Signing In..."
+    "signingIn": "Signing In...",
+    "invalidEmailFormat": "Invalid email format",
+    "emailRequired": "Email is required",
+    "passwordRequired": "Password is required",
+    "InvalidCredentials": "Invalid email or password"
+  },
+  "DailyReportPage": {
+    "title": "Daily Report",
+    "description": "Daily Report page"
   }
 }
