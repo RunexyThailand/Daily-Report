@@ -57,9 +57,8 @@ model Report {
   created_at  DateTime  @default(now())
   created_by  String
   updated_at  DateTime  @updatedAt
-  
 
-  @@unique([task_id])
+  translations Report_trans[]
 }
 
 model Report_trans {
@@ -71,6 +70,7 @@ model Report_trans {
   created_at  DateTime  @default(now())
   updated_at  DateTime  @updatedAt
 
+  report      Report    @relation(fields: [report_id], references: [id], onDelete: Cascade)
   @@index([report_id])
 }
 
