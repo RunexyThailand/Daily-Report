@@ -12,8 +12,8 @@ export async function generateMetadata({
   const messages = await getMessages({ locale });
 
   return {
-    title: messages.LoginPage.title,
-    description: messages.LoginPage.description,
+    title: "messages.LoginPage.title",
+    description: "messages.LoginPage.description",
   };
 }
 
@@ -22,7 +22,7 @@ export default async function LoginPage() {
 
   // ถ้า login แล้ว → redirect ไป dashboard
   if (session?.user) {
-    redirect("/protected/dashboard");
+    redirect("/dashboard");
   }
 
   // ถ้ายังไม่ได้ login → แสดง form

@@ -1,7 +1,11 @@
-import { router, publicProcedure, authedProcedure } from "@/server/trpc";
+import { router, publicProcedure } from "@/server/trpc";
 import { z } from "zod";
 
 export const appRouter = router({
+  getTasks: publicProcedure.query(async ({ ctx }) => {
+    const tasks = await ctx.prisma.task.findMany();
+    return { tasks };
+  }),
   // query ธรรมดา
   ping: publicProcedure.query(() => ({
     ok: true,
@@ -14,11 +18,6 @@ export const appRouter = router({
     .query(({ input }) => ({
       message: `Hello ${input?.name ?? "world"}!`,
     })),
-
-  // query ที่ต้อง auth ก่อนถึงจะใช้ได้
-  me: authedProcedure.query(({ ctx }) => ({
-    user: ctx.session?.user ?? null,
-  })),
 
   // mutation ตัวอย่าง
   echo: publicProcedure

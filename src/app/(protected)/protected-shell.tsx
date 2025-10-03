@@ -1,7 +1,7 @@
 "use client";
 
 import { LayoutProvider } from "@/components/layout/layout-provider";
-import { Sidebar } from "@/components/layout/sidebar";
+// import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
 
 export default function ProtectedShell({

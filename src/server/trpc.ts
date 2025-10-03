@@ -1,33 +1,33 @@
-// src/server/trpc.ts
-import { initTRPC } from "@trpc/server";
+// server/trpc.ts
+import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
-import { getServerSession, type Session } from "next-auth";
-import { authOptions } from "@/server/auth";
+import { prisma } from "@/server/db";
+import { getAuth } from "@/server/auth";
 
-// ---- Context ----
-export type Context = {
-  session: Session | null;
+// ---------- Context ----------
+export type TRPCContext = {
+  prisma: typeof prisma;
+  session: Awaited<ReturnType<typeof getAuth>>; // { user?: ... } | null
 };
 
-export async function createContext(): Promise<Context> {
-  const session = await getServerSession(authOptions);
-  return { session };
+export async function createTRPCContext(): Promise<TRPCContext> {
+  const session = await getAuth();
+  return { prisma, session };
 }
 
-// ---- tRPC init ----
-// v10 ใช้ transformer; ถ้า v11 ให้ใช้ dataTransformer
-const t = initTRPC.context<Context>().create({
+// ---------- tRPC init ----------
+const t = initTRPC.context<TRPCContext>().create({
+  // server-side ยังสามารถกำหนด transformer ได้
   transformer: superjson,
 });
 
+// ---------- Routers & Procedures ----------
 export const router = t.router;
 export const publicProcedure = t.procedure;
 
-export const authedProcedure = t.procedure.use(({ ctx, next }) => {
-  if (!ctx.session) {
-    // คุณอาจใช้ TRPCError ก็ได้:
-    // throw new TRPCError({ code: "UNAUTHORIZED" });
-    throw new Error("UNAUTHORIZED");
+export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
+  if (!ctx.session?.user) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
   }
-  return next({ ctx });
+  return next();
 });

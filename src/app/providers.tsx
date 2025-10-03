@@ -1,34 +1,39 @@
 "use client";
 
-import { trpc } from "@/trpc/client";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import type { ReactNode } from "react";
 import { useState } from "react";
-import superjson from "superjson";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
+import superjson from "superjson";
+import { trpc } from "@/trpc/client";
 import { LayoutProvider } from "@/components/layout/layout-provider";
+import { NextIntlClientProvider, type AbstractIntlMessages } from "next-intl";
 
-export default function Providers({ children }: { children: React.ReactNode }) {
-  // React Query client
+type ProvidersProps = {
+  children: ReactNode;
+  messages: AbstractIntlMessages;
+  locale: string; // <-- ต้องมี และต้อง pass ไปให้ NextIntlClientProvider
+};
+
+export default function Providers({
+  children,
+  messages,
+  locale,
+}: ProvidersProps) {
   const [queryClient] = useState(() => new QueryClient());
-
-  // tRPC client
   const [trpcClient] = useState(() =>
     trpc.createClient({
-      links: [
-        httpBatchLink({
-          url: "/api/trpc",
-          transformer: superjson, // ✅ ใส่ transformer ตรง link (ตาม v11)
-          // ถ้าต้องส่ง cookie/session:
-          // fetch: (input, init) => fetch(input, { ...init, credentials: "include" }),
-        }),
-      ],
+      links: [httpBatchLink({ url: "/api/trpc", transformer: superjson })],
     }),
   );
 
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <LayoutProvider>{children}</LayoutProvider>
+        {/* ✅ ใส่ locale ชัดเจน */}
+        <NextIntlClientProvider messages={messages} locale={locale}>
+          <LayoutProvider>{children}</LayoutProvider>
+        </NextIntlClientProvider>
       </QueryClientProvider>
     </trpc.Provider>
   );
