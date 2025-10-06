@@ -1,4 +1,4 @@
-import NextAuth, { DefaultSession } from "next-auth";
+import { DefaultSession } from "next-auth";
 
 // เพิ่ม field ให้ Session.user
 declare module "next-auth" {

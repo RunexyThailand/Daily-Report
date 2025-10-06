@@ -42,14 +42,8 @@ export function Sidebar() {
           </SheetHeader>
           <Separator />
           <nav className="grid gap-1 p-2">
-            <NavLink
-              href="/dashboard"
-              icon={<LayoutDashboard className="h-4 w-4" />}
-            >
-              Dashboard
-            </NavLink>
-            <NavLink href="/reports" icon={<NotebookPen className="h-4 w-4" />}>
-              Reports
+            <NavLink href="/report" icon={<NotebookPen className="h-4 w-4" />}>
+              Report
             </NavLink>
             <NavLink href="/settings" icon={<Settings className="h-4 w-4" />}>
               Settings
@@ -88,10 +82,10 @@ export function Sidebar() {
       <nav className="grid gap-1 p-2">
         <NavLink
           collapsed={!sidebarOpen}
-          href="/dashboard"
+          href="/report"
           icon={<LayoutDashboard className="h-4 w-4" />}
         >
-          Dashboard
+          Report
         </NavLink>
         <NavLink
           collapsed={!sidebarOpen}

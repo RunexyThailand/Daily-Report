@@ -121,7 +121,7 @@ const seedReport = async () => {
           progress: Math.floor(Math.random() * 100), // random progress 0-100
           due_date: Math.floor(Math.random() * 2) === 0 ? null : due_date, // 50% chance of null},
           created_by: user.id,
-          translations: {
+          report_trans: {
             create: [
               {
                 language: "en",

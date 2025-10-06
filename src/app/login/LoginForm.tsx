@@ -106,7 +106,7 @@ export default function LoginForm() {
                       password: values.password,
                     });
                     if (res?.ok) {
-                      router.push("/protected/dashboard");
+                      router.push("/protected/report");
                     } else {
                       setSubmitting(false);
                       setServerError(t("InvalidCredentials"));

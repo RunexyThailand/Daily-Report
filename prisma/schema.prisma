@@ -8,43 +8,53 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  password      String?   
-  image         String?
+  id         String   @id @default(cuid())
+  name       String?
+  email      String?  @unique
+  password   String?
+  image      String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  is_active  Boolean  @default(true)
 
-  // OAuth sessions/accounts (สำหรับอนาคต)
-  // accounts      Account[]
-  // sessions      Session[]
+  // ⬅️ relation กลับจาก Report
+  reports Report[] @relation("UserReports")
 
-  created_at     DateTime  @default(now())
-  updated_at     DateTime  @updatedAt
-  is_active      Boolean   @default(true)
+  @@map("User")
 }
 
 model Project {
-  id          String    @id @default(cuid())
-  name        String
-  created_at  DateTime  @default(now())
-  created_by  String
-  updated_at  DateTime  @updatedAt
-  updated_by  String?
-  deleted_at  DateTime?
-  deleted_by  String?
-  is_active   Boolean   @default(true)
+  id         String    @id @default(cuid())
+  name       String
+  created_at DateTime  @default(now())
+  created_by String
+  updated_at DateTime  @updatedAt
+  updated_by String?
+  deleted_at DateTime?
+  deleted_by String?
+  is_active  Boolean   @default(true)
+
+  // ⬅️ relation กลับจาก Report
+  reports Report[]
+
+  @@map("Project")
 }
 
 model Task {
-  id          String    @id @default(cuid())
-  name        String
-  created_at  DateTime  @default(now())
-  created_by  String
-  updated_at  DateTime  @updatedAt
-  updated_by  String?
-  deleted_at  DateTime?
-  deleted_by  String?
-  is_active   Boolean   @default(true)
+  id         String    @id @default(cuid())
+  name       String
+  created_at DateTime  @default(now())
+  created_by String
+  updated_at DateTime  @updatedAt
+  updated_by String?
+  deleted_at DateTime?
+  deleted_by String?
+  is_active  Boolean   @default(true)
+
+  // ⬅️ relation กลับจาก Report
+  reports Report[]
+
+  @@map("Task")
 }
 
 model Report {
@@ -58,32 +68,47 @@ model Report {
   created_by  String
   updated_at  DateTime  @updatedAt
 
-  translations Report_trans[]
+  // ⬅️ relations
+  createdBy    User           @relation("UserReports", fields: [created_by], references: [id])
+  task         Task?          @relation(fields: [task_id], references: [id])
+  project      Project?       @relation(fields: [project_id], references: [id])
+  report_trans Report_trans[]
+  comments     Comment[]
+
+  @@index([created_by])
+  @@index([project_id])
+  @@index([task_id])
+  @@map("Report")
 }
 
 model Report_trans {
-  id          String    @id @default(cuid())
-  report_id   String
-  language    String
-  title       String
-  detail      String
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt
+  id         String   @id @default(cuid())
+  report_id  String
+  language   String
+  title      String
+  detail     String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
-  report      Report    @relation(fields: [report_id], references: [id], onDelete: Cascade)
+  report Report @relation(fields: [report_id], references: [id], onDelete: Cascade)
+
   @@index([report_id])
+  @@map("Report_trans")
 }
 
 model Comment {
-  id          String    @id @default(cuid())
-  report_id   String
-  content     String
-  created_at  DateTime  @default(now())
-  created_by  String
-  updated_at  DateTime  @updatedAt
-  updated_by  String?
+  id         String   @id @default(cuid())
+  report_id  String
+  content    String
+  created_at DateTime @default(now())
+  created_by String
+  updated_at DateTime @updatedAt
+  updated_by String?
+
+  report Report @relation(fields: [report_id], references: [id], onDelete: Cascade)
 
   @@index([report_id])
+  @@map("Comment")
 }
 
 // model Account {
@@ -123,7 +148,9 @@ model Comment {
 //   @@unique([identifier, token])
 // }
 
-/* ตัวอย่างตารางธุรกิจของคุณ */
+/**
+ * ตัวอย่างตารางธุรกิจของคุณ
+ */
 // model Post {
 //   id        String   @id @default(cuid())
 //   title     String

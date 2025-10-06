@@ -10,6 +10,7 @@ export async function generateMetadata({
   params: { locale: string };
 }): Promise<Metadata> {
   const messages = await getMessages({ locale });
+  console.log("messages", messages);
 
   return {
     title: "messages.LoginPage.title",
@@ -20,9 +21,9 @@ export async function generateMetadata({
 export default async function LoginPage() {
   const session = await getAuth();
 
-  // ถ้า login แล้ว → redirect ไป dashboard
+  // ถ้า login แล้ว → redirect ไป report
   if (session?.user) {
-    redirect("/dashboard");
+    redirect("/report");
   }
 
   // ถ้ายังไม่ได้ login → แสดง form

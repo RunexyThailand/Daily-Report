@@ -42,7 +42,7 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async redirect({ url, baseUrl }) {
-      // บังคับให้กลับไป /protected/dashboard หลัง login สำเร็จ
+      // บังคับให้กลับไป /protected/report หลัง login สำเร็จ
       // แต่ถ้ามี callbackUrl ที่เป็น internal ให้เคารพด้วย
       try {
         const u = new URL(url);
@@ -53,7 +53,7 @@ export const authOptions: NextAuthOptions = {
           if (u.pathname && u.pathname !== "/login") return u.toString();
         }
       } catch {}
-      return `${baseUrl}/dashboard`;
+      return `${baseUrl}/report`;
     },
     async jwt({ token, user }) {
       // ตอน login ครั้งแรก user จะไม่เป็น undefined

@@ -5,7 +5,7 @@ export { default } from "next-auth/middleware";
 export const config = {
   matcher: [
     "/", // ✅ ป้องกันหน้า root
-    "/dashboard/:path*", // ป้องกัน /dashboard และ subpath
+    "/report/:path*", // ป้องกัน /report และ subpath
     "/admin/:path*", // ป้องกัน /admin
     "/settings/:path*", // ป้องกัน /settings
   ],

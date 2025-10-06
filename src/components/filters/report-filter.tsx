@@ -1,9 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { format } from "date-fns";
-import { Calendar as CalendarIcon, X } from "lucide-react";
+import { Calendar as CalendarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -11,19 +11,16 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
+
 import { cn } from "@/lib/utils";
 import type { DateRange } from "react-day-picker";
+import Selected, { type optionType } from "@/components/form/Selected";
 
-type ProjectDTO = { id: string; name: string };
+type ReportFilterProps = {
+  projects: optionType[];
+  tasks: optionType[];
+  users: optionType[];
+};
 
 function getDateFromParam(v?: string | null) {
   if (!v) return undefined;
@@ -31,9 +28,13 @@ function getDateFromParam(v?: string | null) {
   return isNaN(+d) ? undefined : d;
 }
 
-export default function ReportFilter({ projects }: { projects: ProjectDTO[] }) {
-  const router = useRouter();
-  const pathname = usePathname();
+export default function ReportFilter({
+  projects,
+  tasks,
+  users,
+}: ReportFilterProps) {
+  // const router = useRouter();
+  // const pathname = usePathname();
   const sp = useSearchParams();
 
   // init from URL
@@ -43,32 +44,34 @@ export default function ReportFilter({ projects }: { projects: ProjectDTO[] }) {
   };
 
   const [range, setRange] = React.useState<DateRange | undefined>(initialRange);
-  const [selected, setSelected] = React.useState<string>(
-    sp.get("selected") ?? "all",
-  );
+  const [projectSelected, setProjectSelected] = React.useState<string>("all");
+  const [taskSelected, setTaskSelected] = React.useState<string>("all");
+  const [userSelected, setUserSelected] = React.useState<string>("all");
   const [open, setOpen] = React.useState(false);
 
   const hasDate = !!(range?.from || range?.to);
-  const hasSelected = selected !== "all";
+  // const hasSelected = selected !== "all";
 
   function apply() {
-    const qs = new URLSearchParams(sp.toString());
-    if (range?.from) qs.set("from", range.from.toISOString().slice(0, 10));
-    else qs.delete("from");
-    if (range?.to) qs.set("to", range.to.toISOString().slice(0, 10));
-    else qs.delete("to");
-    if (selected && selected !== "all") qs.set("selected", selected);
-    else qs.delete("selected");
-    router.replace(`${pathname}?${qs.toString()}`, { scroll: false });
+    // const qs = new URLSearchParams(sp.toString());
+    // if (range?.from) qs.set("from", range.from.toISOString().slice(0, 10));
+    // else qs.delete("from");
+    // if (range?.to) qs.set("to", range.to.toISOString().slice(0, 10));
+    // else qs.delete("to");
+    // if (selected && selected !== "all") qs.set("selected", selected);
+    // else qs.delete("selected");
+    // router.replace(`${pathname}?${qs.toString()}`, { scroll: false });
     setOpen(false);
   }
 
   function reset() {
-    const qs = new URLSearchParams(sp.toString());
-    ["from", "to", "selected"].forEach((k) => qs.delete(k));
-    router.replace(`${pathname}?${qs.toString()}`, { scroll: false });
+    // const qs = new URLSearchParams(sp.toString());
+    // ["from", "to", "selected"].forEach((k) => qs.delete(k));
+    // router.replace(`${pathname}?${qs.toString()}`, { scroll: false });
     setRange(undefined);
-    setSelected("all");
+    setProjectSelected("all");
+    setTaskSelected("all");
+    setUserSelected("all");
     setOpen(false);
   }
 
@@ -101,7 +104,6 @@ export default function ReportFilter({ projects }: { projects: ProjectDTO[] }) {
             numberOfMonths={2}
             selected={range}
             onSelect={setRange}
-            initialFocus
           />
           <div className="mt-3 flex gap-2 justify-end">
             <Button variant="ghost" onClick={() => setRange(undefined)}>
@@ -112,64 +114,46 @@ export default function ReportFilter({ projects }: { projects: ProjectDTO[] }) {
         </PopoverContent>
       </Popover>
 
-      {/* Selected filter */}
-      <Select value={selected} onValueChange={setSelected}>
-        <SelectTrigger className="w-[200px]">
-          <SelectValue placeholder="All projects" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All projects</SelectItem>
-          {projects.map((item: ProjectDTO) => (
-            <SelectItem value={item.id}>{item.name}</SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-      <Select value={"allTask"} onValueChange={() => {}}>
-        <SelectTrigger className="w-[200px]">
-          <SelectValue placeholder="All projects" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="allTask">All Task </SelectItem>
-          <SelectItem value="taks1">Taks1</SelectItem>
-          <SelectItem value="taks2">Taks2</SelectItem>
-        </SelectContent>
-      </Select>
+      <Selected
+        options={projects}
+        value={projectSelected}
+        onChange={(id) => {
+          setProjectSelected(id);
+        }}
+        includeAll
+        allLabel="All projects"
+        placeholder="All projects"
+        triggerClassName="w-[200px]"
+      />
+
+      <Selected
+        options={tasks}
+        value={taskSelected}
+        onChange={(id) => {
+          setTaskSelected(id);
+        }}
+        includeAll
+        allLabel="All tasks"
+        placeholder="All tasks"
+        triggerClassName="w-[200px]"
+      />
+
+      <Selected
+        options={users}
+        value={userSelected}
+        onChange={(id) => {
+          setUserSelected(id);
+        }}
+        includeAll
+        allLabel="Everyone"
+        placeholder="Everyone"
+        triggerClassName="w-[200px]"
+      />
 
       <Button onClick={apply}>Filter</Button>
       <Button variant="ghost" onClick={reset}>
         Reset
       </Button>
-
-      {/* Active chips */}
-      {(hasDate || hasSelected) && (
-        <>
-          <Separator orientation="vertical" className="mx-1 h-6" />
-          <div className="flex items-center gap-2">
-            {hasDate && (
-              <Badge variant="secondary" className="gap-2">
-                {range?.from ? format(range.from, "yyyy-MM-dd") : "…"} —{" "}
-                {range?.to ? format(range.to, "yyyy-MM-dd") : "…"}
-                <X
-                  className="h-3 w-3 cursor-pointer"
-                  onClick={() => setRange(undefined)}
-                />
-              </Badge>
-            )}
-            {hasSelected && (
-              <Badge variant="secondary" className="gap-2">
-                {selected !== "all"
-                  ? (projects.find((p) => p.id === selected)?.name ??
-                    "Unknown project")
-                  : "Not selected"}
-                <X
-                  className="h-3 w-3 cursor-pointer"
-                  onClick={() => setSelected("all")}
-                />
-              </Badge>
-            )}
-          </div>
-        </>
-      )}
     </div>
   );
 }

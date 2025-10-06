@@ -1,18 +1,15 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useLayout } from "@/components/layout/layout-provider";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
-import { Menu } from "lucide-react";
 import { NavLink } from "../ui/nav-link";
 import { usePathname } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -26,7 +23,7 @@ import { useEffect, useState } from "react";
 export function Topbar({ className }: { className?: string }) {
   const [locale, setLocale] = useState("en");
   const router = useRouter();
-  const { toggleSidebar } = useLayout();
+  // const { toggleSidebar } = useLayout();
   const pathname = usePathname();
 
   // helper: เช็ค active
@@ -84,15 +81,15 @@ export function Topbar({ className }: { className?: string }) {
         <div className="flex h-14 items-center px-5 py-2 justify-between">
           <nav className="hidden md:flex items-center gap-2">
             <NavLink
-              href="/dashboard"
+              href="/report"
               className={clsx(
-                isActive("/dashboard")
+                isActive("/report")
                   ? "text-[#ea340e]"
                   : "text-white hover:text-black",
                 "hover:bg-gray-200",
               )}
             >
-              Dashboard
+              Report
             </NavLink>
             <NavLink
               href="/calendar"
@@ -159,7 +156,7 @@ export function Topbar({ className }: { className?: string }) {
 
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuItem asChild>
-                <NavLink href="/dashboard">Dashboard</NavLink>
+                <NavLink href="/report">Report</NavLink>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <NavLink href="/calendar">Calendar</NavLink>
