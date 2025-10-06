@@ -15,11 +15,19 @@ import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import type { DateRange } from "react-day-picker";
 import Selected, { type optionType } from "@/components/form/Selected";
+import { DateTime } from "luxon";
 
 type ReportFilterProps = {
   projects: optionType[];
   tasks: optionType[];
   users: optionType[];
+  onChange?: (v: {
+    taskId: string;
+    projectId: string;
+    userId: string;
+    from: string;
+    to: string;
+  }) => void;
 };
 
 function getDateFromParam(v?: string | null) {
@@ -32,12 +40,9 @@ export default function ReportFilter({
   projects,
   tasks,
   users,
+  onChange,
 }: ReportFilterProps) {
-  // const router = useRouter();
-  // const pathname = usePathname();
   const sp = useSearchParams();
-
-  // init from URL
   const initialRange: DateRange | undefined = {
     from: getDateFromParam(sp.get("from")),
     to: getDateFromParam(sp.get("to")),
@@ -50,24 +55,29 @@ export default function ReportFilter({
   const [open, setOpen] = React.useState(false);
 
   const hasDate = !!(range?.from || range?.to);
-  // const hasSelected = selected !== "all";
 
   function apply() {
-    // const qs = new URLSearchParams(sp.toString());
-    // if (range?.from) qs.set("from", range.from.toISOString().slice(0, 10));
-    // else qs.delete("from");
-    // if (range?.to) qs.set("to", range.to.toISOString().slice(0, 10));
-    // else qs.delete("to");
-    // if (selected && selected !== "all") qs.set("selected", selected);
-    // else qs.delete("selected");
-    // router.replace(`${pathname}?${qs.toString()}`, { scroll: false });
+    console.log("range", range);
+
+    onChange?.({
+      projectId: projectSelected === "all" ? "" : projectSelected,
+      taskId: taskSelected === "all" ? "" : taskSelected,
+      userId: userSelected === "all" ? "" : userSelected,
+      from: range?.from
+        ? DateTime.fromJSDate(range?.from, { zone: "Asia/Bangkok" })
+            .startOf("day")
+            .toString()
+        : "",
+      to: range?.to
+        ? DateTime.fromJSDate(range?.to, { zone: "Asia/Bangkok" })
+            .endOf("day")
+            .toString()
+        : "",
+    });
     setOpen(false);
   }
 
   function reset() {
-    // const qs = new URLSearchParams(sp.toString());
-    // ["from", "to", "selected"].forEach((k) => qs.delete(k));
-    // router.replace(`${pathname}?${qs.toString()}`, { scroll: false });
     setRange(undefined);
     setProjectSelected("all");
     setTaskSelected("all");
@@ -77,7 +87,6 @@ export default function ReportFilter({
 
   return (
     <div className="flex flex-wrap items-center gap-2">
-      {/* Date Range */}
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button

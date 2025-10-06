@@ -1,27 +1,43 @@
 import { router, publicProcedure } from "@/server/trpc";
+import { Prisma } from "@prisma/client";
+import { DateTime } from "luxon";
 import * as z from "zod";
 export const appRouter = router({
-  getUsers: publicProcedure
+  getUserReport: publicProcedure
     .input(
       z.object({
-        date: z.string().nullable(),
+        userId: z.string().nullable(),
+        lang: z.string().default("en"),
+        taskId: z.string().nullable().optional(),
+        projectId: z.string().nullable().optional(),
+        from: z.string().nullable().optional(),
+        to: z.string().nullable().optional(),
       }),
     )
     .query(async ({ ctx, input }) => {
+      const now = DateTime.now();
+      const startToday = now.startOf("day").toString();
+      const endToday = now.endOf("day").toString();
+      const dateGte = input.from ? input.from : startToday;
+      const dateLte = input.to ? input.to : endToday;
+      const reportWhere: Prisma.ReportWhereInput = {
+        ...(input.taskId !== "" ? { task_id: input.taskId } : {}),
+        ...(input.projectId !== "" ? { project_id: input.projectId } : {}),
+        created_at: { gte: dateGte, lte: dateLte },
+      };
+      const userWhere: Prisma.UserWhereInput = {
+        ...(input.userId ? { id: input.userId } : {}),
+        reports: { some: reportWhere },
+      };
       const users = await ctx.prisma.user.findMany({
-        where: { reports: { some: {} } },
+        where: userWhere,
         select: {
           id: true,
           name: true,
           email: true,
           image: true,
           reports: {
-            where: {
-              created_at: {
-                gte: new Date("2025-10-03 00:00:00"),
-                lte: new Date("2025-10-03 23:59:59"),
-              },
-            },
+            where: reportWhere,
             orderBy: { report_date: "desc" },
             select: {
               id: true,
@@ -29,7 +45,7 @@ export const appRouter = router({
               progress: true,
               due_date: true,
               report_trans: {
-                where: { language: "en" },
+                where: { language: input.lang },
                 select: { title: true, detail: true },
                 take: 1,
               },
@@ -59,6 +75,10 @@ export const appRouter = router({
 
       return { users: result };
     }),
+  getUsers: publicProcedure.query(async ({ ctx }) => {
+    const users = await ctx.prisma.user.findMany();
+    return { users };
+  }),
   getTasks: publicProcedure.query(async ({ ctx }) => {
     const tasks = await ctx.prisma.task.findMany();
     return { tasks };
