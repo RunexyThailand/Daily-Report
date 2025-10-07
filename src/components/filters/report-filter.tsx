@@ -15,6 +15,8 @@ import { cn } from "@/lib/utils";
 import type { DateRange } from "react-day-picker";
 import Selected, { type optionType } from "@/components/form/selected";
 import { DateTime } from "luxon";
+import { useLocale, useTranslations } from "next-intl";
+import { ja, enUS } from "date-fns/locale";
 
 type ReportFilterProps = {
   projects: optionType[];
@@ -68,7 +70,9 @@ export default function ReportFilter({
   onChange,
 }: ReportFilterProps) {
   const sp = useSearchParams();
-
+  const t = useTranslations("DailyReportPage");
+  const currentLang = useLocale();
+  const lang = currentLang === "jp" ? ja : enUS;
   // compute once
   const initialRange: DateRange | undefined = (() => {
     const f = parseDateFromParam(sp.get("from"));
@@ -184,7 +188,9 @@ export default function ReportFilter({
                   {range?.to ? format(range.to, "yyyy-MM-dd") : "…"}
                 </span>
               ) : (
-                <span className="text-muted-foreground">Pick date range</span>
+                <span data-testid="pickDate" className="text-muted-foreground">
+                  {t("selectDateLabel")}
+                </span>
               )}
             </Button>
           </PopoverTrigger>
@@ -199,13 +205,14 @@ export default function ReportFilter({
               mode="range"
               numberOfMonths={2}
               selected={range}
+              locale={lang}
               onSelect={onRangeChange}
             />
             <div className="mt-3 flex gap-2 justify-end">
               <Button variant="ghost" onClick={() => onRangeChange(undefined)}>
-                Clear
+                {t("clear")}
               </Button>
-              <Button onClick={apply}>Apply</Button>
+              <Button onClick={apply}>{t("apply")}</Button>
             </div>
           </PopoverContent>
         </Popover>
@@ -215,8 +222,8 @@ export default function ReportFilter({
           value={projectSelected}
           onChange={onProjectChange}
           includeAll
-          allLabel="All projects"
-          placeholder="All projects"
+          allLabel={t("allProjectsLabel")}
+          placeholder={t("allProjectsLabel")}
           triggerClassName="w-full sm:w-[255px]"
         />
 
@@ -225,8 +232,8 @@ export default function ReportFilter({
           value={taskSelected}
           onChange={onTaskChange}
           includeAll
-          allLabel="All tasks"
-          placeholder="All tasks"
+          allLabel={t("allTasksLabel")}
+          placeholder={t("allTasksLabel")}
           triggerClassName="w-full sm:w-[255px]"
         />
 
@@ -235,8 +242,8 @@ export default function ReportFilter({
           value={userSelected}
           onChange={onUserChange}
           includeAll
-          allLabel="Everyone"
-          placeholder="Everyone"
+          allLabel={t("everyone")}
+          placeholder={t("everyone")}
           triggerClassName="w-full sm:w-[255px]"
         />
       </div>
@@ -247,7 +254,7 @@ export default function ReportFilter({
           className="w-full sm:w-[200px] bg-gray-100 cursor-pointer"
           onClick={reset}
         >
-          Reset
+          {t("reset")}
         </Button>
       </div>
     </div>

@@ -11,7 +11,16 @@
   },
   "DailyReportPage": {
     "title": "日次報告",
-    "description": "日次報告ページ"
+    "description": "日次報告ページ",
+    "loading": "読み込み中...",
+    "reportEmpty": "本日は日報が提出されていません",
+    "selectDateLabel": "日付を選択してください。",
+    "clear": "クリア",
+    "apply": "適用する",
+    "reset": "リセット",
+    "allProjectsLabel": "すべてのプロジェクト",
+    "allTasksLabel": "すべてのタスク",
+    "everyone": "みんな"
   },
   "Common": {
     "cancel": "キャンセル",

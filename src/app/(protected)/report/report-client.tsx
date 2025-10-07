@@ -19,6 +19,7 @@ import { isEmpty } from "ramda";
 import { Button } from "@/components/ui/button";
 import DialogTask from "@/components/dialogTask";
 import { useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 
 export default function ReportClient({
   projects,
@@ -29,6 +30,8 @@ export default function ReportClient({
   tasks: optionType[];
   users: optionType[];
 }) {
+  const t = useTranslations("DailyReportPage");
+
   const [isOpen, setIsOpen] = useState(false);
   const [taskId, setTaskId] = useState("");
   const [userId, setUserId] = useState("");
@@ -71,10 +74,10 @@ export default function ReportClient({
       </div>
       <div className="sm:px-10 flex-rows space-y-4">
         {isFetching ? (
-          <div className="flex justify-center mt-20">Loading...</div>
+          <div className="flex justify-center mt-20">{t("loading")}</div>
         ) : isEmpty(userReport) ? (
           <div className="flex justify-center mt-20">
-            <div>No report has been submitted today.</div>
+            <div>{t("reportEmpty")}</div>
           </div>
         ) : (
           userReport.map((user) => {

@@ -115,7 +115,7 @@ function setup(onChange = jest.fn()) {
 describe("<ReportFilter />", () => {
   test("renders default state with 'Pick date range'", () => {
     setup();
-    expect(screen.getByText("Pick date range")).toBeInTheDocument();
+    expect(screen.getByTestId("pickDate")).toBeInTheDocument();
   });
 
   test("calendar selection then Apply emits correct ISO with Bangkok timezone", async () => {
@@ -178,7 +178,7 @@ describe("<ReportFilter />", () => {
       from: "",
       to: "",
     });
-    expect(screen.getByText("Pick date range")).toBeInTheDocument();
+    expect(screen.getByTestId("pickDate")).toBeInTheDocument();
   });
 
   test("PopoverContent has the width classes we set", () => {

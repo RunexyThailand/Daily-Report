@@ -11,7 +11,16 @@
   },
   "DailyReportPage": {
     "title": "Daily Report",
-    "description": "Daily Report page"
+    "description": "Daily Report page",
+    "loading": "Loading...",
+    "reportEmpty": "No report has been submitted today",
+    "selectDateLabel": "Please select a date.",
+    "clear": "Clear",
+    "apply": "Apply",
+    "reset": "Reset",
+    "allProjectsLabel": "All projects",
+    "allTasksLabel": "All tasks",
+    "everyone": "Everyone"
   },
   "Common": {
     "cancel": "Cancel",
