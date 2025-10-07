@@ -1,13 +1,14 @@
+// src/components/filters/__tests__/report-filter.test.tsx
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import ReportFilter from "../report-filter";
-import * as nextNav from "next/navigation";
 import type { Mock } from "jest-mock";
+import * as nextNav from "next/navigation";
+import ReportFilter from "../report-filter"; // <-- adjust if your file name differs
 
 // ---- Mocks ----
 
-// Stable URLSearchParams object across renders (prevents render loop)
+// Make useSearchParams stable across renders to avoid loops
 const stableParams = new URLSearchParams("");
 jest.mock("next/navigation", () => ({
   useSearchParams: jest.fn(() => stableParams),
@@ -16,10 +17,15 @@ const mockedUseSearchParams = nextNav.useSearchParams as unknown as Mock<
   () => URLSearchParams
 >;
 
-// Popover → always render children, keep className so we can assert width classes
+// Popover → always render children; keep className so we can assert width
 jest.mock("@/components/ui/popover", () => {
+  const React = require("react") as typeof import("react");
   return {
-    Popover: ({ children }: any) => <div>{children}</div>,
+    Popover: ({ children, open, onOpenChange }: any) => (
+      <div data-popover data-open={String(!!open)}>
+        {children}
+      </div>
+    ),
     PopoverTrigger: ({ children }: any) => <div>{children}</div>,
     PopoverContent: ({ children, className }: any) => (
       <div data-testid="popover-content" className={className}>
@@ -29,8 +35,9 @@ jest.mock("@/components/ui/popover", () => {
   };
 });
 
-// Calendar → replace with a simple button that calls onSelect with a known range
+// Calendar → simple button that calls onSelect with a known range
 jest.mock("@/components/ui/calendar", () => {
+  const React = require("react") as typeof import("react");
   return {
     Calendar: ({ onSelect }: any) => (
       <button
@@ -48,8 +55,9 @@ jest.mock("@/components/ui/calendar", () => {
   };
 });
 
-// Selected → render a real <select> to test interactions
-jest.mock("@/components/form/Selected", () => {
+// Selected (lowercase path) → render a native <select> for easy testing
+jest.mock("@/components/form/selected", () => {
+  const React = require("react") as typeof import("react");
   return {
     __esModule: true,
     default: ({
@@ -59,9 +67,11 @@ jest.mock("@/components/form/Selected", () => {
       includeAll,
       allLabel,
       placeholder,
+      triggerClassName,
     }: any) => (
       <select
         aria-label={placeholder ?? allLabel ?? "select"}
+        className={triggerClassName}
         value={value}
         onChange={(e) => onChange(e.target.value)}
       >
@@ -76,7 +86,7 @@ jest.mock("@/components/form/Selected", () => {
   };
 });
 
-// ---- Helpers ----
+// ---- Fixtures ----
 const projects = [
   { id: "p1", label: "Project A" },
   { id: "p2", label: "Project B" },
@@ -90,19 +100,19 @@ const users = [
   { id: "u2", label: "Bob" },
 ];
 
-function setup(mockOnChange = jest.fn()) {
+function setup(onChange = jest.fn()) {
   return render(
     <ReportFilter
       projects={projects}
       tasks={tasks}
       users={users}
-      onChange={mockOnChange}
+      onChange={onChange}
     />,
   );
 }
 
 // ---- Tests ----
-describe("ReportFilter", () => {
+describe("<ReportFilter />", () => {
   test("renders default state with 'Pick date range'", () => {
     setup();
     expect(screen.getByText("Pick date range")).toBeInTheDocument();
@@ -112,13 +122,15 @@ describe("ReportFilter", () => {
     const onChange = jest.fn();
     setup(onChange);
 
+    // Pick range (onRangeChange emits once immediately)
     await userEvent.click(screen.getByLabelText("mock-calendar"));
+    // Click Apply (emit again with same values)
     await userEvent.click(screen.getByRole("button", { name: /apply/i }));
 
-    const calls = onChange.mock.calls;
-    expect(calls.length).toBeGreaterThan(0);
-    const last = calls[calls.length - 1][0];
+    expect(onChange).toHaveBeenCalled();
+    const last = onChange.mock.calls.at(-1)![0];
 
+    // "all" maps to empty string
     expect(last.projectId).toBe("");
     expect(last.taskId).toBe("");
     expect(last.userId).toBe("");
@@ -136,7 +148,7 @@ describe("ReportFilter", () => {
     setup(onChange);
 
     const projectSelect = screen.getByRole("combobox", {
-      name: "All projects",
+      name: /All projects/i,
     });
     await userEvent.selectOptions(projectSelect, "p1");
 
@@ -150,8 +162,11 @@ describe("ReportFilter", () => {
     const onChange = jest.fn();
     setup(onChange);
 
-    const userSelect = screen.getByRole("combobox", { name: "Everyone" });
-    await userEvent.selectOptions(userSelect, "u2");
+    // choose a user first
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: /Everyone/i }),
+      "u2",
+    );
 
     await userEvent.click(screen.getByRole("button", { name: /reset/i }));
 
@@ -163,7 +178,6 @@ describe("ReportFilter", () => {
       from: "",
       to: "",
     });
-
     expect(screen.getByText("Pick date range")).toBeInTheDocument();
   });
 
@@ -175,6 +189,7 @@ describe("ReportFilter", () => {
   });
 
   test("initial range is read from search params and shown on the button", () => {
+    // Make the next call of useSearchParams return query with dates
     mockedUseSearchParams.mockReturnValueOnce(
       new URLSearchParams("from=2025-10-01&to=2025-10-02"),
     );

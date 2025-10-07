@@ -13,7 +13,7 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import type { DateRange } from "react-day-picker";
-import Selected, { type optionType } from "@/components/form/Selected";
+import Selected, { type optionType } from "@/components/form/selected";
 import { DateTime } from "luxon";
 
 type ReportFilterProps = {
@@ -154,7 +154,6 @@ export default function ReportFilter({
 
   function onRangeChange(next?: DateRange) {
     setRange(next);
-    emitChange({ range: next });
   }
 
   function reset() {

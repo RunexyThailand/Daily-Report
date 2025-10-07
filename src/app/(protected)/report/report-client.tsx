@@ -1,6 +1,6 @@
 "use client";
 import { trpc } from "@/trpc/client";
-import { type optionType } from "@/components/form/Selected";
+import { type optionType } from "@/components/form/selected";
 import ReportFilter from "@/components/filters/report-filter";
 import CollapseCard from "@/components/CollapseCard";
 import {
@@ -37,7 +37,7 @@ export default function ReportClient({
   const [to, setTo] = useState("");
   const currentLang = useLocale();
 
-  const { data: usersQuery } = trpc.getUserReport.useQuery({
+  const { data: usersQuery, isFetching } = trpc.getUserReport.useQuery({
     userId,
     lang: currentLang.toLocaleUpperCase() === "JP" ? "JP" : "DEFAULT",
     taskId,
@@ -70,7 +70,9 @@ export default function ReportClient({
         />
       </div>
       <div className="sm:px-10 flex-rows space-y-4">
-        {isEmpty(userReport) ? (
+        {isFetching ? (
+          <div className="flex justify-center mt-20">Loading...</div>
+        ) : isEmpty(userReport) ? (
           <div className="flex justify-center mt-20">
             <div>No report has been submitted today.</div>
           </div>
