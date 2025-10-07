@@ -52,6 +52,8 @@ const detailArrJp = [
 const seedUser = async () => {
   // clean up before the seeding (optional)
   console.log("Seeding users....................");
+  await prisma.report_trans.deleteMany();
+  await prisma.report.deleteMany();
   await prisma.user.deleteMany();
 
   const hashedPassword = await bcrypt.hash("01Password", 10);
@@ -93,7 +95,7 @@ const seedTask = async () => {
 
 const seedReport = async () => {
   console.log("Seeding reports....................");
-  await prisma.report.deleteMany();
+  // await prisma.report.deleteMany(); DELETE before delete user
   const users = await prisma.user.findMany();
   const projects = await prisma.project.findMany();
   const tasks = await prisma.task.findMany();
@@ -124,12 +126,12 @@ const seedReport = async () => {
           report_trans: {
             create: [
               {
-                language: "en",
+                language: "DEFAULT",
                 title: title,
                 detail: detail,
               },
               {
-                language: "jp",
+                language: "JP",
                 title: title_jp,
                 detail: detail_jp,
               },

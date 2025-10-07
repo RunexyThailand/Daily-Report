@@ -1,7 +1,9 @@
 import { router, publicProcedure } from "@/server/trpc";
-import { Prisma } from "@prisma/client";
+import { Language, Prisma } from "@prisma/client";
 import { DateTime } from "luxon";
+import { reportInputSchema } from "./types";
 import * as z from "zod";
+
 export const appRouter = router({
   getUserReport: publicProcedure
     .input(
@@ -45,7 +47,7 @@ export const appRouter = router({
               progress: true,
               due_date: true,
               report_trans: {
-                where: { language: input.lang },
+                where: { language: input.lang as Language },
                 select: { title: true, detail: true },
                 take: 1,
               },
@@ -88,6 +90,24 @@ export const appRouter = router({
     const projects = await ctx.prisma.project.findMany();
     return { projects };
   }),
+  createReport: publicProcedure
+    .input(reportInputSchema)
+    .mutation(async ({ ctx, input }) => {
+      const report = await ctx.prisma.report.create({
+        data: {
+          project_id: input.project_id,
+          task_id: input.task_id,
+          report_date: input.report_date,
+          progress: input.progress,
+          due_date: input.due_date,
+          created_by: ctx.session?.user.id ?? "",
+          report_trans: {
+            create: input.report_trans,
+          },
+        },
+      });
+      return report;
+    }),
 });
 
 // type สำหรับ client

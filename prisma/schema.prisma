@@ -81,10 +81,14 @@ model Report {
   @@map("Report")
 }
 
+enum Language {
+  DEFAULT
+  JP
+}
 model Report_trans {
   id         String   @id @default(cuid())
   report_id  String
-  language   String
+  language   Language
   title      String
   detail     String
   created_at DateTime @default(now())

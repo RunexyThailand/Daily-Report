@@ -20,6 +20,7 @@ export default function Providers({
   messages,
   locale,
 }: ProvidersProps) {
+  const timeZone = "Asia/Bangkok";
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
     trpc.createClient({
@@ -31,7 +32,11 @@ export default function Providers({
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         {/* ✅ ใส่ locale ชัดเจน */}
-        <NextIntlClientProvider messages={messages} locale={locale}>
+        <NextIntlClientProvider
+          messages={messages}
+          locale={locale}
+          timeZone={timeZone}
+        >
           <LayoutProvider>{children}</LayoutProvider>
         </NextIntlClientProvider>
       </QueryClientProvider>

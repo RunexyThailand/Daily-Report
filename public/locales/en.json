@@ -12,5 +12,25 @@
   "DailyReportPage": {
     "title": "Daily Report",
     "description": "Daily Report page"
+  },
+  "Common": {
+    "cancel": "Cancel",
+    "close": "Close",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "areYouSure": "Are you sure ?",
+    "yes": "Yes",
+    "no": "No",
+    "loading": "Loading...",
+    "error": "An error occurred. Please try again.",
+    "success": "Operation successful.",
+    "title": "Title",
+    "description": "Description",
+    "progress": "Progress",
+    "dueDate": "Due Date",
+    "comment": "Comment...",
+    "selectDate": "Select Date"
   }
 }

@@ -12,10 +12,12 @@ import {
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, LoaderCircle } from "lucide-react";
+import { Calendar, LoaderCircle, Plus } from "lucide-react";
 import { DateTime } from "luxon";
 import { useState } from "react";
 import { isEmpty } from "ramda";
+import { Button } from "@/components/ui/button";
+import DialogTask from "@/components/dialogTask";
 
 export default function ReportClient({
   projects,
@@ -26,6 +28,7 @@ export default function ReportClient({
   tasks: optionType[];
   users: optionType[];
 }) {
+  const [isOpen, setIsOpen] = useState(false);
   const [taskId, setTaskId] = useState("");
   const [userId, setUserId] = useState("");
   const [projectId, setProjectId] = useState("");
@@ -39,7 +42,7 @@ export default function ReportClient({
 
   const { data: usersQuery } = trpc.getUserReport.useQuery({
     userId,
-    lang: cookieLocale,
+    lang: cookieLocale?.toLocaleUpperCase() === "JP" ? "JP" : "DEFAULT",
     taskId,
     projectId,
     from,
@@ -158,6 +161,15 @@ export default function ReportClient({
           })
         )}
       </div>
+      <Button
+        className="fixed bottom-6 right-6 rounded-full bg-green-500 hover:bg-green-600 text-white w-14 h-14 flex items-center justify-center shadow-lg cursor-pointer"
+        size="icon"
+        aria-label="Add"
+        onClick={() => setIsOpen(true)}
+      >
+        <Plus size={32} />
+      </Button>
+      <DialogTask isOpen={isOpen} onClose={() => setIsOpen(false)} mode="ADD" />
     </>
   );
 }
