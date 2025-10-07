@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/select";
 
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "./ui/input";
 import { useTranslations } from "next-intl";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -55,6 +55,7 @@ type DialogTaskProps = {
     dueDate: Date;
   };
   report?: ReportDetail;
+  onSuccess?: () => void;
 };
 
 type ReportDetail = {
@@ -73,6 +74,7 @@ const DialogTask = ({
   mode,
   formData,
   report,
+  onSuccess,
 }: DialogTaskProps) => {
   const mockUp: ReportDetail = {
     title: "Default Title",
@@ -141,6 +143,7 @@ const DialogTask = ({
                           },
                         ],
                       });
+                      onSuccess && onSuccess();
                     }}
                   >
                     <Select

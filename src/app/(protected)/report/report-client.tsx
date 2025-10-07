@@ -37,7 +37,7 @@ export default function ReportClient({
   const [to, setTo] = useState("");
   const currentLang = useLocale();
 
-  const { data: usersQuery } = trpc.getUserReport.useQuery({
+  const { data: usersQuery, refetch } = trpc.getUserReport.useQuery({
     userId,
     lang: currentLang.toLocaleUpperCase() === "JP" ? "JP" : "DEFAULT",
     taskId,
@@ -166,7 +166,15 @@ export default function ReportClient({
       >
         <Plus size={32} />
       </Button>
-      <DialogTask isOpen={isOpen} onClose={() => setIsOpen(false)} mode="ADD" />
+      <DialogTask
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        mode="ADD"
+        onSuccess={() => {
+          setIsOpen(false);
+          refetch();
+        }}
+      />
     </>
   );
 }
