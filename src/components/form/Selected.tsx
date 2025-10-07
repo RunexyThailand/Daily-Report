@@ -33,7 +33,7 @@ export default function Selected({
   className,
   triggerClassName,
 }: IdSelectProps) {
-  // บังคับให้ value เป็น string เสมอสำหรับ Select
+  // Force value to a string for Select
   const currentValue = value ?? (includeAll ? "all" : "");
 
   return (

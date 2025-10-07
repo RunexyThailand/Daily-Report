@@ -1,6 +1,6 @@
 "use client";
 import { trpc } from "@/trpc/client";
-import { type optionType } from "@/components/form/Selected";
+import { type optionType } from "@/components/form/selected";
 import ReportFilter from "@/components/filters/report-filter";
 import CollapseCard from "@/components/CollapseCard";
 import {
@@ -37,7 +37,11 @@ export default function ReportClient({
   const [to, setTo] = useState("");
   const currentLang = useLocale();
 
-  const { data: usersQuery, refetch } = trpc.getUserReport.useQuery({
+  const {
+    data: usersQuery,
+    refetch,
+    isFetching,
+  } = trpc.getUserReport.useQuery({
     userId,
     lang: currentLang.toLocaleUpperCase() === "JP" ? "JP" : "DEFAULT",
     taskId,
@@ -70,7 +74,9 @@ export default function ReportClient({
         />
       </div>
       <div className="sm:px-10 flex-rows space-y-4">
-        {isEmpty(userReport) ? (
+        {isFetching ? (
+          <div className="flex justify-center mt-20">Loading...</div>
+        ) : isEmpty(userReport) ? (
           <div className="flex justify-center mt-20">
             <div>No report has been submitted today.</div>
           </div>
@@ -96,7 +102,7 @@ export default function ReportClient({
                             )}
                           >
                             <div className="min-w-0 flex-1">
-                              <CardTitle className="truncate flex justify-end space-x-2">
+                              <CardTitle className="flex justify-end space-x-2">
                                 {report.project_name && (
                                   <Badge
                                     variant="secondary"
@@ -120,7 +126,7 @@ export default function ReportClient({
                                   </Badge>
                                 )}
                               </CardTitle>
-                              <CardDescription className="truncate py-5">
+                              <CardDescription className="py-5">
                                 <div className="font-bold text-18 mb-2">
                                   {report.title}
                                 </div>
