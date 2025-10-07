@@ -98,7 +98,7 @@ export default function ReportClient({
                             )}
                           >
                             <div className="min-w-0 flex-1">
-                              <CardTitle className="truncate flex justify-end space-x-2">
+                              <CardTitle className="flex justify-end space-x-2">
                                 {report.project_name && (
                                   <Badge
                                     variant="secondary"
@@ -122,7 +122,7 @@ export default function ReportClient({
                                   </Badge>
                                 )}
                               </CardTitle>
-                              <CardDescription className="truncate py-5">
+                              <CardDescription className="py-5">
                                 <div className="font-bold text-18 mb-2">
                                   {report.title}
                                 </div>
