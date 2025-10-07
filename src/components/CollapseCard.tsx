@@ -92,7 +92,7 @@ export default function CollapseCard({
         </CardHeader>
 
         <CollapsibleContent>
-          <CardContent className={cn("pt-0", contentClassName)}>
+          <CardContent className={cn("pt-0 sm:px-6 px-3", contentClassName)}>
             {children}
           </CardContent>
         </CollapsibleContent>

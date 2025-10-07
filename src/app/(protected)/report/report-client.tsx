@@ -55,7 +55,7 @@ export default function ReportClient({
 
   return (
     <>
-      <div className="my-10 flex justify-center">
+      <div className="my-10 sm:flex justify-center">
         <ReportFilter
           projects={projects}
           tasks={tasks}
@@ -69,7 +69,7 @@ export default function ReportClient({
           }}
         />
       </div>
-      <div className="px-10 flex-rows space-y-4">
+      <div className="sm:px-10 flex-rows space-y-4">
         {isEmpty(userReport) ? (
           <div className="flex justify-center mt-20">
             <div>No report has been submitted today.</div>
