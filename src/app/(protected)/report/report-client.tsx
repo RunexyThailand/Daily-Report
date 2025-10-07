@@ -18,6 +18,7 @@ import { useState } from "react";
 import { isEmpty } from "ramda";
 import { Button } from "@/components/ui/button";
 import DialogTask from "@/components/dialogTask";
+import { useLocale } from "next-intl";
 
 export default function ReportClient({
   projects,
@@ -34,15 +35,11 @@ export default function ReportClient({
   const [projectId, setProjectId] = useState("");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
-
-  const cookieLocale = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("NEXT_LOCALE="))
-    ?.split("=")[1];
+  const currentLang = useLocale();
 
   const { data: usersQuery } = trpc.getUserReport.useQuery({
     userId,
-    lang: cookieLocale?.toLocaleUpperCase() === "JP" ? "JP" : "DEFAULT",
+    lang: currentLang.toLocaleUpperCase() === "JP" ? "JP" : "DEFAULT",
     taskId,
     projectId,
     from,
