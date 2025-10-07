@@ -1,6 +1,6 @@
 import { getAuth } from "@/server/auth";
 import { redirect } from "next/navigation";
-import LoginForm from "./LoginForm"; // แยก form เป็น client component
+import LoginForm from "./login-form"; // แยก form เป็น client component
 import { Metadata } from "next";
 import { getMessages } from "next-intl/server";
 

@@ -2,7 +2,7 @@
 
 import { LayoutProvider } from "@/components/layout/layout-provider";
 // import { Sidebar } from "@/components/layout/sidebar";
-import { Topbar } from "@/components/layout/topbar";
+import { Topbar } from "@/components/layout/topbar-layout";
 
 export default function ProtectedShell({
   children,
