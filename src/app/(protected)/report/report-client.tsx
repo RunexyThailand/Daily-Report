@@ -2,7 +2,7 @@
 import { trpc } from "@/trpc/client";
 import { type optionType } from "@/components/form/selected";
 import ReportFilter from "@/components/filters/report-filter";
-import CollapseCard from "@/components/CollapseCard";
+import CollapseCard from "@/components/collapse-card";
 import {
   Card,
   CardDescription,
@@ -17,7 +17,7 @@ import { DateTime } from "luxon";
 import { useState } from "react";
 import { isEmpty } from "ramda";
 import { Button } from "@/components/ui/button";
-import DialogTask from "@/components/dialogTask";
+import DialogTask from "@/components/dialog-task";
 import { useLocale } from "next-intl";
 import { useTranslations } from "next-intl";
 
@@ -192,9 +192,9 @@ export default function ReportClient({
         <Plus size={32} />
       </Button>
       <DialogTask
-        isOpen={isOpen}
+        projects={projects}
+        tasks={tasks}
         onClose={() => setIsOpen(false)}
-        mode={action}
         onSuccess={() => {
           setIsOpen(false);
           refetch();
