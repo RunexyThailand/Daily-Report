@@ -199,7 +199,7 @@ export default function ReportFilter({
             align="start"
             side="bottom"
             sideOffset={8}
-            className="p-3 w-[560px] sm:w-[640px]"
+            className="p-3 w-full"
           >
             <Calendar
               mode="range"
@@ -208,7 +208,7 @@ export default function ReportFilter({
               locale={lang}
               onSelect={onRangeChange}
             />
-            <div className="mt-3 flex gap-2 justify-end">
+            <div className="mt-3 flex justify-end">
               <Button variant="ghost" onClick={() => onRangeChange(undefined)}>
                 {t("clear")}
               </Button>
