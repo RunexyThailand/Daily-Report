@@ -41,10 +41,16 @@ import {
 } from "@/components/ui/field";
 import { createReport } from "@/actions/report";
 
+enum formMode {
+  VIEW,
+  CREATE,
+  EDIT,
+}
+
 type DialogTaskProps = {
   isOpen: boolean;
   onClose?: () => void;
-  mode: "ADD" | "EDIT" | "VIEW";
+  mode: formMode;
   formData?: {
     project: string;
     task: string;
@@ -108,9 +114,9 @@ const DialogTask = ({
         <VisuallyHidden>
           <DialogHeader>
             <DialogTitle>
-              {mode === "ADD"
+              {mode === formMode.CREATE
                 ? "Add Task"
-                : mode === "EDIT"
+                : mode === formMode.EDIT
                   ? "Edit Task"
                   : "View Task"}
             </DialogTitle>
@@ -260,13 +266,15 @@ const DialogTask = ({
                         />
                       </PopoverContent>
                     </Popover>
-                    {mode !== "VIEW" && <Button variant="outline">SAVE</Button>}
+                    {mode !== formMode.VIEW && (
+                      <Button variant="outline">SAVE</Button>
+                    )}
                   </form>
                 </>
               </FieldDescription>
             </FieldSet>
 
-            {mode === "VIEW" && (
+            {mode === formMode.VIEW && (
               <>
                 <FieldSeparator />
                 <FieldSet>

@@ -21,6 +21,12 @@ import DialogTask from "@/components/dialogTask";
 import { useLocale } from "next-intl";
 import { useTranslations } from "next-intl";
 
+enum formMode {
+  VIEW,
+  CREATE,
+  EDIT,
+}
+
 export default function ReportClient({
   projects,
   tasks,
@@ -38,6 +44,7 @@ export default function ReportClient({
   const [projectId, setProjectId] = useState("");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
+  const [action, setAction] = useState<formMode>(formMode.CREATE);
   const currentLang = useLocale();
 
   const {
@@ -59,6 +66,10 @@ export default function ReportClient({
       label: user.name || "",
       reports: user.reports,
     })) || [];
+
+  const handleViewReport = (reportId: string) => {
+    console.log("🚀 ~ handleViewReport ~ reportId:", reportId);
+  };
 
   return (
     <>
@@ -95,7 +106,7 @@ export default function ReportClient({
                   {user.reports.map((report) => {
                     return (
                       <Card
-                        className="overflow-hidden p-0"
+                        className="overflow-hidden p-0 group transition-all hover:shadow-lg hover:border-primary"
                         key={report.report_id}
                       >
                         <CardHeader className="p-0 gap-0">
@@ -129,7 +140,12 @@ export default function ReportClient({
                                   </Badge>
                                 )}
                               </CardTitle>
-                              <CardDescription className="py-5">
+                              <CardDescription
+                                className="py-5 cursor-pointer"
+                                onClick={() =>
+                                  handleViewReport(report.report_id)
+                                }
+                              >
                                 <div className="font-bold text-18 mb-2">
                                   {report.title}
                                 </div>
@@ -178,7 +194,7 @@ export default function ReportClient({
       <DialogTask
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        mode="ADD"
+        mode={action}
         onSuccess={() => {
           setIsOpen(false);
           refetch();

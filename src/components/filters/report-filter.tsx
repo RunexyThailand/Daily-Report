@@ -172,7 +172,15 @@ export default function ReportFilter({
   return (
     <div className="sm:flex sm:space-x-3">
       <div className="sm:flex items-center sm:space-x-3 sm:space-y-0 space-y-3">
-        <Popover open={open} onOpenChange={setOpen}>
+        <Popover
+          open={open}
+          onOpenChange={(isOpen) => {
+            if (!isOpen) {
+              emitChange();
+            }
+            setOpen(isOpen);
+          }}
+        >
           <PopoverTrigger asChild>
             <Button
               variant="outline"
