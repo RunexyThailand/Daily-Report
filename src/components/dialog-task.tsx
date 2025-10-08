@@ -92,7 +92,7 @@ const Schema = Yup.object({
     .transform((v, o) => (o === "" ? null : v))
     .min(0, "Min 0")
     .max(100, "Max 100"),
-  dueDate: Yup.date().nullable()
+  dueDate: Yup.date().nullable(),
 });
 
 export default function AddReportDialog({
@@ -283,7 +283,10 @@ export default function AddReportDialog({
                           onChange={(e) => {
                             const v = e.target.value;
                             const n = v === "" ? null : Number.parseInt(v, 10);
-                            setFieldValue("progress", Number.isNaN(n) ? null : n);
+                            setFieldValue(
+                              "progress",
+                              Number.isNaN(n) ? null : n,
+                            );
                           }}
                         />
                         {touched.progress && errors.progress && (

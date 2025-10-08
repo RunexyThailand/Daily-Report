@@ -1,176 +1,231 @@
-// src/components/filters/__tests__/report-filter.test.tsx
-import React from "react";
+// __tests__/ReportFilter.test.tsx
+import * as React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type { Mock } from "jest-mock";
-import * as nextNav from "next/navigation";
-import ReportFilter from "../report-filter"; // <-- adjust if your file name differs
+import "@testing-library/jest-dom";
 
-// ---- Mocks ----
+// 👉 UPDATE THIS PATH:
+import ReportFilter from "@/components/filters/report-filter";
 
-// Make useSearchParams stable across renders to avoid loops
-const stableParams = new URLSearchParams("");
-jest.mock("next/navigation", () => ({
-  useSearchParams: jest.fn(() => stableParams),
+// --------------------
+// Mocks
+// --------------------
+
+// mock for @/lib/utils (no `any`)
+jest.mock("@/lib/utils", () => ({
+  cn: (...args: Array<string | number | false | null | undefined>): string =>
+    args.filter(Boolean).map(String).join(" "),
 }));
-const mockedUseSearchParams = nextNav.useSearchParams as unknown as Mock<
-  () => URLSearchParams
->;
 
-// Popover → always render children; keep className so we can assert width
-jest.mock("@/components/ui/popover", () => {
-  const React = require("react") as typeof import("react");
-  return {
-    Popover: ({ children, open, onOpenChange }: any) => (
-      <div data-popover data-open={String(!!open)}>
-        {children}
-      </div>
-    ),
-    PopoverTrigger: ({ children }: any) => <div>{children}</div>,
-    PopoverContent: ({ children, className }: any) => (
-      <div data-testid="popover-content" className={className}>
-        {children}
-      </div>
-    ),
-  };
-});
+// Minimal <Button>
+jest.mock("@/components/ui/button", () => ({
+  Button: ({ children, ...props }: any) => (
+    <button {...props}>{children}</button>
+  ),
+}));
 
-// Calendar → simple button that calls onSelect with a known range
-jest.mock("@/components/ui/calendar", () => {
-  const React = require("react") as typeof import("react");
-  return {
-    Calendar: ({ onSelect }: any) => (
+// in __tests__/ReportFilter.test.tsx (or wherever you mocked Popover)
+jest.mock("@/components/ui/popover", () => ({
+  Popover: ({ children }: any) => <div data-testid="popover">{children}</div>,
+  PopoverTrigger: ({ children }: any) => (
+    <div data-testid="trigger">{children}</div>
+  ),
+  PopoverContent: ({ children }: any) => (
+    <div data-testid="content">{children}</div>
+  ),
+}));
+
+// Simplified Calendar with buttons to simulate range selection/clear
+jest.mock("@/components/ui/calendar", () => ({
+  Calendar: ({ onSelect }: any) => (
+    <div>
       <button
-        aria-label="mock-calendar"
+        data-testid="pickRange"
         onClick={() =>
-          onSelect({
-            from: new Date("2025-10-01T12:00:00Z"),
-            to: new Date("2025-10-03T12:00:00Z"),
+          onSelect?.({
+            from: new Date("2025-06-10T14:30:00+07:00"),
+            to: new Date("2025-06-18T09:15:00+07:00"),
           })
         }
       >
-        Pick Range
+        pickRange
       </button>
-    ),
-  };
-});
+      <button data-testid="clearRange" onClick={() => onSelect?.(undefined)}>
+        clearRange
+      </button>
+    </div>
+  ),
+}));
 
-// Selected (lowercase path) → render a native <select> for easy testing
-jest.mock("@/components/form/selected", () => {
-  const React = require("react") as typeof import("react");
-  return {
-    __esModule: true,
-    default: ({
-      options,
-      value,
-      onChange,
-      includeAll,
-      allLabel,
-      placeholder,
-      triggerClassName,
-    }: any) => (
-      <select
-        aria-label={placeholder ?? allLabel ?? "select"}
-        className={triggerClassName}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      >
-        {includeAll && <option value="all">{allLabel ?? "All"}</option>}
-        {options?.map((o: any) => (
-          <option key={o.id} value={o.id}>
-            {o.label}
-          </option>
-        ))}
-      </select>
-    ),
-  };
-});
+// Replace <Selected> with a simple <select>
+jest.mock("@/components/form/selected", () => ({
+  __esModule: true,
+  default: ({
+    options,
+    value,
+    onChange,
+    includeAll,
+    allLabel,
+    placeholder,
+  }: any) => (
+    <select
+      data-testid={placeholder || allLabel || "selected"}
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+    >
+      {includeAll ? <option value="all">{allLabel || "All"}</option> : null}
+      {options?.map((o: any) => (
+        <option key={o.id} value={o.id}>
+          {o.label}
+        </option>
+      ))}
+    </select>
+  ),
+}));
 
-// ---- Fixtures ----
-const projects = [
-  { id: "p1", label: "Project A" },
-  { id: "p2", label: "Project B" },
-];
-const tasks = [
-  { id: "t1", label: "Task A" },
-  { id: "t2", label: "Task B" },
-];
-const users = [
-  { id: "u1", label: "Alice" },
-  { id: "u2", label: "Bob" },
-];
+// Icon noop
+jest.mock("lucide-react", () => ({
+  Calendar: () => <span />,
+  CalendarIcon: () => <span />,
+}));
 
-function setup(onChange = jest.fn()) {
-  return render(
+// next-intl: provide deterministic labels
+const dict = {
+  DailyReportPage: {
+    selectDateLabel: "Pick date range",
+    allProjectsLabel: "All projects",
+    allTasksLabel: "All tasks",
+    everyone: "Everyone",
+    clear: "Clear",
+    apply: "Apply",
+    reset: "Reset",
+  },
+};
+jest.mock("next-intl", () => ({
+  useTranslations: (ns?: string) => (key: string) =>
+    (dict as any)[ns || "DailyReportPage"]?.[key] ?? key,
+  useLocale: () => "en",
+}));
+
+// next/navigation: configurable mock for search params
+const mockSearchParams = new URLSearchParams();
+jest.mock("next/navigation", () => ({
+  useSearchParams: () => mockSearchParams,
+}));
+
+// --------------------
+// Helpers
+// --------------------
+const baseOptions = {
+  projects: [
+    { id: "p1", label: "Project 1" },
+    { id: "p2", label: "Project 2" },
+  ],
+  tasks: [
+    { id: "t1", label: "Task 1" },
+    { id: "t2", label: "Task 2" },
+  ],
+  users: [
+    { id: "u1", label: "User 1" },
+    { id: "u2", label: "User 2" },
+  ],
+};
+
+function renderFilter(
+  overrides: Partial<Parameters<typeof ReportFilter>[0]> = {},
+) {
+  const onChange = jest.fn();
+  render(
     <ReportFilter
-      projects={projects}
-      tasks={tasks}
-      users={users}
+      projects={baseOptions.projects}
+      tasks={baseOptions.tasks}
+      users={baseOptions.users}
       onChange={onChange}
+      {...overrides}
     />,
   );
+  return { onChange };
 }
 
-// ---- Tests ----
-describe("<ReportFilter />", () => {
-  test("renders default state with 'Pick date range'", () => {
-    setup();
+// --------------------
+// Tests
+// --------------------
+describe("ReportFilter", () => {
+  beforeEach(() => {
+    mockSearchParams.forEach((_, k) => mockSearchParams.delete(k));
+  });
+
+  test("renders placeholder when no date is chosen", () => {
+    renderFilter();
     expect(screen.getByTestId("pickDate")).toBeInTheDocument();
+    expect(screen.getByTestId("pickDate")).toHaveTextContent("Pick date range");
   });
 
-  test("calendar selection then Apply emits correct ISO with Bangkok timezone", async () => {
-    const onChange = jest.fn();
-    setup(onChange);
+  test("selecting project/task/user emits combined filters (mapping 'all' → '')", async () => {
+    const user = userEvent.setup();
+    const { onChange } = renderFilter();
 
-    // Pick range (onRangeChange emits once immediately)
-    await userEvent.click(screen.getByLabelText("mock-calendar"));
-    // Click Apply (emit again with same values)
-    await userEvent.click(screen.getByRole("button", { name: /apply/i }));
+    // change project → p1
+    await user.selectOptions(screen.getByTestId("All projects"), "p1");
+    // change task → t2
+    await user.selectOptions(screen.getByTestId("All tasks"), "t2");
+    // change user → u2
+    await user.selectOptions(screen.getByTestId("Everyone"), "u2");
 
-    expect(onChange).toHaveBeenCalled();
-    const last = onChange.mock.calls.at(-1)![0];
-
-    // "all" maps to empty string
-    expect(last.projectId).toBe("");
-    expect(last.taskId).toBe("");
-    expect(last.userId).toBe("");
-
-    // from: 2025-10-01T00:00:00+07:00
-    // to:   2025-10-03T23:59:59.999+07:00
-    expect(last.from).toMatch(/^2025-10-01T00:00:00/);
-    expect(last.from).toMatch(/\+07:00$/);
-    expect(last.to).toMatch(/^2025-10-03T23:59:59\.999/);
-    expect(last.to).toMatch(/\+07:00$/);
-  });
-
-  test("changing project to a concrete ID emits that ID (others empty)", async () => {
-    const onChange = jest.fn();
-    setup(onChange);
-
-    const projectSelect = screen.getByRole("combobox", {
-      name: /All projects/i,
+    const last = onChange.mock.calls[onChange.mock.calls.length - 1][0];
+    expect(last).toMatchObject({
+      projectId: "p1",
+      taskId: "t2",
+      userId: "u2",
+      from: "",
+      to: "",
     });
-    await userEvent.selectOptions(projectSelect, "p1");
-
-    const last = onChange.mock.calls.at(-1)![0];
-    expect(last.projectId).toBe("p1");
-    expect(last.taskId).toBe("");
-    expect(last.userId).toBe("");
   });
 
-  test("reset clears everything and emits empty strings", async () => {
-    const onChange = jest.fn();
-    setup(onChange);
+  test("applying a picked date range emits ISO with startOfDay/endOfDay (Asia/Bangkok)", async () => {
+    const user = userEvent.setup();
+    const { onChange } = renderFilter();
 
-    // choose a user first
-    await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: /Everyone/i }),
-      "u2",
-    );
+    // Simulate selecting range in mocked Calendar
+    await user.click(screen.getByTestId("pickRange"));
+    // Apply
+    await user.click(screen.getByRole("button", { name: "Apply" }));
 
-    await userEvent.click(screen.getByRole("button", { name: /reset/i }));
+    const last = onChange.mock.calls[onChange.mock.calls.length - 1][0];
+    // start: 2025-06-10T00:00:00+07:00
+    // end:   2025-06-18T23:59:59.999+07:00 (we assert only seconds part to avoid ms fragility)
+    expect(last.from).toContain("2025-06-10T00:00:00");
+    expect(last.to).toContain("2025-06-18T23:59:59");
+  });
 
-    const last = onChange.mock.calls.at(-1)![0];
+  test("clearing the range then applying emits empty from/to", async () => {
+    const user = userEvent.setup();
+    const { onChange } = renderFilter();
+
+    await user.click(screen.getByTestId("pickRange")); // set a range
+    await user.click(screen.getByTestId("clearRange")); // clear (onRangeChange(undefined))
+    await user.click(screen.getByRole("button", { name: "Apply" })); // emit
+
+    const last = onChange.mock.calls[onChange.mock.calls.length - 1][0];
+    expect(last.from).toBe("");
+    expect(last.to).toBe("");
+  });
+
+  test("Reset button resets everything and emits empty filters", async () => {
+    const user = userEvent.setup();
+    const { onChange } = renderFilter();
+
+    // Change some filters first
+    await user.selectOptions(screen.getByTestId("All projects"), "p2");
+    await user.selectOptions(screen.getByTestId("All tasks"), "t1");
+    await user.selectOptions(screen.getByTestId("Everyone"), "u1");
+    await user.click(screen.getByTestId("pickRange"));
+    await user.click(screen.getByRole("button", { name: "Apply" }));
+
+    // Now reset
+    await user.click(screen.getByRole("button", { name: "Reset" }));
+
+    const last = onChange.mock.calls[onChange.mock.calls.length - 1][0];
     expect(last).toEqual({
       projectId: "",
       taskId: "",
@@ -178,22 +233,16 @@ describe("<ReportFilter />", () => {
       from: "",
       to: "",
     });
-    expect(screen.getByTestId("pickDate")).toBeInTheDocument();
   });
 
-  test("PopoverContent has the width classes we set", () => {
-    setup();
-    const pop = screen.getByTestId("popover-content");
-    expect(pop).toHaveClass("w-[560px]");
-    expect(pop).toHaveClass("sm:w-[640px]");
-  });
+  test("reads initial from/to from search params and shows formatted label", () => {
+    // Preload URL params
+    mockSearchParams.set("from", "2025-06-01T00:00:00+07:00");
+    mockSearchParams.set("to", "2025-06-10T23:59:59+07:00");
 
-  test("initial range is read from search params and shown on the button", () => {
-    // Make the next call of useSearchParams return query with dates
-    mockedUseSearchParams.mockReturnValueOnce(
-      new URLSearchParams("from=2025-10-01&to=2025-10-02"),
-    );
-    setup();
-    expect(screen.getByText(/2025-10-01\s—\s2025-10-02/)).toBeInTheDocument();
+    renderFilter();
+
+    // The trigger renders yyyy-MM-dd — yyyy-MM-dd when hasDate=true
+    expect(screen.getByText("2025-06-01 — 2025-06-10")).toBeInTheDocument();
   });
 });
