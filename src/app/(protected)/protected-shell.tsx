@@ -3,6 +3,7 @@
 import { LayoutProvider } from "@/components/layout/layout-provider";
 // import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar-layout";
+import { SessionProvider } from "next-auth/react";
 
 export default function ProtectedShell({
   children,
@@ -10,16 +11,18 @@ export default function ProtectedShell({
   children: React.ReactNode;
 }) {
   return (
-    <LayoutProvider>
-      <div className="flex min-h-dvh">
-        {/* <Sidebar /> */}
-        <div className="flex flex-1 flex-col">
-          <Topbar />
-          <main className="flex-1 overflow-auto p-4 lg:p-6">
-            <div className="mx-auto">{children}</div>
-          </main>
+    <SessionProvider>
+      <LayoutProvider>
+        <div className="flex min-h-dvh">
+          {/* <Sidebar /> */}
+          <div className="flex flex-1 flex-col">
+            <Topbar />
+            <main className="flex-1 overflow-auto p-4 lg:p-6">
+              <div className="mx-auto">{children}</div>
+            </main>
+          </div>
         </div>
-      </div>
-    </LayoutProvider>
+      </LayoutProvider>
+    </SessionProvider>
   );
 }

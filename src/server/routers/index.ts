@@ -53,6 +53,7 @@ export const appRouter = router({
               },
               task: { select: { name: true } },
               project: { select: { name: true } },
+              created_by: true,
             },
           },
         },
@@ -72,6 +73,7 @@ export const appRouter = router({
           detail: r.report_trans[0]?.detail ?? null,
           task_name: r.task?.name ?? null,
           project_name: r.project?.name ?? null,
+          created_by: r.created_by,
         })),
       }));
 
@@ -90,6 +92,18 @@ export const appRouter = router({
     const projects = await ctx.prisma.project.findMany();
     return { projects };
   }),
+  getReportById: publicProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      const reportId = input;
+      const report = await ctx.prisma.report.findFirst({
+        include: {
+          report_trans: true,
+        },
+        where: { id: reportId },
+      });
+      return report;
+    }),
   createReport: publicProcedure
     .input(reportInputSchema)
     .mutation(async ({ ctx, input }) => {
@@ -107,6 +121,19 @@ export const appRouter = router({
         },
       });
       return report;
+    }),
+  deleteReport: publicProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input }) => {
+      const reportId = input;
+      await ctx.prisma.report_trans.deleteMany({
+        where: {
+          report_id: reportId,
+        },
+      });
+      await ctx.prisma.report.delete({
+        where: { id: reportId },
+      });
     }),
 });
 

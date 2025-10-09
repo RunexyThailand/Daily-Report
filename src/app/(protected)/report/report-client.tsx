@@ -14,18 +14,14 @@ import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, LoaderCircle, Plus } from "lucide-react";
 import { DateTime } from "luxon";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { isEmpty } from "ramda";
 import { Button } from "@/components/ui/button";
 import DialogTask from "@/components/dialog-task";
 import { useLocale } from "next-intl";
 import { useTranslations } from "next-intl";
-
-enum formMode {
-  VIEW,
-  CREATE,
-  EDIT,
-}
+import { formMode } from "@/components/dialog-task";
+import { useSession } from "next-auth/react";
 
 export default function ReportClient({
   projects,
@@ -38,6 +34,7 @@ export default function ReportClient({
 }) {
   const t = useTranslations("DailyReportPage");
 
+  const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [taskId, setTaskId] = useState("");
   const [userId, setUserId] = useState("");
@@ -46,6 +43,9 @@ export default function ReportClient({
   const [to, setTo] = useState("");
   const [action, setAction] = useState<formMode>(formMode.CREATE);
   const currentLang = useLocale();
+  const [reportId, setReportId] = useState<string>("");
+  const [selectedReport, setSelectedReport] = useState<any>(null);
+  const [shouldOpenDialog, setShouldOpenDialog] = useState(false);
 
   const {
     data: usersQuery,
@@ -60,6 +60,12 @@ export default function ReportClient({
     to,
   });
 
+  const {
+    data: reportQuery,
+    refetch: refetchReport,
+    isFetching: isFetchingReport,
+  } = trpc.getReportById.useQuery(reportId);
+
   const userReport =
     usersQuery?.users.map((user) => ({
       id: String(user.id),
@@ -68,8 +74,27 @@ export default function ReportClient({
     })) || [];
 
   const handleViewReport = (reportId: string) => {
-    console.log("🚀 ~ handleViewReport ~ reportId:", reportId);
+    setShouldOpenDialog(true);
+    setReportId(reportId);
+    refetchReport();
   };
+
+  useEffect(() => {
+    if (
+      // [formMode.VIEW, formMode.EDIT].includes(action) &&
+      reportQuery &&
+      shouldOpenDialog
+    ) {
+      setAction(
+        reportQuery.created_by === session?.user.id
+          ? formMode.EDIT
+          : formMode.VIEW,
+      );
+      setSelectedReport(reportQuery);
+      setIsOpen(true);
+      setShouldOpenDialog(false);
+    }
+  }, [reportQuery, action, shouldOpenDialog]);
 
   return (
     <>
@@ -106,8 +131,9 @@ export default function ReportClient({
                   {user.reports.map((report) => {
                     return (
                       <Card
-                        className="overflow-hidden p-0 group transition-all hover:shadow-lg hover:border-primary"
+                        className="overflow-hidden p-0 group transition-all hover:shadow-lg hover:border-primary cursor-pointer"
                         key={report.report_id}
+                        onClick={() => handleViewReport(report.report_id)}
                       >
                         <CardHeader className="p-0 gap-0">
                           <div
@@ -140,12 +166,7 @@ export default function ReportClient({
                                   </Badge>
                                 )}
                               </CardTitle>
-                              <CardDescription
-                                className="py-5 cursor-pointer"
-                                onClick={() =>
-                                  handleViewReport(report.report_id)
-                                }
-                              >
+                              <CardDescription className="py-5">
                                 <div className="font-bold text-18 mb-2">
                                   {report.title}
                                 </div>
@@ -153,22 +174,30 @@ export default function ReportClient({
                               </CardDescription>
                               <CardFooter className="p-0 flex justify-end space-x-4">
                                 <div className="flex items-center space-x-1">
-                                  <LoaderCircle
-                                    className="h-4 w-4"
-                                    aria-hidden="true"
-                                  />
-                                  <label>{report.progress}%</label>
+                                  {report.progress && (
+                                    <>
+                                      <LoaderCircle
+                                        className="h-4 w-4"
+                                        aria-hidden="true"
+                                      />
+                                      <label>{report.progress}%</label>
+                                    </>
+                                  )}
                                 </div>
                                 <div className="flex items-center space-x-1">
-                                  <Calendar
-                                    className="h-5 w-5"
-                                    aria-hidden="true"
-                                  />
-                                  <span>
-                                    {DateTime.fromJSDate(
-                                      report.report_date,
-                                    ).toFormat("dd/LL/yyyy")}
-                                  </span>
+                                  {report.due_date && (
+                                    <>
+                                      <Calendar
+                                        className="h-5 w-5"
+                                        aria-hidden="true"
+                                      />
+                                      <span>
+                                        {DateTime.fromJSDate(
+                                          report.due_date,
+                                        ).toFormat("dd/LL/yyyy")}
+                                      </span>
+                                    </>
+                                  )}
                                 </div>
                               </CardFooter>
                             </div>
@@ -187,11 +216,17 @@ export default function ReportClient({
         className="fixed bottom-6 right-6 rounded-full bg-green-500 hover:bg-green-600 text-white w-14 h-14 flex items-center justify-center shadow-lg cursor-pointer"
         size="icon"
         aria-label="Add"
-        onClick={() => setIsOpen(true)}
+        onClick={() => {
+          setSelectedReport(null);
+          setAction(formMode.CREATE);
+          setIsOpen(true);
+        }}
       >
         <Plus size={32} />
       </Button>
       <DialogTask
+        reportData={selectedReport}
+        isOpen={isOpen}
         projects={projects}
         tasks={tasks}
         onClose={() => setIsOpen(false)}
@@ -199,6 +234,7 @@ export default function ReportClient({
           setIsOpen(false);
           refetch();
         }}
+        mode={action}
       />
     </>
   );

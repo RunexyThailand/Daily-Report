@@ -21,6 +21,7 @@ type IdSelectProps = {
   placeholder?: string;
   className?: string;
   triggerClassName?: string;
+  disabled?: boolean;
 };
 
 export default function Selected({
@@ -32,6 +33,7 @@ export default function Selected({
   placeholder = "Select...",
   className,
   triggerClassName,
+  disabled = false,
 }: IdSelectProps) {
   // Force value to a string for Select
   const currentValue = value ?? (includeAll ? "all" : "");
@@ -41,6 +43,7 @@ export default function Selected({
       <Select
         value={currentValue}
         onValueChange={(v) => onChange(v as "all" | string)}
+        disabled={disabled}
       >
         <SelectTrigger className={cn("w-[200px]", triggerClassName)}>
           <SelectValue placeholder={placeholder} />

@@ -40,6 +40,9 @@
     "progress": "進捗",
     "dueDate": "期限",
     "comment": "コメント...",
-    "selectDate": "日付を選択"
+    "selectDate": "日付を選択",
+    "CREATE_Report": "レポートを追加",
+    "EDIT_Report": "レポートを編集",
+    "VIEW_Report": "レポートを表示"
   }
 }

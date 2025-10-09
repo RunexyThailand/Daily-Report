@@ -40,6 +40,9 @@
     "progress": "Progress",
     "dueDate": "Due Date",
     "comment": "Comment...",
-    "selectDate": "Select Date"
+    "selectDate": "Select Date",
+    "CREATE_Report": "Add Report",
+    "EDIT_Report": "Edit Report",
+    "VIEW_Report": "View Report"
   }
 }
