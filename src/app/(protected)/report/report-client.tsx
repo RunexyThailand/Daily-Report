@@ -192,6 +192,7 @@ export default function ReportClient({
         <Plus size={32} />
       </Button>
       <DialogTask
+        open={isOpen}
         projects={projects}
         tasks={tasks}
         onClose={() => setIsOpen(false)}

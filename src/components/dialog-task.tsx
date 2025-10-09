@@ -70,6 +70,7 @@ type FormValues = {
 };
 
 export type AddReportDialogProps = {
+  open: boolean;
   triggerLabel?: string;
   projects: { id: string; label: string }[];
   tasks: { id: string; label: string }[];
@@ -96,6 +97,7 @@ const Schema = Yup.object({
 });
 
 export default function AddReportDialog({
+  open,
   triggerLabel = "Add report",
   projects,
   tasks,
@@ -104,7 +106,7 @@ export default function AddReportDialog({
   t = (s) => s,
   onSuccess,
 }: AddReportDialogProps) {
-  const [open, setOpen] = React.useState(!!defaultOpen);
+  // const [open, setOpen] = React.useState(!!defaultOpen);
   const [calendarOpen, setCalendarOpen] = React.useState(false);
   // const { toast } = useToast();
 
@@ -123,7 +125,7 @@ export default function AddReportDialog({
   // });
 
   return (
-    <Dialog open={true} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-xl">
         <DialogHeader>
           <DialogTitle>{t("Add Report")}</DialogTitle>
