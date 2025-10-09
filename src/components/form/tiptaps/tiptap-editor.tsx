@@ -4,6 +4,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import type { Editor } from "@tiptap/core";
 import { createExtensions } from "@/components/form/tiptaps/extensions";
 import { Toolbar } from "@/components/form/tiptaps/toolbars";
+import { TextSelection } from "@tiptap/pm/state";
 
 export type TiptapEditorProps = {
   /** Controlled HTML value (optional). If provided, parent controls the editor */
@@ -41,6 +42,23 @@ export default function TiptapEditor({
       attributes: {
         class: "prose dark:prose-invert focus:outline-none max-w-none",
       },
+      handleDOMEvents: {
+        mousedown: (view, event) => {
+          const e = event as MouseEvent;
+          const pos = view.posAtCoords({ left: e.clientX, top: e.clientY });
+
+          if (pos && pos.pos != null) {
+            return false;
+          }
+
+          const docEnd = view.state.doc.content.size;
+          const sel = TextSelection.near(view.state.doc.resolve(docEnd));
+          const tr = view.state.tr.setSelection(sel);
+          view.dispatch(tr);
+          view.focus();
+          return true;
+        },
+      },
     },
   });
 
@@ -56,7 +74,16 @@ export default function TiptapEditor({
     <div className={className}>
       <Toolbar editor={editor as Editor | null} />
       <div className="rounded-xl border bg-background p-3">
-        <div className="rounded-md px-2 py-1" style={{ minHeight }}>
+        <div
+          className="rounded-md px-2 py-1"
+          style={{ minHeight }}
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) {
+              editor?.commands.focus("end");
+              e.preventDefault();
+            }
+          }}
+        >
           {editor ? (
             <EditorContent editor={editor} />
           ) : (

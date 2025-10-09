@@ -11,9 +11,14 @@ import ListItem from "@tiptap/extension-list-item";
 import { FontSize } from "@/components/form/tiptaps/extensions/font-size";
 import Image from "@tiptap/extension-image";
 import { ImageResize } from "@/components/form/tiptaps/extensions/image-resize";
+import { TrailingNode } from "@tiptap/extensions";
 
 export function createExtensions(placeholder: string): Extensions {
   return [
+    TrailingNode.configure({
+      node: "paragraph",
+      notAfter: ["codeBlock"], // กันเคสหลัง codeBlock บางทีวางเคอร์เซอร์ยาก
+    }),
     StarterKit.configure({
       heading: { levels: [1, 2, 3] },
       bulletList: { keepMarks: true },

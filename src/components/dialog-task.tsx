@@ -254,6 +254,7 @@ export default function AddReportDialog({
                   <Field name="description">
                     {({ field }: { field: FieldInputProps<string> }) => (
                       <TiptapEditor
+                        {...field}
                         defaultValue="<p>Hello Tiptap!</p>"
                         placeholder="พิมพ์ข้อความที่นี่…"
                         minHeight="16rem"
