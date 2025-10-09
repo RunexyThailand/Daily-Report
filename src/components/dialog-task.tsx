@@ -40,6 +40,7 @@ import { trpc } from "@/trpc/client";
 import Selected from "./form/selected";
 import DatePicker from "./form/date-picker";
 import { DateTime } from "luxon";
+import TiptapEditor from "./form/tiptaps/tiptap-editor";
 
 // Types
 export type ReportTrans = {
@@ -126,7 +127,7 @@ export default function AddReportDialog({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-xl">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>{t("Add Report")}</DialogTitle>
           <DialogDescription>
@@ -252,13 +253,22 @@ export default function AddReportDialog({
                   </label>
                   <Field name="description">
                     {({ field }: { field: FieldInputProps<string> }) => (
-                      <Textarea
-                        {...field}
-                        placeholder={t("Common.description")}
-                        className="w-full mb-4 bg-white"
-                        rows={10}
-                        cols={5}
+                      <TiptapEditor
+                        defaultValue="<p>Hello Tiptap!</p>"
+                        placeholder="พิมพ์ข้อความที่นี่…"
+                        minHeight="16rem"
+                        onChange={(html) => {
+                          // รับค่า HTML ที่แก้ไขล่าสุด
+                          console.log("editor html:", html);
+                        }}
                       />
+                      // <Textarea
+                      //   {...field}
+                      //   placeholder={t("Common.description")}
+                      //   className="w-full mb-4 bg-white"
+                      //   rows={10}
+                      //   cols={5}
+                      // />
                     )}
                   </Field>
                 </div>

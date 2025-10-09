@@ -3,8 +3,54 @@ import { Language, Prisma } from "@prisma/client";
 import { DateTime } from "luxon";
 import { reportInputSchema } from "./types";
 import * as z from "zod";
+import { mkdir, writeFile } from "node:fs/promises";
+import path from "node:path";
+
+function sanitizeName(name: string) {
+  return name.replace(/[^a-z0-9.\-_]/gi, "_");
+}
+
+function parseDataUrl(dataUrl: string) {
+  const m = dataUrl.match(/^data:(image\/[a-z0-9+\-\.]+);base64,(.+)$/i);
+  if (!m) throw new Error("Invalid data URL");
+  const mime = m[1];
+  const base64 = m[2];
+  const buffer = Buffer.from(base64, "base64");
+  const ext =
+    mime === "image/svg+xml"
+      ? "svg"
+      : mime === "image/png"
+        ? "png"
+        : mime === "image/jpeg"
+          ? "jpg"
+          : mime === "image/webp"
+            ? "webp"
+            : mime === "image/gif"
+              ? "gif"
+              : "bin";
+  return { buffer, mime, ext };
+}
 
 export const appRouter = router({
+  uploadImageToLocal: publicProcedure
+    .input(
+      z.object({
+        dataUrl: z.string().min(10),
+        filename: z.string().optional(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const { buffer, ext } = parseDataUrl(input.dataUrl);
+      const uploadsDir = path.join(process.cwd(), "public", "uploads");
+      await mkdir(uploadsDir, { recursive: true });
+
+      const safe = sanitizeName(input.filename ?? `image.${ext}`);
+      const name = `${Date.now()}_${safe.endsWith(`.${ext}`) ? safe : `${safe}.${ext}`}`;
+      const filePath = path.join(uploadsDir, name);
+
+      await writeFile(filePath, buffer);
+      return { url: `/uploads/${name}` }; // เสิร์ฟได้ทันที
+    }),
   getUserReport: publicProcedure
     .input(
       z.object({
