@@ -26,6 +26,8 @@ import { createReport, deleteReport } from "@/actions/report";
 import { Language } from "@prisma/client";
 import { toast } from "sonner";
 import { useState } from "react";
+import { DateTime } from "luxon";
+import TiptapEditor from "./form/tiptaps/tiptap-editor";
 
 // Types
 export type ReportTrans = {
@@ -310,13 +312,23 @@ export default function AddReportDialog({
                       </label>
                       <Field name="detail">
                         {({ field }: { field: FieldInputProps<string> }) => (
-                          <Textarea
-                            readOnly={mode === formMode.VIEW}
+                          // <Textarea
+                          //   readOnly={mode === formMode.VIEW}
+                          //   {...field}
+                          //   placeholder={t("Common.description")}
+                          //   className={`w-full mb-4 bg-white ${mode === formMode.VIEW && "bg-gray-100"}`}
+                          //   rows={10}
+                          //   cols={5}
+                          // />
+                          <TiptapEditor
                             {...field}
-                            placeholder={t("Common.description")}
-                            className={`w-full mb-4 bg-white ${mode === formMode.VIEW && "bg-gray-100"}`}
-                            rows={10}
-                            cols={5}
+                            defaultValue="<p>Hello Tiptap!</p>"
+                            placeholder="พิมพ์ข้อความที่นี่…"
+                            minHeight="16rem"
+                            onChange={(html) => {
+                              // รับค่า HTML ที่แก้ไขล่าสุด
+                              console.log("editor html:", html);
+                            }}
                           />
                         )}
                       </Field>
@@ -359,7 +371,6 @@ export default function AddReportDialog({
                   </TabsContent>
                 </div>
               </Tabs>
-
               <div className="sm:flex justify-between space-x-5 space-y-2">
                 <div className="w-full sm:w-1/2 space-y-1">
                   <label className="block text-sm font-medium text-muted-foreground">

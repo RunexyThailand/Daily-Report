@@ -6,7 +6,7 @@ import Selected, { type optionType } from "../selected";
 
 // --- Mock shadcn/ui Select into a controlled native <select> (typed) ---
 jest.mock("@/components/ui/select", () => {
-  const React = require("react") as typeof import("react");
+  // const React = require("react") as typeof import("react");
 
   type Item = { value: string; label: React.ReactNode; key?: string };
 
@@ -82,7 +82,7 @@ jest.mock("@/components/ui/select", () => {
   }
 
   // not needed for this mock
-  function SelectValue(_: { placeholder?: string }) {
+  function SelectValue({}: { placeholder?: string }) {
     return null;
   }
 

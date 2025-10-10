@@ -17,6 +17,7 @@ import Selected, { type optionType } from "@/components/form/selected";
 import { DateTime } from "luxon";
 import { useLocale, useTranslations } from "next-intl";
 import { ja, enUS } from "date-fns/locale";
+import { RangeDatePicker } from "@/components/filters/range-date-picker";
 
 type ReportFilterProps = {
   projects: optionType[];
@@ -136,11 +137,6 @@ export default function ReportFilter({
     [projectSelected, taskSelected, userSelected, range, onChange],
   );
 
-  function apply() {
-    emitChange();
-    setOpen(false);
-  }
-
   function onProjectChange(id: string) {
     setProjectSelected(id);
     emitChange({ projectId: id });
@@ -158,6 +154,7 @@ export default function ReportFilter({
 
   function onRangeChange(next?: DateRange) {
     setRange(next);
+    emitChange({ range: next });
   }
 
   function reset() {
@@ -172,58 +169,16 @@ export default function ReportFilter({
   return (
     <div className="sm:flex sm:space-x-3">
       <div className="sm:flex items-center sm:space-x-3 sm:space-y-0 space-y-3">
-        <Popover
-          open={open}
-          onOpenChange={(isOpen) => {
-            if (!isOpen) {
-              emitChange();
-            }
-            setOpen(isOpen);
+        <RangeDatePicker
+          value={range}
+          onChange={onRangeChange}
+          locale={lang}
+          labels={{
+            selectDateLabel: t("selectDateLabel"),
+            clear: t("clear"),
+            apply: t("apply"),
           }}
-        >
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className={cn(
-                "justify-start w-full sm:w-[256px]",
-                hasDate && "border-primary",
-              )}
-            >
-              <CalendarIcon className="h-4 w-4" />
-              {hasDate ? (
-                <span className="truncate">
-                  {range?.from ? format(range.from, "yyyy-MM-dd") : "…"} —{" "}
-                  {range?.to ? format(range.to, "yyyy-MM-dd") : "…"}
-                </span>
-              ) : (
-                <span data-testid="pickDate" className="text-muted-foreground">
-                  {t("selectDateLabel")}
-                </span>
-              )}
-            </Button>
-          </PopoverTrigger>
-
-          <PopoverContent
-            align="start"
-            side="bottom"
-            sideOffset={8}
-            className="p-3 w-full"
-          >
-            <Calendar
-              mode="range"
-              numberOfMonths={2}
-              selected={range}
-              locale={lang}
-              onSelect={onRangeChange}
-            />
-            <div className="mt-3 flex justify-end">
-              <Button variant="ghost" onClick={() => onRangeChange(undefined)}>
-                {t("clear")}
-              </Button>
-              <Button onClick={apply}>{t("apply")}</Button>
-            </div>
-          </PopoverContent>
-        </Popover>
+        />
 
         <Selected
           options={projects}
