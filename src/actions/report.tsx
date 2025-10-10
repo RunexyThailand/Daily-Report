@@ -4,9 +4,13 @@ import { ReportInput } from "@/server/routers/types";
 import { createTRPCContext } from "@/server/trpc";
 
 export const createReport = async (formData: ReportInput) => {
-  const caller = appRouter.createCaller(await createTRPCContext());
-  const result = await caller.createReport(formData);
-  return result;
+  try {
+    const caller = appRouter.createCaller(await createTRPCContext());
+    const result = await caller.createReport(formData);
+    return result;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const deleteReport = async (reportId: string) => {
@@ -15,6 +19,6 @@ export const deleteReport = async (reportId: string) => {
     const result = await caller.deleteReport(reportId);
     return result;
   } catch (error) {
-    throw error; // Rethrow the error after logging it
+    throw error;
   }
 };

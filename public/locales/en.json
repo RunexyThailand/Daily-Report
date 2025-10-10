@@ -43,7 +43,9 @@
     "selectDate": "Select Date",
     "CREATE_Report": "Add Report",
     "EDIT_Report": "Edit Report",
-    "VIEW_Report": "View Report"
+    "VIEW_Report": "View Report",
+    "Confirm_action": "Confirm Action",
+    "Confirm_description": "Are you sure you want to proceed with this action?"
   },
   "ResponseStatus": {
     "success": "Success",

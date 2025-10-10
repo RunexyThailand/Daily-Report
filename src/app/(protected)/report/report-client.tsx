@@ -80,11 +80,7 @@ export default function ReportClient({
   };
 
   useEffect(() => {
-    if (
-      // [formMode.VIEW, formMode.EDIT].includes(action) &&
-      reportQuery &&
-      shouldOpenDialog
-    ) {
+    if (reportQuery && shouldOpenDialog) {
       setAction(
         reportQuery.created_by === session?.user.id
           ? formMode.EDIT

@@ -93,8 +93,8 @@ export const appRouter = router({
               progress: true,
               due_date: true,
               report_trans: {
-                where: { language: input.lang as Language },
-                select: { title: true, detail: true },
+                // where: { language: input.lang as Language },
+                select: { language: true, title: true, detail: true },
                 take: 1,
               },
               task: { select: { name: true } },
@@ -110,17 +110,29 @@ export const appRouter = router({
         name: u.name,
         email: u.email,
         image: u.image,
-        reports: u.reports.map((r) => ({
-          report_id: r.id,
-          report_date: r.report_date,
-          progress: r.progress ?? null,
-          due_date: r.due_date ?? null,
-          title: r.report_trans[0]?.title ?? null,
-          detail: r.report_trans[0]?.detail ?? null,
-          task_name: r.task?.name ?? null,
-          project_name: r.project?.name ?? null,
-          created_by: r.created_by,
-        })),
+        reports: u.reports.map((r) => {
+          const defaultTrans = r.report_trans.find(
+            (x) => x.language === "DEFAULT",
+          );
+          const jp = r.report_trans.find((x) => x.language === "JP");
+          return {
+            report_id: r.id,
+            report_date: r.report_date,
+            progress: r.progress ?? null,
+            due_date: r.due_date ?? null,
+            title:
+              input.lang === "JP"
+                ? (jp?.title ?? defaultTrans?.title ?? null)
+                : (defaultTrans?.title ?? null),
+            detail:
+              input.lang === "JP"
+                ? (jp?.detail ?? defaultTrans?.detail ?? null)
+                : (defaultTrans?.detail ?? null),
+            task_name: r.task?.name ?? null,
+            project_name: r.project?.name ?? null,
+            created_by: r.created_by,
+          };
+        }),
       }));
 
       return { users: result };

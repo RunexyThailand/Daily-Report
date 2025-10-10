@@ -19,6 +19,7 @@ export type TiptapEditorProps = {
   minHeight?: string;
   /** Initial content if uncontrolled */
   defaultValue?: string;
+  readOnly?: boolean;
 };
 
 export default function TiptapEditor({
@@ -28,10 +29,12 @@ export default function TiptapEditor({
   className,
   minHeight = "12rem",
   defaultValue = "",
+  readOnly = false,
 }: TiptapEditorProps) {
   const isControlled = typeof value === "string";
 
   const editor = useEditor({
+    editable: !readOnly,
     extensions: createExtensions(placeholder),
     content: isControlled ? value : defaultValue,
     immediatelyRender: false,
@@ -72,7 +75,7 @@ export default function TiptapEditor({
 
   return (
     <div className={className}>
-      <Toolbar editor={editor as Editor | null} />
+      {!readOnly && <Toolbar editor={editor as Editor | null} />}
       <div className="rounded-xl border bg-background p-3">
         <div
           className="rounded-md px-2 py-1"
