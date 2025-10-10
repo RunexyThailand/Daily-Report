@@ -119,6 +119,7 @@ export function RangeDatePicker({
       onOpenChange={(isOpen) => {
         if (!isOpen) {
           setPending(value);
+          onChange(pending);
         }
         setOpen(isOpen);
       }}
