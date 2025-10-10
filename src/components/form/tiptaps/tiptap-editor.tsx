@@ -72,10 +72,12 @@ export default function TiptapEditor({
 
   return (
     <div className={className}>
-      <Toolbar editor={editor as Editor | null} />
-      <div className="rounded-xl border bg-background p-3">
+      <div className="rounded-xl border bg-background">
+        <div className="border border-0 flex border-b-1 mb-2 p-2 bg-[#f4fafd] rounded-t-xl">
+          <Toolbar editor={editor as Editor | null} />
+        </div>
         <div
-          className="rounded-md px-2 py-1"
+          className="rounded-md p-3 py-1"
           style={{ minHeight }}
           onMouseDown={(e) => {
             if (e.target === e.currentTarget) {

@@ -171,7 +171,7 @@ export default function AddReportDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-xl">
+      <DialogContent className="w-full h-[95vh] supports-[height:100svh]:h-[95svh] overflow-y-auto overscroll-y-auto">
         <DialogHeader>
           <DialogTitle>{t(`Common.${mode}_Report`)}</DialogTitle>
           <DialogDescription>
@@ -278,7 +278,7 @@ export default function AddReportDialog({
                 }
                 className="w-full"
               >
-                <div className="flex-col bg-[#f4fafd] rounded-lg p-4">
+                <div className="flex-col bg-[#f0f9fd] rounded-lg p-4">
                   <div className="flex justify-self-end">
                     <TabsList>
                       <TabsTrigger value="1" className="cursor-pointer">
@@ -312,14 +312,6 @@ export default function AddReportDialog({
                       </label>
                       <Field name="detail">
                         {({ field }: { field: FieldInputProps<string> }) => (
-                          // <Textarea
-                          //   readOnly={mode === formMode.VIEW}
-                          //   {...field}
-                          //   placeholder={t("Common.description")}
-                          //   className={`w-full mb-4 bg-white ${mode === formMode.VIEW && "bg-gray-100"}`}
-                          //   rows={10}
-                          //   cols={5}
-                          // />
                           <TiptapEditor
                             {...field}
                             defaultValue="<p>Hello Tiptap!</p>"
