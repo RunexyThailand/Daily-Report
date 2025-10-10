@@ -10,7 +10,11 @@ export const createReport = async (formData: ReportInput) => {
 };
 
 export const deleteReport = async (reportId: string) => {
-  const caller = appRouter.createCaller(await createTRPCContext());
-  const result = await caller.deleteReport(reportId);
-  return result;
+  try {
+    const caller = appRouter.createCaller(await createTRPCContext());
+    const result = await caller.deleteReport(reportId);
+    return result;
+  } catch (error) {
+    throw error; // Rethrow the error after logging it
+  }
 };

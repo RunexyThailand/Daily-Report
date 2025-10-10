@@ -44,5 +44,9 @@
     "CREATE_Report": "Add Report",
     "EDIT_Report": "Edit Report",
     "VIEW_Report": "View Report"
+  },
+  "ResponseStatus": {
+    "success": "Success",
+    "error": "Error"
   }
 }

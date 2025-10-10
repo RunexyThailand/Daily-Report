@@ -24,6 +24,8 @@ import DatePicker from "./form/date-picker";
 import { useLocale, useTranslations } from "next-intl";
 import { createReport, deleteReport } from "@/actions/report";
 import { Language } from "@prisma/client";
+import { toast } from "sonner";
+import { useState } from "react";
 
 // Types
 export type ReportTrans = {
@@ -97,6 +99,7 @@ export default function AddReportDialog({
   reportData,
   mode,
 }: AddReportDialogProps) {
+  const [isLoading, setIsLoading] = useState(false);
   const currentLang = useLocale();
   const t = useTranslations();
   const getInitialValues = (
@@ -136,12 +139,17 @@ export default function AddReportDialog({
 
   const handleDelete = async (reportId: string) => {
     try {
+      setIsLoading(true);
       await deleteReport(reportId);
+      toast.success(`${t(`Common.delete`)} ${t(`ResponseStatus.success`)}`);
       onSuccess?.();
+      setIsLoading(false);
     } catch (err) {
-      console.error("Delete failed:", err);
+      toast.error(`${t(`Common.delete`)} ${t(`ResponseStatus.error`)}`, {
+        description: err instanceof Error ? err.message : "Unknown error",
+      });
+      setIsLoading(false);
     }
-    // Handle delete action
   };
   // const { toast } = useToast();
 
@@ -203,6 +211,12 @@ export default function AddReportDialog({
         >
           {({ values, errors, touched, isSubmitting, setFieldValue }) => (
             <Form className="flex-col space-y-4">
+              {isLoading && (
+                <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/70">
+                  <LoaderCircle className="animate-spin h-12 w-12 text-primary" />
+                </div>
+              )}
+
               <div className="w-48 flex justify-self-end">
                 <DatePicker
                   className={`w-full ${mode === formMode.VIEW && "pointer-events-none bg-gray-100"}`}

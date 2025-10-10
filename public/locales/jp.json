@@ -44,5 +44,9 @@
     "CREATE_Report": "レポートを追加",
     "EDIT_Report": "レポートを編集",
     "VIEW_Report": "レポートを表示"
+  },
+  "ResponseStatus": {
+    "success": "成功",
+    "error": "エラー"
   }
 }
