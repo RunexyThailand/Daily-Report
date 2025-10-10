@@ -13,7 +13,7 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import type { DateRange } from "react-day-picker";
-import Selected, { type optionType } from "@/components/form/selected";
+import Selected, { type optionType } from "@/components/form/selector";
 import { DateTime } from "luxon";
 import { useLocale, useTranslations } from "next-intl";
 import { ja, enUS } from "date-fns/locale";

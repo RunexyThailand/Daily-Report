@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { LoaderCircle } from "lucide-react";
-import Selected from "./form/selected";
+import Selected from "./form/selector";
 import DatePicker from "./form/date-picker";
 import { useLocale, useTranslations } from "next-intl";
 import { createReport, deleteReport } from "@/actions/report";

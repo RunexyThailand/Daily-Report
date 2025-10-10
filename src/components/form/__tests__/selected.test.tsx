@@ -2,7 +2,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import Selected, { type optionType } from "../selected";
+import Selected, { type optionType } from "../selector";
 
 // --- Mock shadcn/ui Select into a controlled native <select> (typed) ---
 jest.mock("@/components/ui/select", () => {

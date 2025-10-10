@@ -1,6 +1,6 @@
 "use client";
 import { trpc } from "@/trpc/client";
-import { type optionType } from "@/components/form/selected";
+import { type optionType } from "@/components/form/selector";
 import ReportFilter from "@/components/filters/report-filter";
 import CollapseCard from "@/components/collapse-card";
 import {
