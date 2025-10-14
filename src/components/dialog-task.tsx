@@ -25,6 +25,9 @@ import { toast } from "sonner";
 import { useState } from "react";
 import TiptapEditor from "./form/tiptaps/tiptap-editor";
 import DialogConfirm from "./dialog/dialog-confirm";
+import { onCallChat } from "@/lib/services/chat";
+
+const textTest = `<p><strong>Thank goodness for Harry Kane.</strong></p><p>The Bayern Munich star is likely to start England's match in Riga against Latvia on Tuesday night where he will be hoping to add to his superb run of 18 goals from his past 10 matches.     </p><p>A minor injury meant Kane was not involved in England's 3-0 win over Wales on Thursday night with Aston Villa's Ollie Watkins - the only other out-and-out striker in the squad - deputising.</p><p>But during the match Watkins collided with the post and has subsequently been ruled out of the Latvia fixture through injury.</p><p>England fans are once again going through who the striker options behind captain Kane and the answer does not appear obvious.</p>`;
 
 // Types
 export type ReportTrans = {
@@ -102,6 +105,13 @@ export default function AddReportDialog({
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const currentLang = useLocale();
   const t = useTranslations();
+
+  const handleCallChat = async (text: string, lang: string) => {
+    const r2 = await onCallChat(textTest, lang);
+
+    console.log("r2", r2);
+  };
+
   const getInitialValues = (
     reportData?: CreateReportInput | null,
   ): FormValues => {
@@ -308,6 +318,7 @@ export default function AddReportDialog({
                                 placeholder={t("Common.title")}
                                 className={`w-full mb-4 bg-white ${mode === formMode.VIEW && "bg-gray-100"}`}
                                 type="text"
+                                onBlur={(e) => handleCallChat(textTest, "th")}
                               />
                             )}
                           </Field>

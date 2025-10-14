@@ -10,24 +10,27 @@ function sanitizeName(name: string) {
   return name.replace(/[^a-z0-9.\-_]/gi, "_");
 }
 
+const MIME_TO_EXT: Record<string, string> = {
+  "image/svg+xml": "svg",
+  "image/png": "png",
+  "image/jpeg": "jpg",
+  "image/webp": "webp",
+  "image/gif": "gif",
+};
+
+export function mimeToExt(mime: string, fallback = "bin"): string {
+  const clean = mime.toLowerCase().split(";")[0].trim();
+  return MIME_TO_EXT[clean] ?? fallback;
+}
+
 function parseDataUrl(dataUrl: string) {
   const m = dataUrl.match(/^data:(image\/[a-z0-9+\-\.]+);base64,(.+)$/i);
   if (!m) throw new Error("Invalid data URL");
   const mime = m[1];
   const base64 = m[2];
   const buffer = Buffer.from(base64, "base64");
-  const ext =
-    mime === "image/svg+xml"
-      ? "svg"
-      : mime === "image/png"
-        ? "png"
-        : mime === "image/jpeg"
-          ? "jpg"
-          : mime === "image/webp"
-            ? "webp"
-            : mime === "image/gif"
-              ? "gif"
-              : "bin";
+  const ext = mimeToExt(mime);
+
   return { buffer, mime, ext };
 }
 
