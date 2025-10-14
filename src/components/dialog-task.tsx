@@ -1,32 +1,28 @@
 "use client";
 
 import * as React from "react";
-import { Formik, Form, Field, useField } from "formik";
+import { Formik, Form, Field } from "formik";
 import type { FieldInputProps } from "formik";
 import * as Yup from "yup";
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
   DialogFooter,
-  DialogClose,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { LoaderCircle } from "lucide-react";
 import Selected from "./form/selector";
 import DatePicker from "./form/date-picker";
 import { useLocale, useTranslations } from "next-intl";
-import { createReport, deleteReport } from "@/actions/report";
+import { createReport, deleteReport, updateReport } from "@/actions/report";
 import { Language } from "@prisma/client";
 import { toast } from "sonner";
 import { useState } from "react";
-import { DateTime } from "luxon";
 import TiptapEditor from "./form/tiptaps/tiptap-editor";
 import DialogConfirm from "./dialog/dialog-confirm";
 
@@ -173,7 +169,7 @@ export default function AddReportDialog({
                 const payload: CreateReportInput = {
                   project_id: values.project_id,
                   task_id: values.task_id,
-                  report_date: new Date(),
+                  report_date: values.reportDate,
                   progress: values.progress ?? null,
                   due_date: values.dueDate ?? null,
                   report_trans: [
@@ -189,7 +185,15 @@ export default function AddReportDialog({
                     },
                   ],
                 };
-                await createReport(payload);
+                if (mode === formMode.EDIT) {
+                  payload.id = reportData?.id;
+                  await updateReport(
+                    payload as CreateReportInput & { id: string },
+                  );
+                } else {
+                  await createReport(payload);
+                }
+
                 toast.success(
                   `${t(`Common.save`)} ${t(`ResponseStatus.success`)}`,
                 );
@@ -213,7 +217,7 @@ export default function AddReportDialog({
               return (
                 <Form className="flex-col space-y-4">
                   {isLoading && (
-                    <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/70">
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-white/70">
                       <LoaderCircle className="animate-spin h-12 w-12 text-primary" />
                     </div>
                   )}
@@ -323,22 +327,13 @@ export default function AddReportDialog({
                             }: {
                               field: FieldInputProps<string>;
                             }) => (
-                              // <Textarea
-                              //   readOnly={mode === formMode.VIEW}
-                              //   {...field}
-                              //   placeholder={t("Common.description")}
-                              //   className={`w-full mb-4 bg-white ${mode === formMode.VIEW && "bg-gray-100"}`}
-                              //   rows={10}
-                              //   cols={5}
-                              // />
                               <TiptapEditor
                                 {...field}
                                 defaultValue="<p>Hello Tiptap!</p>"
                                 placeholder="พิมพ์ข้อความที่นี่…"
                                 minHeight="16rem"
                                 onChange={(html) => {
-                                  // รับค่า HTML ที่แก้ไขล่าสุด
-                                  console.log("editor html:", html);
+                                  setFieldValue("detail", html);
                                 }}
                                 readOnly={mode === formMode.VIEW}
                               />
@@ -377,14 +372,6 @@ export default function AddReportDialog({
                             }: {
                               field: FieldInputProps<string>;
                             }) => (
-                              // <Textarea
-                              //   {...field}
-                              //   placeholder={t("Common.description")}
-                              //   className={`w-full mb-4 bg-white ${mode === formMode.VIEW && "bg-gray-100"}`}
-                              //   rows={10}
-                              //   cols={5}
-                              //   readOnly={mode === formMode.VIEW}
-                              // />
                               <TiptapEditor
                                 {...field}
                                 readOnly={mode === formMode.VIEW}
@@ -392,8 +379,7 @@ export default function AddReportDialog({
                                 placeholder="พิมพ์ข้อความที่นี่…"
                                 minHeight="16rem"
                                 onChange={(html) => {
-                                  // รับค่า HTML ที่แก้ไขล่าสุด
-                                  console.log("editor html:", html);
+                                  setFieldValue("detailJP", html);
                                 }}
                               />
                             )}
@@ -467,7 +453,6 @@ export default function AddReportDialog({
                     {mode === formMode.EDIT && (
                       <Button
                         type="button"
-                        variant="outline"
                         onClick={() => setShowConfirmDialog(true)}
                         className="bg-red-500 hover:bg-red-700 text-white cursor-pointer"
                       >

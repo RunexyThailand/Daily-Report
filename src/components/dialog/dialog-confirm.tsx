@@ -31,9 +31,16 @@ export default function DialogConfirm({
         <DialogDescription>{t("Common.Confirm_description")}</DialogDescription>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline">{t("Common.cancel")}</Button>
+            <Button variant="outline" className="cursor-pointer">
+              {t("Common.cancel")}
+            </Button>
           </DialogClose>
-          <Button onClick={onConfirm}>{t("Common.confirm")}</Button>
+          <Button
+            onClick={onConfirm}
+            className="bg-red-500 hover:bg-red-700 text-white cursor-pointer"
+          >
+            {t("Common.confirm")}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

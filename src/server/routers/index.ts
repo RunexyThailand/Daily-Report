@@ -138,17 +138,30 @@ export const appRouter = router({
       return { users: result };
     }),
   getUsers: publicProcedure.query(async ({ ctx }) => {
-    const users = await ctx.prisma.user.findMany();
-    return { users };
+    try {
+      const users = await ctx.prisma.user.findMany();
+      return { users };
+    } catch (err) {
+      console.log("🚀 ~ err:", err);
+    }
   }),
+
   getTasks: publicProcedure.query(async ({ ctx }) => {
-    const tasks = await ctx.prisma.task.findMany();
-    return { tasks };
+    try {
+      const tasks = await ctx.prisma.task.findMany();
+      return { tasks };
+    } catch (err) {
+      console.log("🚀 ~ err:", err);
+    }
   }),
 
   getProjects: publicProcedure.query(async ({ ctx }) => {
-    const projects = await ctx.prisma.project.findMany();
-    return { projects };
+    try {
+      const projects = await ctx.prisma.project.findMany();
+      return { projects };
+    } catch (err) {
+      console.log("🚀 ~ err:", err);
+    }
   }),
   getReportById: publicProcedure
     .input(z.string())
@@ -192,6 +205,28 @@ export const appRouter = router({
       await ctx.prisma.report.delete({
         where: { id: reportId },
       });
+    }),
+  updateReport: publicProcedure
+    .input(reportInputSchema.extend({ id: z.string().min(1) }))
+    .mutation(async ({ ctx, input }) => {
+      const report = await ctx.prisma.report.update({
+        where: { id: input.id },
+        data: {
+          project_id: input.project_id,
+          task_id: input.task_id,
+          report_date: input.report_date,
+          progress: input.progress,
+          due_date: input.due_date,
+          updated_at: new Date().toISOString(),
+          report_trans: {
+            deleteMany: {
+              report_id: input.id,
+            },
+            create: input.report_trans,
+          },
+        },
+      });
+      return report;
     }),
 });
 

@@ -10,20 +10,23 @@ export default async function ReportPage() {
     caller.getUsers(),
   ]);
 
-  const projects = projectsData.projects.map((project) => ({
-    id: String(project.id),
-    label: project.name,
-  }));
+  const projects =
+    projectsData?.projects.map((project) => ({
+      id: String(project.id),
+      label: project.name,
+    })) ?? [];
 
-  const tasks = tasksData.tasks.map((task) => ({
-    id: String(task.id),
-    label: task.name,
-  }));
+  const tasks =
+    tasksData?.tasks.map((task) => ({
+      id: String(task.id),
+      label: task.name,
+    })) ?? [];
 
-  const users = userData.users.map((user) => ({
-    id: String(user.id),
-    label: user.name || "",
-  }));
+  const users =
+    userData?.users.map((user) => ({
+      id: String(user.id),
+      label: user.name || "",
+    })) ?? [];
 
   return (
     <div>

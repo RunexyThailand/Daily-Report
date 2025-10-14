@@ -73,10 +73,10 @@ export default function ReportClient({
       reports: user.reports,
     })) || [];
 
-  const handleViewReport = (reportId: string) => {
-    setShouldOpenDialog(true);
+  const handleViewReport = async (reportId: string) => {
     setReportId(reportId);
-    refetchReport();
+    await refetchReport();
+    setShouldOpenDialog(true);
   };
 
   useEffect(() => {
@@ -110,7 +110,9 @@ export default function ReportClient({
       </div>
       <div className="sm:px-10 flex-rows space-y-4">
         {isFetching ? (
-          <div className="flex justify-center mt-20">{t("loading")}</div>
+          <div className="flex justify-center mt-20">
+            <LoaderCircle className="animate-spin h-12 w-12 text-primary" />
+          </div>
         ) : isEmpty(userReport) ? (
           <div className="flex justify-center mt-20">
             <div>{t("reportEmpty")}</div>
@@ -166,7 +168,11 @@ export default function ReportClient({
                                 <div className="font-bold text-18 mb-2">
                                   {report.title}
                                 </div>
-                                <div>{report.detail}</div>
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: report.detail ?? "",
+                                  }}
+                                />
                               </CardDescription>
                               <CardFooter className="p-0 flex justify-end space-x-4">
                                 <div className="flex items-center space-x-1">

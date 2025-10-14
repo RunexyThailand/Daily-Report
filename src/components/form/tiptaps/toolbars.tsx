@@ -83,7 +83,6 @@ export function Toolbar({ editor }: ToolbarProps) {
     return url;
   }
   const isBold = !!editor?.isActive("bold");
-  console.log("isBold", isBold);
 
   return (
     <div className="mb-2 flex flex-wrap items-center gap-1">

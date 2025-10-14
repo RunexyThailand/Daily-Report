@@ -22,3 +22,13 @@ export const deleteReport = async (reportId: string) => {
     throw error;
   }
 };
+
+export const updateReport = async (formData: ReportInput & { id: string }) => {
+  try {
+    const caller = appRouter.createCaller(await createTRPCContext());
+    const result = await caller.updateReport(formData);
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
