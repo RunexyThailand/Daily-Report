@@ -159,12 +159,11 @@ export default function AddReportDialog({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="sm:max-w-xl">
+        <DialogContent className="w-full h-[95vh] supports-[height:100svh]:h-[95svh] overflow-y-auto overscroll-y-auto">
           <DialogHeader>
             <DialogTitle>{t(`Common.${mode}_Report`)}</DialogTitle>
             <DialogDescription>{``}</DialogDescription>
           </DialogHeader>
-
           <Formik<FormValues>
             initialValues={getInitialValues(reportData)}
             validationSchema={Schema}
@@ -218,7 +217,6 @@ export default function AddReportDialog({
                       <LoaderCircle className="animate-spin h-12 w-12 text-primary" />
                     </div>
                   )}
-
                   <div className="w-48 flex justify-self-end">
                     <DatePicker
                       className={`w-full ${mode === formMode.VIEW && "pointer-events-none bg-gray-100"}`}
@@ -278,7 +276,7 @@ export default function AddReportDialog({
                     }
                     className="w-full"
                   >
-                    <div className="flex-col bg-[#f4fafd] rounded-lg p-4">
+                    <div className="flex-col bg-[#f0f9fd] rounded-lg p-4">
                       <div className="flex justify-self-end">
                         <TabsList>
                           <TabsTrigger value="1" className="cursor-pointer">
@@ -465,7 +463,6 @@ export default function AddReportDialog({
                       />
                     </div>
                   </div>
-
                   <DialogFooter className="mt-4">
                     {mode === formMode.EDIT && (
                       <Button

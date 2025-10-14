@@ -21,20 +21,36 @@ import {
   Undo2,
   Redo2,
   Eraser,
-  Image as ImageIcon,
 } from "lucide-react";
 import { LinkDialog } from "./link-dialog";
 import { fileToDataUrl } from "@/lib/data-to-url";
 import { trpc } from "@/trpc/client";
+import { FontSizeSelect } from "@/components/form/tiptaps/font-size-selected";
+import ColorSelected from "./color-selected";
+import ImageUploadButton from "../image-upload-button";
 
 export type ToolbarProps = { editor: Editor | null };
 
-const SIZES = ["12px", "14px", "16px", "18px", "20px", "24px", "28px", "32px"];
+function useTiptapRerender(editor: Editor | null) {
+  const [, force] = React.useState(0);
+  React.useEffect(() => {
+    if (!editor) return;
+    const rerender = () => force((x) => x + 1);
+    editor.on("selectionUpdate", rerender);
+    editor.on("transaction", rerender);
+    editor.on("update", rerender);
+    return () => {
+      editor.off("selectionUpdate", rerender);
+      editor.off("transaction", rerender);
+      editor.off("update", rerender);
+    };
+  }, [editor]);
+}
 
 export function Toolbar({ editor }: ToolbarProps) {
+  useTiptapRerender(editor);
   const [linkOpen, setLinkOpen] = React.useState(false);
 
-  const fileRef = React.useRef<HTMLInputElement>(null);
   const uploadMut = trpc.uploadImageToLocal.useMutation();
 
   if (!editor) {
@@ -47,17 +63,16 @@ export function Toolbar({ editor }: ToolbarProps) {
 
   const isActive = (name: string, attrs?: Record<string, unknown>): boolean =>
     editor.isActive(name, attrs);
-  const buttonClass = (active: boolean): string =>
-    `h-9 px-2 ${active ? "bg-accent text-accent-foreground" : ""}`;
+
+  const buttonClass = (active: boolean): string => {
+    return `h-9 px-2 ${active ? "bg-[#7ccac7] text-accent-foreground" : ""}`;
+  };
 
   const currentColor = editor?.getAttributes("textStyle")?.color ?? "#000000";
   const currentSize = editor?.getAttributes("textStyle")?.fontSize ?? "";
 
-  // ใช้ tRPC mutation
-
   async function uploadImage(file: File): Promise<string> {
-    // (แนะนำ) เช็กขนาดไฟล์ก่อนแปลง base64
-    const MAX = 8 * 1024 * 1024; // 8MB
+    const MAX = 8 * 1024 * 1024;
     if (file.size > MAX) throw new Error("ไฟล์ใหญ่เกินไป (>8MB)");
 
     const dataUrl = await fileToDataUrl(file);
@@ -67,99 +82,23 @@ export function Toolbar({ editor }: ToolbarProps) {
     });
     return url;
   }
+  const isBold = !!editor?.isActive("bold");
+  console.log("isBold", isBold);
 
   return (
     <div className="mb-2 flex flex-wrap items-center gap-1">
       <div className="flex items-center gap-1 flex-wrap">
-        <div className="flex items-center gap-2">
-          <select
-            aria-label="Font size"
-            className="border rounded px-2 py-1"
-            value={currentSize}
-            onChange={(e) =>
-              editor?.chain().focus().setFontSize(e.target.value).run()
-            }
-          >
-            <option value="" disabled>
-              เลือกขนาด…
-            </option>
-            {SIZES.map((s) => (
-              <option key={s} value={s}>
-                {s}
-              </option>
-            ))}
-          </select>
-
-          <button
-            type="button"
-            className="px-2 py-1 rounded border"
-            onClick={() => editor?.chain().focus().unsetFontSize().run()}
-          >
-            ล้างขนาด
-          </button>
-        </div>
-        <div className="flex items-center gap-2">
-          <input
-            aria-label="Text color"
-            title="Text color"
-            type="color"
-            className="h-6 w-6 cursor-pointer border-0 bg-transparent p-0"
-            value={currentColor}
-            onChange={(e) =>
-              editor?.chain().focus().setColor(e.target.value).run()
-            }
-          />
-          <button
-            type="button"
-            className="px-2 py-1 rounded border"
-            onClick={() => editor?.chain().focus().unsetColor().run()}
-          >
-            ล้างสี
-          </button>
-        </div>
-        <Button
-          type="button"
-          variant="ghost"
-          className="h-9 px-2"
-          onClick={() => {
-            const url = window.prompt("วางลิงก์รูปภาพ (https://...)");
-            if (url) {
-              editor.chain().focus().setImage({ src: url }).run();
-            }
-          }}
-          aria-label="Insert image by URL"
-          title="Insert image by URL"
-        >
-          <ImageIcon className="h-4 w-4" />
-        </Button>
-        {/* ---- ปุ่มอัปโหลดรูป + input file hidden ---- */}
-        <input
-          ref={fileRef}
-          type="file"
-          accept="image/*"
-          // className="hidden"
-          onChange={async (e) => {
-            const inputEl = e.currentTarget as HTMLInputElement; // ⬅️ เก็บไว้ก่อน
-            const file = inputEl.files?.[0];
-            if (!file) return;
-
-            try {
-              const url = await uploadImage(file); // ← await ได้สบาย
-              editor
-                ?.chain()
-                .focus()
-                .setImage({ src: url, alt: file.name })
-                .run();
-            } catch (err) {
-              console.error(err);
-            } finally {
-              // รีเซ็ตโดยไม่พึ่ง e.currentTarget อีกต่อไป
-              if (inputEl && inputEl.isConnected) {
-                inputEl.value = "";
-              }
-            }
-          }}
+        <FontSizeSelect
+          current={currentSize}
+          onChange={(value) => editor?.chain().focus().setFontSize(value).run()}
         />
+        <ColorSelected
+          editor={editor}
+          fallback={currentColor}
+          onChange={(value) => editor?.chain().focus().setColor(value).run()}
+        />
+        <ImageUploadButton editor={editor} uploadImage={uploadImage} />
+
         <Button
           type="button"
           variant="ghost"

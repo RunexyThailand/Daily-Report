@@ -129,7 +129,7 @@ export function RangeDatePicker({
           disabled={disabled}
           variant="outline"
           className={cn(
-            "justify-start w-full sm:w-[256px]",
+            "justify-start w-full sm:w-[200px]",
             hasDate && "border-primary",
             triggerClassName,
           )}

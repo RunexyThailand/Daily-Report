@@ -187,7 +187,7 @@ export default function ReportFilter({
           includeAll
           allLabel={t("allProjectsLabel")}
           placeholder={t("allProjectsLabel")}
-          triggerClassName="w-full sm:w-[255px]"
+          triggerClassName="w-full sm:w-[200px]"
         />
 
         <Selected
@@ -197,7 +197,7 @@ export default function ReportFilter({
           includeAll
           allLabel={t("allTasksLabel")}
           placeholder={t("allTasksLabel")}
-          triggerClassName="w-full sm:w-[255px]"
+          triggerClassName="w-full sm:w-[200px]"
         />
 
         <Selected
@@ -207,7 +207,7 @@ export default function ReportFilter({
           includeAll
           allLabel={t("everyone")}
           placeholder={t("everyone")}
-          triggerClassName="w-full sm:w-[255px]"
+          triggerClassName="w-full sm:w-[200px]"
         />
       </div>
 
