@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Formik, Form, Field } from "formik";
-import type { FieldInputProps } from "formik";
+import type { FieldInputProps, FormikContextType } from "formik";
 import * as Yup from "yup";
 import {
   Dialog,
@@ -106,10 +106,22 @@ export default function AddReportDialog({
   const currentLang = useLocale();
   const t = useTranslations();
 
-  const handleCallChat = async (text: string, lang: string) => {
-    const r2 = await onCallChat(textTest, lang);
+  const handleTitleCallChat = async (
+    text: string,
+    lang: string,
+    setFieldValue: FormikContextType<FormValues>["setFieldValue"],
+  ) => {
+    const r2 = await onCallChat(text, lang);
+    await setFieldValue("titleJP", r2);
+  };
 
-    console.log("r2", r2);
+  const handleBodyCallChat = async (
+    text: string,
+    lang: string,
+    setFieldValue: FormikContextType<FormValues>["setFieldValue"],
+  ) => {
+    const r2 = await onCallChat(text, lang, true);
+    await setFieldValue("detailJP", r2);
   };
 
   const getInitialValues = (
@@ -168,7 +180,6 @@ export default function AddReportDialog({
         <DialogContent className="w-full h-[95vh] supports-[height:100svh]:h-[95svh] overflow-y-auto overscroll-y-auto">
           <DialogHeader>
             <DialogTitle>{t(`Common.${mode}_Report`)}</DialogTitle>
-            <DialogDescription>{``}</DialogDescription>
           </DialogHeader>
           <Formik<FormValues>
             initialValues={getInitialValues(reportData)}
@@ -288,6 +299,9 @@ export default function AddReportDialog({
                           : "1"
                         : "1"
                     }
+                    onClick={() => {
+                      // console.log('e', e.);
+                    }}
                     className="w-full"
                   >
                     <div className="flex-col bg-[#f0f9fd] rounded-lg p-4">
@@ -318,7 +332,13 @@ export default function AddReportDialog({
                                 placeholder={t("Common.title")}
                                 className={`w-full mb-4 bg-white ${mode === formMode.VIEW && "bg-gray-100"}`}
                                 type="text"
-                                onBlur={(e) => handleCallChat(textTest, "th")}
+                                onBlur={(e) =>
+                                  handleTitleCallChat(
+                                    e.target.value,
+                                    "jp",
+                                    setFieldValue,
+                                  )
+                                }
                               />
                             )}
                           </Field>
@@ -345,6 +365,7 @@ export default function AddReportDialog({
                                 minHeight="16rem"
                                 onChange={(html) => {
                                   setFieldValue("detail", html);
+                                  handleBodyCallChat(html, "jp", setFieldValue);
                                 }}
                                 readOnly={mode === formMode.VIEW}
                               />

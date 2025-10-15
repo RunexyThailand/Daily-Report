@@ -1,5 +1,5 @@
 import { axiosClient } from "@/lib/axios.client";
-import { buildTranslatePrompt } from "./chat-prompt";
+import { buildTranslatePrompt, buildTranslatePromptText } from "./chat-prompt";
 
 export type TranslationResult = {
   sourceLang: string;
@@ -8,8 +8,14 @@ export type TranslationResult = {
   translatedText: string;
 };
 
-export async function onCallChat(textOrHtml: string, targetLang: string) {
-  const content = buildTranslatePrompt(textOrHtml, targetLang);
+export async function onCallChat(
+  textOrHtml: string,
+  targetLang: string,
+  isHtml: boolean = false,
+) {
+  const content = isHtml
+    ? buildTranslatePrompt(textOrHtml, targetLang)
+    : buildTranslatePromptText(textOrHtml, targetLang);
 
   const body = {
     model: "gemma3n",

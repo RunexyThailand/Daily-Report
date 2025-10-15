@@ -20,7 +20,7 @@ export function createAxios(
       "Content-Type": "application/json",
       ...baseHeaders,
     },
-    timeout: 50_000,
+    timeout: 30_000,
     withCredentials: true,
     paramsSerializer: (params) =>
       qs.stringify(params, { arrayFormat: "repeat", skipNulls: true }),
