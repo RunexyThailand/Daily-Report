@@ -17,11 +17,17 @@ import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
 import { isEmpty } from "ramda";
 import { Button } from "@/components/ui/button";
-import DialogTask from "@/components/dialog-task";
+import DialogTask from "@/components/dialog-reports/dialog-task";
 import { useLocale } from "next-intl";
 import { useTranslations } from "next-intl";
-import { formMode } from "@/components/dialog-task";
+import { formMode } from "@/types/report-dialog-type";
 import { useSession } from "next-auth/react";
+
+const languages: optionType[] = [
+  { id: "ja", label: "Japanese" },
+  { id: "en", label: "English" },
+  { id: "th", label: "Thai" },
+];
 
 export default function ReportClient({
   projects,
@@ -231,6 +237,7 @@ export default function ReportClient({
         isOpen={isOpen}
         projects={projects}
         tasks={tasks}
+        languages={languages}
         onClose={() => setIsOpen(false)}
         onSuccess={() => {
           setIsOpen(false);

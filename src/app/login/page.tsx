@@ -10,7 +10,6 @@ export async function generateMetadata({
   params: { locale: string };
 }): Promise<Metadata> {
   const messages = await getMessages({ locale });
-  console.log("messages", messages);
 
   return {
     title: "messages.LoginPage.title",

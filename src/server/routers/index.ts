@@ -5,6 +5,7 @@ import { reportInputSchema } from "./types";
 import * as z from "zod";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { translateRouter } from "./translate";
 
 function sanitizeName(name: string) {
   return name.replace(/[^a-z0-9.\-_]/gi, "_");
@@ -35,6 +36,7 @@ function parseDataUrl(dataUrl: string) {
 }
 
 export const appRouter = router({
+  translate: translateRouter,
   uploadImageToLocal: publicProcedure
     .input(
       z.object({
