@@ -145,6 +145,6 @@ const seedReport = async () => {
 };
 
 await seedUser();
-await seedProject();
-await seedTask();
-await seedReport();
+// await seedProject();
+// await seedTask();
+// await seedReport();
