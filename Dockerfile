@@ -21,7 +21,7 @@ RUN npx prisma generate
 RUN npm run build
 
 # Expose port (default for Next.js)
-EXPOSE 3003
+EXPOSE 3002
 
 # Start the app
 CMD npx prisma migrate deploy && npm start
