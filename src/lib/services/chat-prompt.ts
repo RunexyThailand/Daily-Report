@@ -105,7 +105,7 @@ export function buildTranslatePromptText(
   targetLang: string,
   opts?: { chineseVariant?: "simplified" | "traditional" },
 ) {
-  const { code, label } = normalizeTargetLang(targetLang, opts);
+  const { label } = normalizeTargetLang(targetLang, opts);
   const TEXT_JSON = JSON.stringify(input);
 
   return `Translate the following text into ${label}.

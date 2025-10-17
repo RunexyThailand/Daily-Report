@@ -2,16 +2,7 @@
 
 import * as React from "react";
 import { useSearchParams } from "next/navigation";
-import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import { cn } from "@/lib/utils";
 import type { DateRange } from "react-day-picker";
 import Selected, { type optionType } from "@/components/form/selector";
 import { DateTime } from "luxon";
@@ -85,7 +76,6 @@ export default function ReportFilter({
   const [projectSelected, setProjectSelected] = React.useState<string>("all");
   const [taskSelected, setTaskSelected] = React.useState<string>("all");
   const [userSelected, setUserSelected] = React.useState<string>("all");
-  const [open, setOpen] = React.useState(false);
 
   // 🔒 avoid loop: depend on primitives and only update when changed
   const fromParam = sp.get("from");
@@ -107,8 +97,6 @@ export default function ReportFilter({
       return changed ? nextRange : prev;
     });
   }, [fromParam, toParam]);
-
-  const hasDate = !!(range?.from || range?.to);
 
   const emitChange = React.useCallback(
     (
@@ -162,7 +150,6 @@ export default function ReportFilter({
     setProjectSelected("all");
     setTaskSelected("all");
     setUserSelected("all");
-    setOpen(false);
     onChange?.({ projectId: "", taskId: "", userId: "", from: "", to: "" });
   }
 

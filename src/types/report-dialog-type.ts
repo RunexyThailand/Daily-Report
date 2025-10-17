@@ -1,3 +1,5 @@
+import { Lang } from "@/lib/services/translates";
+
 export type LangValue = {
   default: string;
   en?: string;
@@ -9,11 +11,11 @@ export type FormValues = {
   reportDate: Date;
   project_id: string | null;
   task_id: string | null;
-  title: string;
-  detail: string;
+  title: LangValue;
+  detail: LangValue;
   progress: number | null;
   dueDate: Date | null;
-  language_id: string | null;
+  language_code: Lang | null;
 };
 
 export enum formMode {
@@ -23,7 +25,7 @@ export enum formMode {
 }
 
 export type ReportTrans = {
-  language: "DEFAULT" | "JP";
+  language: "DEFAULT" | Lang;
   title: string;
   detail: string;
 };
@@ -35,7 +37,9 @@ export type CreateReportInput = {
   report_date: Date;
   progress: number | null;
   due_date: Date | null;
-  report_trans: ReportTrans[];
+  title: LangValue;
+  detail: LangValue;
+  //   report_trans: ReportTrans[];
 };
 
 export type ReportForm = {

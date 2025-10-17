@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useTranslations } from "next-intl";
-import { deleteReport } from "@/actions/report";
+import { createReport, deleteReport, updateReport } from "@/actions/report";
 import { toast } from "sonner";
 import { useState } from "react";
 import DialogConfirm from "../dialog/dialog-confirm";
@@ -16,23 +16,35 @@ import {
   AddReportDialogProps,
   CreateReportInput,
   FormValues,
+  formMode,
 } from "@/types/report-dialog-type";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { ReportInput } from "@/server/routers/types";
 
 const Schema = Yup.object({
   reportDate: Yup.date(),
   project_id: Yup.string().nullable().optional(),
   task_id: Yup.string().nullable().optional(),
-  title: Yup.string().trim().required("Title is required"),
-  detail: Yup.string().trim().required("Description is required"),
+  title: Yup.object({
+    default: Yup.string().required("Default title is required"),
+    en: Yup.string().optional(),
+    ja: Yup.string().optional(),
+    th: Yup.string().optional(),
+  }),
+  detail: Yup.object({
+    default: Yup.string().required("Default title is required"),
+    en: Yup.string().optional(),
+    ja: Yup.string().optional(),
+    th: Yup.string().optional(),
+  }),
   progress: Yup.number()
     .nullable()
     .transform((v, o) => (o === "" ? null : v))
     .min(0, "Min 0")
     .max(100, "Max 100"),
   dueDate: Yup.date().nullable(),
-  language_id: Yup.string(),
+  language_code: Yup.string().nullable(),
 });
 
 const getInitialValues = (
@@ -42,11 +54,11 @@ const getInitialValues = (
     reportDate: reportData?.report_date ?? new Date(),
     project_id: reportData?.project_id ?? null,
     task_id: reportData?.task_id ?? null,
-    title: "",
-    detail: "",
+    title: { default: "" },
+    detail: { default: "" },
     progress: reportData?.progress ?? null,
     dueDate: reportData?.due_date ?? null,
-    language_id: null,
+    language_code: null,
   };
 };
 
@@ -82,7 +94,11 @@ export default function AddReportDialog({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="w-full h-[95vh] supports-[height:100svh]:h-[95svh] overflow-y-auto overscroll-y-auto">
+        <DialogContent
+          onPointerDownOutside={(e) => e.preventDefault()}
+          onEscapeKeyDown={(e) => e.preventDefault()}
+          className="w-full h-[95vh] supports-[height:100svh]:h-[95svh] overflow-y-auto overscroll-y-auto"
+        >
           <DialogHeader>
             <DialogTitle>{t(`Common.${mode}_Report`)}</DialogTitle>
           </DialogHeader>
@@ -90,52 +106,44 @@ export default function AddReportDialog({
             initialValues={getInitialValues(reportData)}
             validationSchema={Schema}
             onSubmit={async (values, { setSubmitting }) => {
-              // setIsLoading(true);
-              // try {
-              //   const payload: CreateReportInput = {
-              //     project_id: values.project_id,
-              //     task_id: values.task_id,
-              //     report_date: values.reportDate,
-              //     progress: values.progress ?? null,
-              //     due_date: values.dueDate ?? null,
-              //     report_trans: [
-              //       {
-              //         language: "DEFAULT",
-              //         title: values.title,
-              //         detail: values.detail,
-              //       },
-              //       {
-              //         language: "JP",
-              //         title: values.titleJP,
-              //         detail: values.detailJP,
-              //       },
-              //     ],
-              //   };
-              //   if (mode === formMode.EDIT) {
-              //     payload.id = reportData?.id;
-              //     await updateReport(
-              //       payload as CreateReportInput & { id: string },
-              //     );
-              //   } else {
-              //     await createReport(payload);
-              //   }
-              //   toast.success(
-              //     `${t(`Common.save`)} ${t(`ResponseStatus.success`)}`,
-              //   );
-              //   onSuccess?.();
-              // } catch (err) {
-              //   toast.error(
-              //     `${t(`Common.save`)} ${t(`ResponseStatus.error`)}`,
-              //     {
-              //       description:
-              //         err instanceof Error ? err.message : "Unknown error",
-              //     },
-              //   );
-              //   setSubmitting(false);
-              // } finally {
-              //   setSubmitting(false);
-              // }
-              // setIsLoading(false);
+              setSubmitting(false);
+              setIsLoading(true);
+              try {
+                const payload: ReportInput = {
+                  project_id: values.project_id,
+                  task_id: values.task_id,
+                  reportDate: values.reportDate,
+                  progress: values.progress ?? null,
+                  dueDate: values.dueDate ?? null,
+                  title: values.title,
+                  detail: values.detail,
+                  language_code: values.language_code,
+                };
+                if (mode === formMode.EDIT) {
+                  // payload.id = reportData?.id;
+                  // await updateReport(
+                  //   payload as CreateReportInput & { id: string },
+                  // );
+                } else {
+                  await createReport(payload);
+                }
+                toast.success(
+                  `${t(`Common.save`)} ${t(`ResponseStatus.success`)}`,
+                );
+                onSuccess?.();
+              } catch (err) {
+                toast.error(
+                  `${t(`Common.save`)} ${t(`ResponseStatus.error`)}`,
+                  {
+                    description:
+                      err instanceof Error ? err.message : "Unknown error",
+                  },
+                );
+                setSubmitting(false);
+              } finally {
+                setSubmitting(false);
+              }
+              setIsLoading(false);
             }}
           >
             <DialogReportForm

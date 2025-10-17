@@ -1,6 +1,6 @@
 "use client";
 import TiptapEditor from "../form/tiptaps/tiptap-editor";
-import { Formik, Form, Field, useFormikContext } from "formik";
+import { Form, Field, useFormikContext } from "formik";
 import type { FieldInputProps } from "formik";
 import { LoaderCircle } from "lucide-react";
 import Selected from "../form/selector";
@@ -9,9 +9,17 @@ import { Input } from "@/components/ui/input";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
-import { FormValues, formMode, ReportForm } from "@/types/report-dialog-type";
-import { TranslateInput, useTranslator } from "@/lib/services/translates";
+import {
+  FormValues,
+  formMode,
+  ReportForm,
+  LangValue,
+} from "@/types/report-dialog-type";
+import { Lang, TranslateInput, useTranslator } from "@/lib/services/translates";
 import { useEffect, useState } from "react";
+import { z } from "zod";
+
+const LanguageSchema = z.enum(["ja", "en", "th"]);
 
 export default ({
   mode,
@@ -22,34 +30,50 @@ export default ({
   onOpenDeleteDialog,
 }: ReportForm) => {
   const formik = useFormikContext<FormValues>();
+
   const { translate, result, isTranslating } = useTranslator();
   const [isTranslationDisable, setTranslationDisable] = useState(true);
 
   const t = useTranslations();
 
-  const handleTranslation = () => {
-    const input: TranslateInput = {
-      title: formik.values.title,
-      description: formik.values.detail,
-    };
-    setTranslationDisable(true);
-    // translate(input);
-  };
+  const handleTranslation = (langCode: Lang) => {
+    if (!formik.values.title[langCode] || !formik.values.detail[langCode]) {
+      const input: TranslateInput = {
+        title: formik.values.title.default,
+        description: formik.values.detail.default,
+      };
 
+      translate(input, [langCode]);
+    }
+  };
   const checkTranslationDiable = () => {
-    setTranslationDisable(!formik.values.title || !formik.values.detail);
+    setTranslationDisable(
+      !formik.values.title.default || !formik.values.detail.default,
+    );
   };
 
   useEffect(() => {
-    if (!isTranslating && result) {
-      console.log("result", result);
-      setTranslationDisable(true);
+    if (result && !isTranslating && formik.values.language_code) {
+      formik.setFieldValue("title", {
+        ...formik.values.title,
+        [formik.values.language_code]:
+          result.translations[formik.values.language_code]?.title,
+        [result.source.languageCode]: result.original.title,
+      });
+      formik.setFieldValue("detail", {
+        ...formik.values.detail,
+        [formik.values.language_code]:
+          result.translations[formik.values.language_code]?.description,
+        [result.source.languageCode]: result.original.description,
+      });
     }
   }, [isTranslating]);
 
+  console.log("formik", formik);
+
   useEffect(checkTranslationDiable, [
-    formik.values.title,
-    formik.values.detail,
+    formik.values.title.default,
+    formik.values.detail.default,
   ]);
 
   return (
@@ -118,17 +142,14 @@ export default ({
             triggerClassName={` bg-white ${mode === formMode.VIEW ? "pointer-events-none bg-white" : ""}`}
             includeAll={false}
             disabled={isTranslationDisable}
-            value={formik.values.language_id ?? ""}
+            value={formik.values.language_code ?? ""}
             placeholder="Languages"
             options={languages}
-            onChange={() => {
-              handleTranslation();
+            onChange={(code) => {
+              const langCode = LanguageSchema.parse(code);
+              handleTranslation(langCode);
+              formik.setFieldValue("language_code", langCode);
             }}
-            // onChange={(id) =>
-            //     mode === formMode.VIEW
-            //         ? undefined
-            //         : setFieldValue("language_id", id)
-            // }
           />
         </div>
         <div className="space-y-1">
@@ -136,19 +157,38 @@ export default ({
             Title
           </label>
           <Field name="title">
-            {({ field }: { field: FieldInputProps<string> }) => (
-              <Input
-                readOnly={mode === formMode.VIEW}
-                {...field}
-                placeholder={t("Common.title")}
-                className={`w-full mb-4 bg-white ${mode === formMode.VIEW && "bg-gray-100"}`}
-                type="text"
-                onChange={(e) => {
-                  formik.setFieldValue("title", e.target.value);
-                  formik.setFieldValue("language_id", null);
-                  checkTranslationDiable();
-                }}
-              />
+            {({ field }: { field: FieldInputProps<LangValue> }) => (
+              <div className="relative">
+                <Input
+                  readOnly={mode === formMode.VIEW}
+                  value={field.value[formik.values.language_code ?? "default"]}
+                  placeholder={t("Common.title")}
+                  className={`w-full mb-4 bg-white ${mode === formMode.VIEW && "bg-gray-100"}`}
+                  type="text"
+                  onChange={(e) => {
+                    let titleValue = { default: e.target.value };
+                    if (formik.values.language_code) {
+                      titleValue = {
+                        ...titleValue,
+                        [formik.values.language_code]: e.target.value,
+                      };
+                    }
+
+                    formik.setFieldValue("title", titleValue);
+
+                    if (formik.values.language_code) {
+                      formik.setFieldValue("detail", {
+                        default:
+                          formik.values.detail[formik.values.language_code],
+                        [formik.values.language_code]:
+                          formik.values.detail[formik.values.language_code],
+                      });
+                    }
+
+                    checkTranslationDiable();
+                  }}
+                />
+              </div>
             )}
           </Field>
           {formik.touched.title && formik.errors.title && (
@@ -162,15 +202,33 @@ export default ({
             Description
           </label>
           <Field name="detail">
-            {({ field }: { field: FieldInputProps<string> }) => (
+            {({ field }: { field: FieldInputProps<LangValue> }) => (
               <TiptapEditor
                 {...field}
-                defaultValue="<p>Hello Tiptap!</p>"
+                value={field.value[formik.values.language_code ?? "default"]}
                 placeholder="พิมพ์ข้อความที่นี่…"
                 minHeight="16rem"
                 onChange={(html) => {
-                  formik.setFieldValue("detail", html);
-                  formik.setFieldValue("language_id", null);
+                  console.log("detail", html);
+
+                  let detailValue = { default: html };
+                  if (formik.values.language_code) {
+                    detailValue = {
+                      ...detailValue,
+                      [formik.values.language_code]: html,
+                    };
+                  }
+
+                  formik.setFieldValue("detail", detailValue);
+
+                  if (formik.values.language_code) {
+                    formik.setFieldValue("title", {
+                      default: formik.values.title[formik.values.language_code],
+                      [formik.values.language_code]:
+                        formik.values.title[formik.values.language_code],
+                    });
+                  }
+
                   checkTranslationDiable();
                 }}
                 readOnly={mode === formMode.VIEW}

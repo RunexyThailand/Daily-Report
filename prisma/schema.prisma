@@ -82,8 +82,9 @@ model Report {
 }
 
 enum Language {
-  DEFAULT
-  JP
+  ja
+  th
+  en
 }
 model Report_trans {
   id         String   @id @default(cuid())

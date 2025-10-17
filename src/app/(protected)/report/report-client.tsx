@@ -22,6 +22,7 @@ import { useLocale } from "next-intl";
 import { useTranslations } from "next-intl";
 import { formMode } from "@/types/report-dialog-type";
 import { useSession } from "next-auth/react";
+import ReportCard from "@/components/reports/report-card";
 
 const languages: optionType[] = [
   { id: "ja", label: "Japanese" },
@@ -66,11 +67,8 @@ export default function ReportClient({
     to,
   });
 
-  const {
-    data: reportQuery,
-    refetch: refetchReport,
-    isFetching: isFetchingReport,
-  } = trpc.getReportById.useQuery(reportId);
+  const { data: reportQuery, refetch: refetchReport } =
+    trpc.getReportById.useQuery(reportId);
 
   const userReport =
     usersQuery?.users.map((user) => ({
@@ -171,14 +169,19 @@ export default function ReportClient({
                                 )}
                               </CardTitle>
                               <CardDescription className="py-5">
-                                <div className="font-bold text-18 mb-2">
+                                <ReportCard
+                                  translates={report.translates}
+                                  lang={currentLang}
+                                />
+                                {/* <div className="font-bold text-18 mb-2">
                                   {report.title}
                                 </div>
                                 <div
+                                  className="tiptap"
                                   dangerouslySetInnerHTML={{
                                     __html: report.detail ?? "",
                                   }}
-                                />
+                                /> */}
                               </CardDescription>
                               <CardFooter className="p-0 flex justify-end space-x-4">
                                 <div className="flex items-center space-x-1">

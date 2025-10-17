@@ -6,6 +6,7 @@ import * as z from "zod";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { translateRouter } from "./translate";
+import { createReportService } from "../services/report.service";
 
 function sanitizeName(name: string) {
   return name.replace(/[^a-z0-9.\-_]/gi, "_");
@@ -98,9 +99,7 @@ export const appRouter = router({
               progress: true,
               due_date: true,
               report_trans: {
-                // where: { language: input.lang as Language },
                 select: { language: true, title: true, detail: true },
-                take: 1,
               },
               task: { select: { name: true } },
               project: { select: { name: true } },
@@ -116,23 +115,25 @@ export const appRouter = router({
         email: u.email,
         image: u.image,
         reports: u.reports.map((r) => {
-          const defaultTrans = r.report_trans.find(
-            (x) => x.language === "DEFAULT",
-          );
-          const jp = r.report_trans.find((x) => x.language === "JP");
+          // const defaultTrans = r.report_trans.find((x) => x.language === "ja");
+          // const jp = r.report_trans.find(
+          //   (x: { title: string; detail: string; language: Language }) =>
+          //     x.language,
+          // );
           return {
             report_id: r.id,
             report_date: r.report_date,
             progress: r.progress ?? null,
             due_date: r.due_date ?? null,
-            title:
-              input.lang === "JP"
-                ? (jp?.title ?? defaultTrans?.title ?? null)
-                : (defaultTrans?.title ?? null),
-            detail:
-              input.lang === "JP"
-                ? (jp?.detail ?? defaultTrans?.detail ?? null)
-                : (defaultTrans?.detail ?? null),
+            translates: r.report_trans,
+            // title:
+            //   input.lang === "JP"
+            //     ? (jp?.title ?? defaultTrans?.title ?? null)
+            //     : (defaultTrans?.title ?? null),
+            // detail:
+            //   input.lang === "JP"
+            //     ? (jp?.detail ?? defaultTrans?.detail ?? null)
+            //     : (defaultTrans?.detail ?? null),
             task_name: r.task?.name ?? null,
             project_name: r.project?.name ?? null,
             created_by: r.created_by,
@@ -183,21 +184,29 @@ export const appRouter = router({
   createReport: publicProcedure
     .input(reportInputSchema)
     .mutation(async ({ ctx, input }) => {
-      const report = await ctx.prisma.report.create({
-        data: {
-          project_id: input.project_id,
-          task_id: input.task_id,
-          report_date: input.report_date,
-          progress: input.progress,
-          due_date: input.due_date,
-          created_by: ctx.session?.user.id ?? "",
-          report_trans: {
-            create: input.report_trans,
-          },
-        },
-      });
-      return report;
+      const userId = ctx.session?.user.id ?? "";
+      console.log("userId", userId);
+
+      return createReportService(ctx.prisma, input, userId);
     }),
+  // createReport: publicProcedure
+  //   .input(reportInputSchema)
+  //   .mutation(async ({ ctx, input }) => {
+  //     const report = await ctx.prisma.report.create({
+  //       data: {
+  //         project_id: input.project_id,
+  //         task_id: input.task_id,
+  //         report_date: input.report_date,
+  //         progress: input.progress,
+  //         due_date: input.due_date,
+  //         created_by: ctx.session?.user.id ?? "",
+  //         report_trans: {
+  //           create: input.report_trans,
+  //         },
+  //       },
+  //     });
+  //     return report;
+  //   }),
   deleteReport: publicProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {
@@ -211,28 +220,28 @@ export const appRouter = router({
         where: { id: reportId },
       });
     }),
-  updateReport: publicProcedure
-    .input(reportInputSchema.extend({ id: z.string().min(1) }))
-    .mutation(async ({ ctx, input }) => {
-      const report = await ctx.prisma.report.update({
-        where: { id: input.id },
-        data: {
-          project_id: input.project_id,
-          task_id: input.task_id,
-          report_date: input.report_date,
-          progress: input.progress,
-          due_date: input.due_date,
-          updated_at: new Date().toISOString(),
-          report_trans: {
-            deleteMany: {
-              report_id: input.id,
-            },
-            create: input.report_trans,
-          },
-        },
-      });
-      return report;
-    }),
+  // updateReport: publicProcedure
+  //   .input(reportInputSchema.extend({ id: z.string().min(1) }))
+  //   .mutation(async ({ ctx, input }) => {
+  //     const report = await ctx.prisma.report.update({
+  //       where: { id: input.id },
+  //       data: {
+  //         project_id: input.project_id,
+  //         task_id: input.task_id,
+  //         report_date: input.report_date,
+  //         progress: input.progress,
+  //         due_date: input.due_date,
+  //         updated_at: new Date().toISOString(),
+  //         report_trans: {
+  //           deleteMany: {
+  //             report_id: input.id,
+  //           },
+  //           create: input.report_trans,
+  //         },
+  //       },
+  //     });
+  //     return report;
+  //   }),
 });
 
 // type สำหรับ client

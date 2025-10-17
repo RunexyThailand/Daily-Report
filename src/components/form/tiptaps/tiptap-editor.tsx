@@ -93,7 +93,9 @@ export default function TiptapEditor({
           }}
         >
           {editor ? (
-            <EditorContent editor={editor} />
+            <div className="tiptap prose prose-sm max-w-none">
+              <EditorContent editor={editor} />
+            </div>
           ) : (
             <div className="h-24 animate-pulse rounded-md bg-muted" />
           )}

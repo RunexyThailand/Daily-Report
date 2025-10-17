@@ -22,21 +22,42 @@ export const UserWithReportsSchema = z.object({
   reports: z.array(ReportItemSchema),
 });
 
-const reportTransSchema = z.object({
-  language: LanguageEnum,
-  title: z.string(),
-  detail: z.string(),
-});
+// const reportTransSchema = z.object({
+//   language: LanguageEnum,
+//   title: z.string(),
+//   detail: z.string(),
+// });
 
-export const reportInputSchema = z.object({
-  project_id: z.string().nullable(),
-  task_id: z.string().nullable(),
-  report_date: z.date(),
-  progress: z.number().nullable(),
-  due_date: z.date().nullable(),
-  report_trans: z.array(reportTransSchema),
-});
+// export const reportInputSchema = z.object({
+//   project_id: z.string().nullable(),
+//   task_id: z.string().nullable(),
+//   report_date: z.date(),
+//   progress: z.number().nullable(),
+//   due_date: z.date().nullable(),
+//   report_trans: z.array(reportTransSchema),
+// });
 
 export type ReportItem = z.infer<typeof ReportItemSchema>;
 export type UserWithReports = z.infer<typeof UserWithReportsSchema>;
+
+// export type ReportInput = z.infer<typeof reportInputSchema>;
+export const langEnum = z.enum(["ja", "th", "en"]);
+export const langValueSchema = z.object({
+  default: z.string(),
+  en: z.string().optional(),
+  ja: z.string().optional(),
+  th: z.string().optional(),
+});
+
+export const reportInputSchema = z.object({
+  reportDate: z.coerce.date(), // รองรับ string → Date ด้วย
+  project_id: z.string().nullable(),
+  task_id: z.string().nullable(),
+  title: langValueSchema,
+  detail: langValueSchema,
+  progress: z.number().int().nullable(),
+  dueDate: z.coerce.date().nullable(),
+  language_code: langEnum.nullable(),
+});
+
 export type ReportInput = z.infer<typeof reportInputSchema>;

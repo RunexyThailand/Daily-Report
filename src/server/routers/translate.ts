@@ -1,5 +1,16 @@
 import { z } from "zod";
 import { router, publicProcedure } from "../trpc";
+type TranslateFormat = "text" | "html";
+
+// คุณมี Lang อยู่แล้วในโปรเจกต์
+// type Lang = "en" | "ja" | "th" | ...;
+
+interface TranslateRequest {
+  q: string; // หรือ string[] ถ้าจะส่งหลายข้อความ
+  target: Lang;
+  source?: string; // ถ้ารู้แน่ (ห้าม "und")
+  format?: TranslateFormat; // ปกติ title=text, description=html
+}
 
 type Lang = "en" | "ja" | "th";
 const API_KEY = process.env.GOOGLE_TRANSLATE_API_KEY!;
@@ -31,11 +42,11 @@ async function Detect(text: string) {
 async function TranslateOne(params: {
   q: string;
   target: Lang;
-  source?: string; // ระบุได้ถ้ารู้แน่
-  format?: "text" | "html"; // ปกติ title=text, description=html
+  source?: string;
+  format?: "text" | "html";
 }) {
   const { q, target, source, format = "text" } = params;
-  const payload: any = { q, target, format };
+  const payload: TranslateRequest = { q, target, format };
   if (source && source !== "und") payload.source = source;
 
   const res = await fetch(`${BASE_TRANSLATE}?key=${API_KEY}`, {
@@ -44,7 +55,6 @@ async function TranslateOne(params: {
     body: JSON.stringify(payload),
   }).then((r) => r.json());
 
-  // data.translations[0].translatedText
   return res?.data?.translations?.[0]?.translatedText ?? q;
 }
 
@@ -60,7 +70,7 @@ export const translateRouter = router({
     .input(
       z.object({
         title: z.string(),
-        description: z.string(), // HTML OK
+        description: z.string(),
         targets: z
           .array(z.enum(["ja", "th", "en"]))
           .default(["ja", "th", "en"]),
@@ -69,17 +79,14 @@ export const translateRouter = router({
     .mutation(async ({ input }) => {
       if (!API_KEY) throw new Error("Missing GOOGLE_TRANSLATE_API_KEY");
 
-      // 1) Detect
       const forDetect = `${input.title}\n${stripHtml(input.description)}`;
       const det = await Detect(forDetect);
       const sourceLang = det.languageCode as Lang | "und";
 
-      // 2) ตัดภาษาต้นฉบับออก
       const finalTargets = input.targets.filter(
         (t) => t !== sourceLang,
       ) as Lang[];
 
-      // 3) แปลเฉพาะ target ที่เหลือ
       const translations: Partial<
         Record<Lang, { title: string; description: string }>
       > = {};
