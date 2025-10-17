@@ -12,11 +12,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useTranslations } from "next-intl";
+import { Language } from "@prisma/client";
 
 export default function LoginForm() {
   const t = useTranslations("LoginPage");
   const router = useRouter();
-  const [locale, setLocale] = useState("en");
+  const [locale, setLocale] = useState<Language>("en");
   const [serverError, setServerError] = useState<string | null>(null);
   const LoginSchema = Yup.object({
     email: Yup.string()
@@ -26,21 +27,21 @@ export default function LoginForm() {
   });
 
   useEffect(() => {
-    const cookieLocale = document.cookie
+    const cookieLocale: Language | undefined = document.cookie
       .split("; ")
       .find((row) => row.startsWith("NEXT_LOCALE="))
-      ?.split("=")[1];
+      ?.split("=")[1] as Language | undefined;
     if (cookieLocale) {
       setLocale(cookieLocale);
     } else {
       const browserLang = navigator.language.split("-")[0];
-      setLocale(browserLang);
+      setLocale(browserLang as Language);
       document.cookie = `NEXT_LOCALE=${browserLang};`;
       router.refresh();
     }
   }, [router]);
 
-  const changeLanguage = (lng: string) => {
+  const changeLanguage = (lng: Language) => {
     setLocale(lng);
     document.cookie = `NEXT_LOCALE=${lng};`;
     router.refresh();
@@ -69,7 +70,6 @@ export default function LoginForm() {
                 }}
                 variant="secondary"
                 className="w-10 cursor-pointer"
-                // style={{ backgroundColor: "#234868", color: "#ea330b" }}
                 style={
                   locale === "en"
                     ? { backgroundColor: "#ea330b", color: "#ffffff" }
@@ -82,15 +82,29 @@ export default function LoginForm() {
                 variant="secondary"
                 className="w-10 cursor-pointer"
                 onClick={() => {
-                  changeLanguage("jp");
+                  changeLanguage("ja");
                 }}
                 style={
-                  locale === "jp"
+                  locale === "ja"
                     ? { backgroundColor: "#ea330b", color: "#ffffff" }
                     : {}
                 }
               >
                 JP
+              </Badge>
+              <Badge
+                onClick={() => {
+                  changeLanguage("th");
+                }}
+                variant="secondary"
+                className="w-10 cursor-pointer"
+                style={
+                  locale === "th"
+                    ? { backgroundColor: "#ea330b", color: "#ffffff" }
+                    : {}
+                }
+              >
+                TH
               </Badge>
             </div>
             <div className="flex  flex-col items-center justify-center py-10 h-128">

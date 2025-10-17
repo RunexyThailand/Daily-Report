@@ -126,12 +126,12 @@ const seedReport = async () => {
           report_trans: {
             create: [
               {
-                language: "DEFAULT",
+                language: "en",
                 title: title,
                 detail: detail,
               },
               {
-                language: "JP",
+                language: "ja",
                 title: title_jp,
                 detail: detail_jp,
               },

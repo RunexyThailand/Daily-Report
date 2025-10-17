@@ -8,6 +8,7 @@ import superjson from "superjson";
 import { trpc } from "@/trpc/client";
 import { LayoutProvider } from "@/components/layout/layout-provider";
 import { NextIntlClientProvider, type AbstractIntlMessages } from "next-intl";
+import { SessionProvider } from "next-auth/react";
 
 type ProvidersProps = {
   children: ReactNode;
@@ -32,12 +33,15 @@ export default function Providers({
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         {/* ✅ ใส่ locale ชัดเจน */}
+
         <NextIntlClientProvider
           messages={messages}
           locale={locale}
           timeZone={timeZone}
         >
-          <LayoutProvider>{children}</LayoutProvider>
+          <SessionProvider>
+            <LayoutProvider>{children}</LayoutProvider>
+          </SessionProvider>
         </NextIntlClientProvider>
       </QueryClientProvider>
     </trpc.Provider>

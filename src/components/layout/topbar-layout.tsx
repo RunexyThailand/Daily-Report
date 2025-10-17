@@ -19,9 +19,10 @@ import { signOut } from "next-auth/react";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Language } from "@prisma/client";
 
 export function Topbar({ className }: { className?: string }) {
-  const [locale, setLocale] = useState("en");
+  const [locale, setLocale] = useState<Language>("en");
   const router = useRouter();
   // const { toggleSidebar } = useLayout();
   const pathname = usePathname();
@@ -31,21 +32,21 @@ export function Topbar({ className }: { className?: string }) {
     pathname === href || pathname.startsWith(href + "/");
 
   useEffect(() => {
-    const cookieLocale = document.cookie
+    const cookieLocale: Language | undefined = document.cookie
       .split("; ")
       .find((row) => row.startsWith("NEXT_LOCALE="))
-      ?.split("=")[1];
+      ?.split("=")[1] as Language | undefined;
     if (cookieLocale) {
       setLocale(cookieLocale);
     } else {
       const browserLang = navigator.language.split("-")[0];
-      setLocale(browserLang);
+      setLocale(browserLang as Language);
       document.cookie = `NEXT_LOCALE=${browserLang};`;
       router.refresh();
     }
   }, [router]);
 
-  const changeLanguage = (lng: string) => {
+  const changeLanguage = (lng: Language) => {
     setLocale(lng);
     document.cookie = `NEXT_LOCALE=${lng};`;
     router.refresh();
@@ -126,15 +127,29 @@ export function Topbar({ className }: { className?: string }) {
               variant="secondary"
               className="w-10 cursor-pointer"
               onClick={() => {
-                changeLanguage("jp");
+                changeLanguage("ja");
               }}
               style={
-                locale === "jp"
+                locale === "ja"
                   ? { backgroundColor: "#ea330b", color: "#ffffff" }
                   : {}
               }
             >
               JP
+            </Badge>
+            <Badge
+              variant="secondary"
+              className="w-10 cursor-pointer"
+              onClick={() => {
+                changeLanguage("th");
+              }}
+              style={
+                locale === "th"
+                  ? { backgroundColor: "#ea330b", color: "#ffffff" }
+                  : {}
+              }
+            >
+              TH
             </Badge>
           </div>
           <Separator

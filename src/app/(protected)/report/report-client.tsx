@@ -60,7 +60,7 @@ export default function ReportClient({
     isFetching,
   } = trpc.getUserReport.useQuery({
     userId,
-    lang: currentLang.toLocaleUpperCase() === "JP" ? "JP" : "DEFAULT",
+    lang: currentLang,
     taskId,
     projectId,
     from,

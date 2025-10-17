@@ -1,0 +1,54 @@
+{
+  "LoginPage": {
+    "title": "ลงชื่อเข้าใช้",
+    "description": "หน้าเข้าสู่ระบบ",
+    "signIn": "ลงชื่อเข้าใช้",
+    "signingIn": "กำลังลงชื่อเข้าใช้...",
+    "invalidEmailFormat": "รูปแบบอีเมลไม่ถูกต้อง",
+    "emailRequired": "ต้องกรอกอีเมล",
+    "passwordRequired": "ต้องกรอกรหัสผ่าน",
+    "InvalidCredentials": "อีเมลหรือรหัสผ่านไม่ถูกต้อง"
+  },
+  "DailyReportPage": {
+    "title": "รายงานประจำวัน",
+    "description": "หน้าแสดงรายงานประจำวัน",
+    "loading": "กำลังโหลด...",
+    "reportEmpty": "ยังไม่มีการส่งรายงานในวันนี้",
+    "selectDateLabel": "กรุณาเลือกวันที่",
+    "clear": "ล้าง",
+    "apply": "ใช้",
+    "reset": "รีเซ็ต",
+    "allProjectsLabel": "ทุกโครงการ",
+    "allTasksLabel": "ทุกงาน",
+    "everyone": "ทุกคน"
+  },
+  "Common": {
+    "cancel": "ยกเลิก",
+    "close": "ปิด",
+    "save": "บันทึก",
+    "edit": "แก้ไข",
+    "delete": "ลบ",
+    "confirm": "ยืนยัน",
+    "areYouSure": "คุณแน่ใจหรือไม่?",
+    "yes": "ใช่",
+    "no": "ไม่",
+    "loading": "กำลังโหลด...",
+    "error": "เกิดข้อผิดพลาด กรุณาลองอีกครั้ง",
+    "success": "ดำเนินการสำเร็จ",
+    "title": "หัวข้อ",
+    "description": "คำอธิบาย",
+    "progress": "ความก้าวหน้า",
+    "dueDate": "วันครบกำหนด",
+    "comment": "ความคิดเห็น...",
+    "selectDate": "เลือกวันที่",
+    "CREATE_Report": "เพิ่มรายงาน",
+    "EDIT_Report": "แก้ไขรายงาน",
+    "VIEW_Report": "ดูรายงาน",
+    "Confirm_action": "ยืนยันการดำเนินการ",
+    "Confirm_description": "คุณแน่ใจหรือไม่ว่าต้องการดำเนินการนี้?"
+  },
+  "ResponseStatus": {
+    "success": "สำเร็จ",
+    "error": "ข้อผิดพลาด"
+  }
+}
