@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
-    "start": "next start",
+    "start": "next start -p 3002",
     "lint": "eslint",
     "fmt": "prettier --write .",
     "fmt:check": "prettier --check .",
@@ -14,7 +14,7 @@
     "test:cov:watch": "jest --coverage --watch"
   },
   "prisma": {
-    "seed": "node prisma/seeds/seed.ts"
+    "seed": "ts-node prisma/seeds/seed.ts"
   },
   "dependencies": {
     "@google-cloud/translate": "^9.2.1",

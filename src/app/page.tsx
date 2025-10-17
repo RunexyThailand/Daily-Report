@@ -1,24 +1,30 @@
 "use client";
-// import { trpc } from "@/trpc/client";
-import { useState } from "react";
+
+import { useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
-  // const user = trpc.me.useQuery();
-  // const utils = trpc.useUtils();
-  const [title, setTitle] = useState("");
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "loading") return; // Still loading
+    
+    if (session) {
+      // User is logged in, redirect to protected area
+      router.replace("/protected/report");
+    } else {
+      // User is not logged in, redirect to login
+      router.replace("/login");
+    }
+  }, [session, status, router]);
 
   return (
-    <main style={{ padding: 24 }}>
-      <h1>tRPC + NextAuth (Credentials) + Prisma</h1>
-      <div>
-        <input
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Post title"
-        />
-        {/* <button onClick={() => create.mutate({ title })}>Create</button> */}
+    <main className="flex min-h-screen items-center justify-center">
+      <div className="text-center">
+        <p className="text-gray-600">Loading...</p>
       </div>
-      {/* {user?.data?.user?.name} */}
     </main>
   );
 }

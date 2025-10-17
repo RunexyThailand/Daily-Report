@@ -50,10 +50,12 @@ export const authOptions: NextAuthOptions = {
         const isInternal = u.origin === b.origin;
         if (isInternal) {
           // ถ้า callbackUrl เป็น internal และตั้งมาแล้ว ก็ใช้เลย
-          if (u.pathname && u.pathname !== "/login") return u.toString();
+          if (u.pathname && u.pathname !== "/login" && u.pathname !== "/") {
+            return u.toString();
+          }
         }
       } catch {}
-      return `${baseUrl}/report`;
+      return `${baseUrl}/protected/report`;
     },
     async jwt({ token, user }) {
       // ตอน login ครั้งแรก user จะไม่เป็น undefined

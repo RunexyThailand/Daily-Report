@@ -144,7 +144,18 @@ const seedReport = async () => {
   console.log("Seeding reports done.");
 };
 
-await seedUser();
-// await seedProject();
-// await seedTask();
-// await seedReport();
+async function main() {
+  await seedUser();
+  // await seedProject();
+  // await seedTask();
+  // await seedReport();
+}
+
+main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
