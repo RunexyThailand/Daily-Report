@@ -14,6 +14,8 @@ import { formMode } from "@/types/report-dialog-type";
 import ReportCard from "@/components/reports/report-card";
 import { Lang } from "@/lib/services/translates";
 import DialogConfirm from "@/components/dialog/dialog-confirm";
+import { toast } from "sonner";
+import { deleteReport } from "@/actions/report";
 
 const languages: optionType[] = [
   { id: "ja", label: "Japanese" },
@@ -31,6 +33,7 @@ export default function ReportClient({
   users: optionType[];
 }) {
   const t = useTranslations("DailyReportPage");
+  const rootT = useTranslations("");
 
   const [isOpen, setIsOpen] = useState(false);
   const [taskId, setTaskId] = useState("");
@@ -63,6 +66,25 @@ export default function ReportClient({
       label: user.name || "",
       reports: user.reports,
     })) || [];
+
+  const handleDelete = async (reportId: string) => {
+    try {
+      await deleteReport(reportId);
+      toast.success(
+        `${rootT(`Common.delete`)} ${rootT(`ResponseStatus.success`)}`,
+      );
+    } catch (err) {
+      toast.error(
+        `${rootT(`Common.delete`)} ${rootT(`ResponseStatus.error`)}`,
+        {
+          description: err instanceof Error ? err.message : "Unknown error",
+        },
+      );
+    } finally {
+      setShowConfirmDialog(false);
+      refetch();
+    }
+  };
 
   return (
     <>
@@ -115,6 +137,10 @@ export default function ReportClient({
                           setAction(formMode.EDIT);
                           setLanguageCode(lange);
                         }}
+                        onDelete={() => {
+                          setReportId(report.report_id);
+                          setShowConfirmDialog(true);
+                        }}
                       />
                     );
                   })}
@@ -154,8 +180,8 @@ export default function ReportClient({
         isOpen={showConfirmDialog}
         onClose={() => setShowConfirmDialog(false)}
         onConfirm={() => {
-          // handleDelete(reportData?.id ?? "");
-          setShowConfirmDialog(false);
+          handleDelete(reportId as string);
+          // setShowConfirmDialog(false);
         }}
       />
     </>

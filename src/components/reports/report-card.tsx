@@ -36,6 +36,7 @@ export type ReportProps = {
   taskName: string | null;
   progress: number | null;
   onOpenDialog: (lang: Lang) => void;
+  onDelete: () => void;
 };
 
 export default ({
@@ -47,6 +48,7 @@ export default ({
   taskName,
   progress,
   onOpenDialog,
+  onDelete,
 }: ReportProps) => {
   const [language, setLanguage] = useState<string>(lang);
 
@@ -113,7 +115,7 @@ export default ({
               <Trash
                 className="h-6 w-6 cursor-pointer text-red-500"
                 aria-hidden="true"
-                // onClick={() => onOpenDialog(language as Lang)}
+                onClick={onDelete}
               />
             </TooltipTrigger>
             <TooltipContent>
