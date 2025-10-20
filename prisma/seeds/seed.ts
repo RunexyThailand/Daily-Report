@@ -6,12 +6,16 @@ console.log("Seeding database....................");
 const userArr = [
   "paramet-l",
   "kittipong-m",
-  "supitchaya-s",
-  "wannaporn-c",
+  "supitchaya-s", // kanhun
+  "wannaporn-c", // minky
   "thanayut-r",
   "tinnapat-t",
+  "dulywat-p",
+  "supakit-s", // jing
+  "sorawait-w",
+  "saelee-s", // mhew
 ];
-const projectArr = ["MylogStar", "RunDX"];
+const projectArr = ["MylogStar", "RunDX", "Intern"];
 const taskArr = ["Testing", "Development", "Admin"];
 
 const titleArr = [

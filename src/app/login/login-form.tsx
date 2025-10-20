@@ -136,7 +136,7 @@ export default function LoginForm() {
                           id="email"
                           name="email"
                           type="email"
-                          placeholder="you@runexy.co.th"
+                          placeholder="you@runexy.co.jp"
                           onChange={handleChange}
                           onBlur={handleBlur}
                           value={values.email}
