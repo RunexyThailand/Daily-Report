@@ -3,26 +3,17 @@ import { trpc } from "@/trpc/client";
 import { type optionType } from "@/components/form/selector";
 import ReportFilter from "@/components/filters/report-filter";
 import CollapseCard from "@/components/collapse-card";
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
-import { Calendar, LoaderCircle, Plus } from "lucide-react";
-import { DateTime } from "luxon";
-import { useEffect, useState } from "react";
+import { LoaderCircle, Plus } from "lucide-react";
+import { useState } from "react";
 import { isEmpty } from "ramda";
 import { Button } from "@/components/ui/button";
 import DialogTask from "@/components/dialog-reports/dialog-task";
 import { useLocale } from "next-intl";
 import { useTranslations } from "next-intl";
 import { formMode } from "@/types/report-dialog-type";
-import { useSession } from "next-auth/react";
 import ReportCard from "@/components/reports/report-card";
+import { Lang } from "@/lib/services/translates";
+import DialogConfirm from "@/components/dialog/dialog-confirm";
 
 const languages: optionType[] = [
   { id: "ja", label: "Japanese" },
@@ -41,7 +32,6 @@ export default function ReportClient({
 }) {
   const t = useTranslations("DailyReportPage");
 
-  const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [taskId, setTaskId] = useState("");
   const [userId, setUserId] = useState("");
@@ -49,10 +39,10 @@ export default function ReportClient({
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [action, setAction] = useState<formMode>(formMode.CREATE);
-  const currentLang = useLocale();
-  const [reportId, setReportId] = useState<string>("");
-  const [selectedReport, setSelectedReport] = useState<any>(null);
-  const [shouldOpenDialog, setShouldOpenDialog] = useState(false);
+  const currentLang = useLocale() as Lang;
+  const [reportId, setReportId] = useState<string | null>(null);
+  const [languageCode, setLanguageCode] = useState<Lang | null>(null);
+  const [showConfirmDialog, setShowConfirmDialog] = useState<boolean>(false);
 
   const {
     data: usersQuery,
@@ -67,34 +57,12 @@ export default function ReportClient({
     to,
   });
 
-  const { data: reportQuery, refetch: refetchReport } =
-    trpc.getReportById.useQuery(reportId);
-
   const userReport =
     usersQuery?.users.map((user) => ({
       id: String(user.id),
       label: user.name || "",
       reports: user.reports,
     })) || [];
-
-  const handleViewReport = async (reportId: string) => {
-    setReportId(reportId);
-    await refetchReport();
-    setShouldOpenDialog(true);
-  };
-
-  useEffect(() => {
-    if (reportQuery && shouldOpenDialog) {
-      setAction(
-        reportQuery.created_by === session?.user.id
-          ? formMode.EDIT
-          : formMode.VIEW,
-      );
-      setSelectedReport(reportQuery);
-      setIsOpen(true);
-      setShouldOpenDialog(false);
-    }
-  }, [reportQuery, action, shouldOpenDialog]);
 
   return (
     <>
@@ -136,10 +104,17 @@ export default function ReportClient({
                         translates={report.translates}
                         lang={currentLang}
                         reportId={report.report_id}
+                        key={report.report_id}
                         projectName={report.project_name}
                         dueDate={report.due_date}
                         taskName={report.task_name}
                         progress={report.progress}
+                        onOpenDialog={(lange: Lang) => {
+                          setIsOpen(true);
+                          setReportId(report.report_id);
+                          setAction(formMode.EDIT);
+                          setLanguageCode(lange);
+                        }}
                       />
                     );
                   })}
@@ -154,7 +129,7 @@ export default function ReportClient({
         size="icon"
         aria-label="Add"
         onClick={() => {
-          setSelectedReport(null);
+          setReportId(null);
           setAction(formMode.CREATE);
           setIsOpen(true);
         }}
@@ -162,7 +137,8 @@ export default function ReportClient({
         <Plus size={32} />
       </Button>
       <DialogTask
-        reportData={selectedReport}
+        reportId={reportId}
+        languageCode={languageCode || "ja"}
         isOpen={isOpen}
         projects={projects}
         tasks={tasks}
@@ -173,6 +149,14 @@ export default function ReportClient({
           refetch();
         }}
         mode={action}
+      />
+      <DialogConfirm
+        isOpen={showConfirmDialog}
+        onClose={() => setShowConfirmDialog(false)}
+        onConfirm={() => {
+          // handleDelete(reportData?.id ?? "");
+          setShowConfirmDialog(false);
+        }}
       />
     </>
   );

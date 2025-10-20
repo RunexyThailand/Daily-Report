@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, LoaderCircle, Eye } from "lucide-react";
+import { Calendar, LoaderCircle, Eye, Trash } from "lucide-react";
 import { DateTime } from "luxon";
 import {
   Card,
@@ -19,6 +19,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Lang } from "@/lib/services/translates";
 
 export type ReportTranslate = {
   title: string;
@@ -34,6 +35,7 @@ export type ReportProps = {
   projectName: string | null;
   taskName: string | null;
   progress: number | null;
+  onOpenDialog: (lang: Lang) => void;
 };
 
 export default ({
@@ -44,12 +46,14 @@ export default ({
   projectName,
   taskName,
   progress,
+  onOpenDialog,
 }: ReportProps) => {
   const [language, setLanguage] = useState<string>(lang);
 
   const translated = translates.find((translate) => {
     return translate.language === language;
   });
+
   return (
     <div>
       <div className="flex w-full justify-between">
@@ -91,19 +95,36 @@ export default ({
             English
           </Button>
         </div>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Eye className="h-7 w-7 cursor-pointer" aria-hidden="true" />
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>VIEW</p>
-          </TooltipContent>
-        </Tooltip>
+        <div className="flex space-x-5">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Eye
+                className="h-6 w-6 cursor-pointer"
+                aria-hidden="true"
+                onClick={() => onOpenDialog(language as Lang)}
+              />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>View</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Trash
+                className="h-6 w-6 cursor-pointer text-red-500"
+                aria-hidden="true"
+                // onClick={() => onOpenDialog(language as Lang)}
+              />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Delete</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
       </div>
       <Card
         className="overflow-hidden p-0 group transition-all rounded-t-none "
         key={reportId}
-        // onClick={() => handleViewReport(reportId)}
       >
         <CardHeader className="p-0 gap-0">
           <div

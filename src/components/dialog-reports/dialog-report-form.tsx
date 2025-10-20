@@ -27,7 +27,7 @@ export default ({
   tasks,
   languages,
   isLoading,
-  onOpenDeleteDialog,
+  onClose,
 }: ReportForm) => {
   const formik = useFormikContext<FormValues>();
 
@@ -68,8 +68,6 @@ export default ({
       });
     }
   }, [isTranslating]);
-
-  console.log("formik", formik);
 
   useEffect(checkTranslationDiable, [
     formik.values.title.default,
@@ -295,17 +293,18 @@ export default ({
         {mode === formMode.EDIT && (
           <Button
             type="button"
-            onClick={onOpenDeleteDialog}
-            className="bg-red-500 hover:bg-red-700 text-white cursor-pointer"
+            variant="ghost"
+            onClick={onClose}
+            className="text-black bg-gray-100 cursor-pointer"
           >
-            {t("Common.delete")}
+            {t("Common.close")}
           </Button>
         )}
         {mode !== formMode.VIEW && (
           <Button
             type="submit"
             disabled={formik.isSubmitting}
-            className="bg-green-500 hover:bg-green-700 text-white cursor-pointer"
+            className="bg-cyan-600 hover:bg-cyan-500 text-white cursor-pointer"
           >
             {formik.isSubmitting ? <LoaderCircle /> : t("Common.save")}
           </Button>

@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const ReportItemSchema = z.object({
   report_id: z.string(),
-  report_date: z.date().nullable(), // ถ้าใช้ superjson, Date ใช้ได้เลย
+  report_date: z.date().nullable(),
   progress: z.number().nullable(),
   due_date: z.date().nullable(),
   title: z.string().nullable(),
@@ -50,7 +50,8 @@ export const langValueSchema = z.object({
 });
 
 export const reportInputSchema = z.object({
-  reportDate: z.coerce.date(), // รองรับ string → Date ด้วย
+  id: z.string().optional().nullable(),
+  reportDate: z.coerce.date(),
   project_id: z.string().nullable(),
   task_id: z.string().nullable(),
   title: langValueSchema,

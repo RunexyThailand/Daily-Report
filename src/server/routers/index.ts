@@ -6,7 +6,10 @@ import * as z from "zod";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { translateRouter } from "./translate";
-import { createReportService } from "../services/report.service";
+import {
+  createReportService,
+  updateReportService,
+} from "../services/report.service";
 
 function sanitizeName(name: string) {
   return name.replace(/[^a-z0-9.\-_]/gi, "_");
@@ -187,28 +190,15 @@ export const appRouter = router({
     .input(reportInputSchema)
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.session?.user.id ?? "";
-      console.log("userId", userId);
-
       return createReportService(ctx.prisma, input, userId);
     }),
-  // createReport: publicProcedure
-  //   .input(reportInputSchema)
-  //   .mutation(async ({ ctx, input }) => {
-  //     const report = await ctx.prisma.report.create({
-  //       data: {
-  //         project_id: input.project_id,
-  //         task_id: input.task_id,
-  //         report_date: input.report_date,
-  //         progress: input.progress,
-  //         due_date: input.due_date,
-  //         created_by: ctx.session?.user.id ?? "",
-  //         report_trans: {
-  //           create: input.report_trans,
-  //         },
-  //       },
-  //     });
-  //     return report;
-  //   }),
+  updateReport: publicProcedure
+    .input(reportInputSchema)
+    .mutation(async ({ ctx, input }) => {
+      const reportId = input.id || "";
+      return updateReportService(ctx.prisma, reportId, input);
+    }),
+
   deleteReport: publicProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {
