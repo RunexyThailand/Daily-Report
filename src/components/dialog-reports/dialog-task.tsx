@@ -16,11 +16,13 @@ import {
   AddReportDialogProps,
   CreateReportInput,
   FormValues,
+  LangValue,
   formMode,
 } from "@/types/report-dialog-type";
-import { Formik } from "formik";
+import { Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { ReportInput } from "@/server/routers/types";
+import { trpc } from "@/trpc/client";
 
 const Schema = Yup.object({
   reportDate: Yup.date(),
@@ -54,8 +56,8 @@ const getInitialValues = (
     reportDate: reportData?.report_date ?? new Date(),
     project_id: reportData?.project_id ?? null,
     task_id: reportData?.task_id ?? null,
-    title: { default: "" },
-    detail: { default: "" },
+    title: reportData?.title ?? { default: "" },
+    detail: reportData?.detail ?? { default: "" },
     progress: reportData?.progress ?? null,
     dueDate: reportData?.due_date ?? null,
     language_code: null,
@@ -69,26 +71,119 @@ export default function AddReportDialog({
   onClose,
   onSuccess,
   isOpen,
-  reportData,
+  reportId,
   mode,
+  languageCode,
 }: AddReportDialogProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+
   const t = useTranslations();
 
-  const handleDelete = async (reportId: string) => {
+  const { data: reportQuery, isFetching: isFetchingReport } =
+    trpc.getReportById.useQuery(reportId as string, {
+      enabled: !!reportId,
+    });
+
+  // const handleDelete = async (reportId: string) => {
+  //   try {
+  //     setIsLoading(true);
+  //     await deleteReport(reportId);
+  //     toast.success(`${t(`Common.delete`)} ${t(`ResponseStatus.success`)}`);
+  //     onSuccess?.();
+  //     setIsLoading(false);
+  //   } catch (err) {
+  //     toast.error(`${t(`Common.delete`)} ${t(`ResponseStatus.error`)}`, {
+  //       description: err instanceof Error ? err.message : "Unknown error",
+  //     });
+  //     setIsLoading(false);
+  //   }
+  // };
+  const { title, detail } = React.useMemo(() => {
+    if (!reportQuery)
+      return {
+        title: null as LangValue | null,
+        detail: null as LangValue | null,
+      };
+
+    const titleLV = reportQuery.report_trans.reduce<LangValue>(
+      (acc, r) => {
+        acc[r.language] = r.title;
+        return acc;
+      },
+      {
+        default:
+          reportQuery.report_trans.find((t) => t.language === languageCode)
+            ?.title ??
+          reportQuery.report_trans[0]?.title ??
+          "",
+      },
+    );
+
+    const detailLV = reportQuery.report_trans.reduce<LangValue>(
+      (acc, r) => {
+        acc[r.language] = r.detail;
+        return acc;
+      },
+      {
+        default:
+          reportQuery.report_trans.find((t) => t.language === languageCode)
+            ?.detail ??
+          reportQuery.report_trans[0]?.detail ??
+          "",
+      },
+    );
+
+    return { title: titleLV, detail: detailLV };
+  }, [reportQuery, languageCode]);
+
+  const coerceDate = (d: Date | string | null | undefined): Date | null =>
+    d ? new Date(d) : null;
+
+  const initialValues: CreateReportInput = {
+    id: reportQuery?.id,
+    project_id: reportQuery?.project_id || null,
+    task_id: reportQuery?.task_id || null,
+    report_date: coerceDate(reportQuery?.report_date),
+    progress: reportQuery?.progress || null,
+    due_date: reportQuery?.due_date || null,
+    title: title ?? { default: "" },
+    detail: detail ?? { default: "" },
+  };
+
+  const onSubmit = async (
+    values: FormValues,
+    { setSubmitting }: FormikHelpers<FormValues>,
+  ) => {
+    setSubmitting(false);
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-      await deleteReport(reportId);
-      toast.success(`${t(`Common.delete`)} ${t(`ResponseStatus.success`)}`);
+      const payload: ReportInput = {
+        project_id: values.project_id,
+        task_id: values.task_id,
+        reportDate: values.reportDate,
+        progress: values.progress ?? null,
+        dueDate: values.dueDate ?? null,
+        title: values.title,
+        detail: values.detail,
+        language_code: values.language_code,
+      };
+      if (mode === formMode.EDIT) {
+        payload.id = reportId || null;
+        await updateReport(payload as ReportInput & { id: string });
+      } else {
+        await createReport(payload);
+      }
+      toast.success(`${t(`Common.save`)} ${t(`ResponseStatus.success`)}`);
       onSuccess?.();
-      setIsLoading(false);
     } catch (err) {
-      toast.error(`${t(`Common.delete`)} ${t(`ResponseStatus.error`)}`, {
+      toast.error(`${t(`Common.save`)} ${t(`ResponseStatus.error`)}`, {
         description: err instanceof Error ? err.message : "Unknown error",
       });
-      setIsLoading(false);
+      setSubmitting(false);
+    } finally {
+      setSubmitting(false);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -102,71 +197,26 @@ export default function AddReportDialog({
           <DialogHeader>
             <DialogTitle>{t(`Common.${mode}_Report`)}</DialogTitle>
           </DialogHeader>
-          <Formik<FormValues>
-            initialValues={getInitialValues(reportData)}
-            validationSchema={Schema}
-            onSubmit={async (values, { setSubmitting }) => {
-              setSubmitting(false);
-              setIsLoading(true);
-              try {
-                const payload: ReportInput = {
-                  project_id: values.project_id,
-                  task_id: values.task_id,
-                  reportDate: values.reportDate,
-                  progress: values.progress ?? null,
-                  dueDate: values.dueDate ?? null,
-                  title: values.title,
-                  detail: values.detail,
-                  language_code: values.language_code,
-                };
-                if (mode === formMode.EDIT) {
-                  // payload.id = reportData?.id;
-                  // await updateReport(
-                  //   payload as CreateReportInput & { id: string },
-                  // );
-                } else {
-                  await createReport(payload);
-                }
-                toast.success(
-                  `${t(`Common.save`)} ${t(`ResponseStatus.success`)}`,
-                );
-                onSuccess?.();
-              } catch (err) {
-                toast.error(
-                  `${t(`Common.save`)} ${t(`ResponseStatus.error`)}`,
-                  {
-                    description:
-                      err instanceof Error ? err.message : "Unknown error",
-                  },
-                );
-                setSubmitting(false);
-              } finally {
-                setSubmitting(false);
-              }
-              setIsLoading(false);
-            }}
-          >
-            <DialogReportForm
-              mode={mode}
-              projects={projects}
-              tasks={tasks}
-              languages={languages}
-              isLoading={isLoading}
-              onOpenDeleteDialog={() => {
-                setShowConfirmDialog(true);
-              }}
-            />
-          </Formik>
+          {isFetchingReport ? (
+            <div>loading</div>
+          ) : (
+            <Formik<FormValues>
+              initialValues={getInitialValues(initialValues)}
+              validationSchema={Schema}
+              onSubmit={onSubmit}
+            >
+              <DialogReportForm
+                mode={mode}
+                projects={projects}
+                tasks={tasks}
+                languages={languages}
+                isLoading={isLoading}
+                onClose={onClose}
+              />
+            </Formik>
+          )}
         </DialogContent>
       </Dialog>
-      <DialogConfirm
-        isOpen={showConfirmDialog}
-        onClose={() => setShowConfirmDialog(false)}
-        onConfirm={() => {
-          handleDelete(reportData?.id ?? "");
-          setShowConfirmDialog(false);
-        }}
-      />
     </>
   );
 }

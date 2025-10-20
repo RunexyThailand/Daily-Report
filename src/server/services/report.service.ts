@@ -159,7 +159,10 @@ export async function updateReportService(
   opts?: { removeMissing?: boolean },
 ) {
   const removeMissing = opts?.removeMissing ?? false;
-  const translations = prepareTranslations(input);
+  const newInput: ReportInput = await checkTranslation(input);
+  const translations = prepareTranslations(newInput);
+
+  if (id === "") return [];
 
   return await prisma.$transaction(async (tx) => {
     await tx.report.update({

@@ -23,7 +23,7 @@ export default withAuth(
     pages: {
       signIn: "/login",
     },
-  }
+  },
 );
 
 // ระบุเส้นทางที่ต้องการป้องกัน

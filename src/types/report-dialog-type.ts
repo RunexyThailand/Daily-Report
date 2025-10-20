@@ -34,7 +34,7 @@ export type CreateReportInput = {
   id?: string;
   project_id: string | null;
   task_id: string | null;
-  report_date: Date;
+  report_date: Date | null;
   progress: number | null;
   due_date: Date | null;
   title: LangValue;
@@ -48,7 +48,7 @@ export type ReportForm = {
   tasks: { id: string; label: string }[];
   languages: { id: string; label: string }[];
   isLoading: boolean;
-  onOpenDeleteDialog: () => void;
+  onClose?: () => void;
 };
 
 export type AddReportDialogProps = {
@@ -60,4 +60,6 @@ export type AddReportDialogProps = {
   onClose?: () => void;
   reportData?: CreateReportInput | null;
   mode: formMode;
+  reportId: string | null;
+  languageCode: Lang;
 };
