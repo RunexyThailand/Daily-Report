@@ -10,7 +10,7 @@ export default function Home() {
 
   useEffect(() => {
     if (status === "loading") return; // Still loading
-    
+
     if (session) {
       // User is logged in, redirect to protected area
       router.replace("/protected/report");

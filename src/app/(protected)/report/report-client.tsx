@@ -132,89 +132,15 @@ export default function ReportClient({
                 <div className="py-4 flex-rows space-y-4">
                   {user.reports.map((report) => {
                     return (
-                      <Card
-                        className="overflow-hidden p-0 group transition-all hover:shadow-lg hover:border-primary cursor-pointer"
-                        key={report.report_id}
-                        onClick={() => handleViewReport(report.report_id)}
-                      >
-                        <CardHeader className="p-0 gap-0">
-                          <div
-                            className={cn(
-                              "flex w-full select-none items-center gap-3 px-4 py-3",
-                            )}
-                          >
-                            <div className="min-w-0 flex-1">
-                              <CardTitle className="flex justify-end space-x-2">
-                                {report.project_name && (
-                                  <Badge
-                                    variant="secondary"
-                                    style={{
-                                      backgroundColor: "#234868",
-                                      color: "#ffffff",
-                                    }}
-                                  >
-                                    {report.project_name}
-                                  </Badge>
-                                )}
-                                {report.task_name && (
-                                  <Badge
-                                    variant="secondary"
-                                    style={{
-                                      backgroundColor: "#31628eff",
-                                      color: "#ffffff",
-                                    }}
-                                  >
-                                    {report.task_name}
-                                  </Badge>
-                                )}
-                              </CardTitle>
-                              <CardDescription className="py-5">
-                                <ReportCard
-                                  translates={report.translates}
-                                  lang={currentLang}
-                                />
-                                {/* <div className="font-bold text-18 mb-2">
-                                  {report.title}
-                                </div>
-                                <div
-                                  className="tiptap"
-                                  dangerouslySetInnerHTML={{
-                                    __html: report.detail ?? "",
-                                  }}
-                                /> */}
-                              </CardDescription>
-                              <CardFooter className="p-0 flex justify-end space-x-4">
-                                <div className="flex items-center space-x-1">
-                                  {report.progress && (
-                                    <>
-                                      <LoaderCircle
-                                        className="h-4 w-4"
-                                        aria-hidden="true"
-                                      />
-                                      <label>{report.progress}%</label>
-                                    </>
-                                  )}
-                                </div>
-                                <div className="flex items-center space-x-1">
-                                  {report.due_date && (
-                                    <>
-                                      <Calendar
-                                        className="h-5 w-5"
-                                        aria-hidden="true"
-                                      />
-                                      <span>
-                                        {DateTime.fromJSDate(
-                                          report.due_date,
-                                        ).toFormat("dd/LL/yyyy")}
-                                      </span>
-                                    </>
-                                  )}
-                                </div>
-                              </CardFooter>
-                            </div>
-                          </div>
-                        </CardHeader>
-                      </Card>
+                      <ReportCard
+                        translates={report.translates}
+                        lang={currentLang}
+                        reportId={report.report_id}
+                        projectName={report.project_name}
+                        dueDate={report.due_date}
+                        taskName={report.task_name}
+                        progress={report.progress}
+                      />
                     );
                   })}
                 </div>

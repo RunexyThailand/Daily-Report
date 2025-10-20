@@ -75,6 +75,7 @@ export default function AddReportDialog({
   const [isLoading, setIsLoading] = useState(false);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const t = useTranslations();
+  console.log("reportData", reportData);
 
   const handleDelete = async (reportId: string) => {
     try {

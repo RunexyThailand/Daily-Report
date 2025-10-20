@@ -175,7 +175,9 @@ export const appRouter = router({
       const reportId = input;
       const report = await ctx.prisma.report.findFirst({
         include: {
-          report_trans: true,
+          report_trans: {
+            select: { language: true, title: true, detail: true },
+          },
         },
         where: { id: reportId },
       });
