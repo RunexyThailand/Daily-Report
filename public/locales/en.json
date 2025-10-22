@@ -22,6 +22,9 @@
     "allTasksLabel": "All tasks",
     "everyone": "Everyone"
   },
+  "Validation": {
+    "isRequired": "is required"
+  },
   "Common": {
     "cancel": "Cancel",
     "close": "Close",

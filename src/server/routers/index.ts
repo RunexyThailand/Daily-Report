@@ -164,14 +164,32 @@ export const appRouter = router({
     }
   }),
 
-  getProjects: publicProcedure.query(async ({ ctx }) => {
-    try {
-      const projects = await ctx.prisma.project.findMany();
-      return { projects };
-    } catch (err) {
-      console.log("🚀 ~ err:", err);
-    }
-  }),
+  getProjects: publicProcedure
+    .input(
+      z
+        .object({
+          onlyActive: z.boolean(),
+        })
+        .default({ onlyActive: true })
+        .optional(),
+    )
+    .query(async ({ ctx, input }) => {
+      const projectWhere = {
+        deleted_at: null,
+      };
+
+      if (input?.onlyActive) {
+        Object.assign(projectWhere, { is_active: true });
+      }
+      try {
+        const projects = await ctx.prisma.project.findMany({
+          where: projectWhere,
+        });
+        return { projects };
+      } catch (err) {
+        console.log("🚀 ~ err:", err);
+      }
+    }),
   getReportById: publicProcedure
     .input(z.string())
     .query(async ({ ctx, input }) => {
@@ -185,6 +203,15 @@ export const appRouter = router({
         where: { id: reportId },
       });
       return report;
+    }),
+  checkProjectIsUsed: publicProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      const projectId = input;
+      const report = await ctx.prisma.report.findFirst({
+        where: { project_id: projectId },
+      });
+      return report ? true : false;
     }),
   createReport: publicProcedure
     .input(reportInputSchema)
@@ -234,6 +261,49 @@ export const appRouter = router({
   //     });
   //     return report;
   //   }),
+  createProject: publicProcedure
+    .input(z.object({ name: z.string().min(1).max(255) }))
+    .mutation(async ({ ctx, input }) => {
+      const project = await ctx.prisma.project.create({
+        data: {
+          name: input.name,
+          created_by: ctx.session?.user.id || "",
+        },
+      });
+      return project;
+    }),
+  updateProject: publicProcedure
+    .input(
+      z.object({
+        id: z.string().min(1),
+        name: z.string().min(1).max(255).optional(),
+        is_active: z.boolean().optional(),
+        softDelete: z.boolean().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const data: Prisma.ProjectUpdateInput = {};
+      if (typeof input.name !== "undefined") data.name = input.name;
+      if (typeof input.is_active !== "undefined")
+        data.is_active = input.is_active;
+      if (input.softDelete) {
+        data.deleted_at = new Date();
+        data.deleted_by = ctx.session?.user.id || "";
+      }
+      const project = await ctx.prisma.project.update({
+        where: { id: input.id },
+        data,
+      });
+      return project;
+    }),
+  deleteProject: publicProcedure
+    .input(z.object({ projectId: z.string().min(1) }))
+    .mutation(async ({ ctx, input }) => {
+      const { projectId } = input;
+      await ctx.prisma.project.delete({
+        where: { id: projectId },
+      });
+    }),
 });
 
 // type สำหรับ client

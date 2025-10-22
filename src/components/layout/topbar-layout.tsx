@@ -103,6 +103,17 @@ export function Topbar({ className }: { className?: string }) {
             >
               Calendar
             </NavLink>
+            <NavLink
+              href="/project"
+              className={clsx(
+                isActive("/project")
+                  ? "text-[#ea340e] "
+                  : "text-white hover:text-black",
+                "hover:bg-gray-200",
+              )}
+            >
+              Project
+            </NavLink>
           </nav>
           <Separator
             orientation="vertical"
