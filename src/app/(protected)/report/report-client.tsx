@@ -123,6 +123,7 @@ export default function ReportClient({
                   {user.reports.map((report) => {
                     return (
                       <ReportCard
+                        creatorId={report.created_by}
                         translates={report.translates}
                         lang={currentLang}
                         reportId={report.report_id}

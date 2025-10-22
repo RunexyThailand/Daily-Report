@@ -20,6 +20,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Lang } from "@/lib/services/translates";
+import { useSession } from "next-auth/react";
 
 export type ReportTranslate = {
   title: string;
@@ -35,6 +36,7 @@ export type ReportProps = {
   projectName: string | null;
   taskName: string | null;
   progress: number | null;
+  creatorId: string;
   onOpenDialog: (lang: Lang) => void;
   onDelete: () => void;
 };
@@ -49,7 +51,10 @@ export default ({
   progress,
   onOpenDialog,
   onDelete,
+  creatorId,
 }: ReportProps) => {
+  const { data: session } = useSession();
+
   const [language, setLanguage] = useState<string>(lang);
 
   const translated = translates.find((translate) => {
@@ -97,32 +102,34 @@ export default ({
             English
           </Button>
         </div>
-        <div className="flex space-x-5">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Eye
-                className="h-6 w-6 cursor-pointer"
-                aria-hidden="true"
-                onClick={() => onOpenDialog(language as Lang)}
-              />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>View</p>
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Trash
-                className="h-6 w-6 cursor-pointer text-red-500"
-                aria-hidden="true"
-                onClick={onDelete}
-              />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Delete</p>
-            </TooltipContent>
-          </Tooltip>
-        </div>
+        {session?.user?.id === creatorId && (
+          <div className="flex space-x-5">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Eye
+                  className="h-6 w-6 cursor-pointer"
+                  aria-hidden="true"
+                  onClick={() => onOpenDialog(language as Lang)}
+                />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>View</p>
+              </TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Trash
+                  className="h-6 w-6 cursor-pointer text-red-500"
+                  aria-hidden="true"
+                  onClick={onDelete}
+                />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Delete</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        )}
       </div>
       <Card
         className="overflow-hidden p-0 group transition-all rounded-t-none "

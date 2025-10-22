@@ -60,6 +60,10 @@ const checkTranslation = async (input: ReportInput) => {
       detailTrans[lang] = t.description;
     }
 
+    titleTrans[input.language_code ?? (result.source.languageCode as Lang)] =
+      input.title.default;
+    detailTrans[input.language_code ?? (result.source.languageCode as Lang)] =
+      input.detail.default;
     return {
       ...input,
       title: { ...input.title, ...titleTrans },
@@ -75,7 +79,6 @@ export async function createReportService(
   createdByUserId: string,
 ) {
   const newInput: ReportInput = await checkTranslation(input);
-
   const translations = prepareTranslations(newInput);
   if (translations.length === 0) {
     throw new Error("At least one language (title & detail) is required.");

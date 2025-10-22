@@ -80,7 +80,7 @@ export const appRouter = router({
       const reportWhere: Prisma.ReportWhereInput = {
         ...(input.taskId !== "" ? { task_id: input.taskId } : {}),
         ...(input.projectId !== "" ? { project_id: input.projectId } : {}),
-        created_at: { gte: dateGte, lte: dateLte },
+        report_date: { gte: dateGte, lte: dateLte },
       };
       const userWhere: Prisma.UserWhereInput = {
         ...(input.userId ? { id: input.userId } : {}),
