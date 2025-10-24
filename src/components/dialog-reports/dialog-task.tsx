@@ -7,10 +7,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useTranslations } from "next-intl";
-import { createReport, deleteReport, updateReport } from "@/actions/report";
+import { createReport, updateReport } from "@/actions/report";
 import { toast } from "sonner";
 import { useState } from "react";
-import DialogConfirm from "../dialog/dialog-confirm";
 import DialogReportForm from "../dialog-reports/dialog-report-form";
 import {
   AddReportDialogProps,
@@ -60,7 +59,7 @@ const getInitialValues = (
     detail: reportData?.detail ?? { default: "" },
     progress: reportData?.progress ?? null,
     dueDate: reportData?.due_date ?? null,
-    language_code: null,
+    language_code: reportData?.languageCode ?? null,
   };
 };
 
@@ -76,28 +75,13 @@ export default function AddReportDialog({
   languageCode,
 }: AddReportDialogProps) {
   const [isLoading, setIsLoading] = useState(false);
-
   const t = useTranslations();
 
   const { data: reportQuery, isFetching: isFetchingReport } =
     trpc.getReportById.useQuery(reportId as string, {
-      enabled: !!reportId,
+      enabled: isOpen && !!reportId,
     });
 
-  // const handleDelete = async (reportId: string) => {
-  //   try {
-  //     setIsLoading(true);
-  //     await deleteReport(reportId);
-  //     toast.success(`${t(`Common.delete`)} ${t(`ResponseStatus.success`)}`);
-  //     onSuccess?.();
-  //     setIsLoading(false);
-  //   } catch (err) {
-  //     toast.error(`${t(`Common.delete`)} ${t(`ResponseStatus.error`)}`, {
-  //       description: err instanceof Error ? err.message : "Unknown error",
-  //     });
-  //     setIsLoading(false);
-  //   }
-  // };
   const { title, detail } = React.useMemo(() => {
     if (!reportQuery)
       return {
@@ -148,6 +132,7 @@ export default function AddReportDialog({
     due_date: reportQuery?.due_date || null,
     title: title ?? { default: "" },
     detail: detail ?? { default: "" },
+    languageCode: languageCode || null,
   };
 
   const onSubmit = async (

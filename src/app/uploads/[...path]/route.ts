@@ -1,4 +1,3 @@
-// app/uploads/[...path]/route.ts
 export const runtime = "nodejs";
 
 import { readFile, stat } from "node:fs/promises";
@@ -20,12 +19,10 @@ export async function GET(
     const st = await stat(abs);
     if (!st.isFile()) return new Response("not a file", { status: 404 });
 
-    const buf = await readFile(abs); // Node Buffer (extends Uint8Array)
+    const buf = await readFile(abs);
     const bytes = new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength);
     const mime = String(mimeLookup(abs) || "application/octet-stream");
 
-    // ✅ ใช้ Uint8Array เป็น BodyInit (ถ้า lib DOM ถูกต้องจะพาส์อัตโนมัติ)
-    // ถ้ายังฟ้องในโปรเจกต์คุณ ให้เติม "as unknown as BodyInit" ไว้ชั่วคราว
     return new Response(bytes as unknown as BodyInit, {
       headers: {
         "Content-Type": mime,
