@@ -114,6 +114,17 @@ export function Topbar({ className }: { className?: string }) {
             >
               Project
             </NavLink>
+            <NavLink
+              href="/task"
+              className={clsx(
+                isActive("/task")
+                  ? "text-[#ea340e] "
+                  : "text-white hover:text-black",
+                "hover:bg-gray-200",
+              )}
+            >
+              Task
+            </NavLink>
           </nav>
           <Separator
             orientation="vertical"
