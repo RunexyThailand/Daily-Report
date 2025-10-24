@@ -39,6 +39,7 @@ export type CreateReportInput = {
   due_date: Date | null;
   title: LangValue;
   detail: LangValue;
+  languageCode?: Lang | null;
   //   report_trans: ReportTrans[];
 };
 
@@ -61,5 +62,5 @@ export type AddReportDialogProps = {
   reportData?: CreateReportInput | null;
   mode: formMode;
   reportId: string | null;
-  languageCode: Lang;
+  languageCode: Lang | null;
 };

@@ -74,6 +74,12 @@ export default ({
     formik.values.detail.default,
   ]);
 
+  useEffect(() => {
+    return () => {
+      formik.resetForm();
+    };
+  }, []);
+
   return (
     <Form className="flex-col space-y-4">
       {isLoading && (
@@ -207,8 +213,6 @@ export default ({
                 placeholder="พิมพ์ข้อความที่นี่…"
                 minHeight="16rem"
                 onChange={(html) => {
-                  console.log("detail", html);
-
                   let detailValue = { default: html };
                   if (formik.values.language_code) {
                     detailValue = {
