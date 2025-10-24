@@ -28,6 +28,7 @@ import { trpc } from "@/trpc/client";
 import { FontSizeSelect } from "@/components/form/tiptaps/font-size-selected";
 import ColorSelected from "./color-selected";
 import ImageUploadButton from "../image-upload-button";
+import TableControls from "./table-controls";
 
 export type ToolbarProps = { editor: Editor | null };
 
@@ -270,78 +271,8 @@ export function Toolbar({ editor }: ToolbarProps) {
         >
           <Eraser className="h-4 w-4" />
         </Button>
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-          className={`px-2 py-1 rounded border ${isActive("codeBlock") ? "bg-black text-white" : ""}`}
-          title="Code block"
-        >
-          Code Block
-        </button>
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={() =>
-              editor
-                ?.chain()
-                .focus()
-                .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
-                .run()
-            }
-          >
-            Insert 3×3
-          </button>
 
-          <button
-            onClick={() => editor?.chain().focus().addColumnBefore().run()}
-          >
-            + Col Before
-          </button>
-          <button
-            onClick={() => editor?.chain().focus().addColumnAfter().run()}
-          >
-            + Col After
-          </button>
-          <button onClick={() => editor?.chain().focus().deleteColumn().run()}>
-            − Col
-          </button>
-
-          <button onClick={() => editor?.chain().focus().addRowBefore().run()}>
-            + Row Before
-          </button>
-          <button onClick={() => editor?.chain().focus().addRowAfter().run()}>
-            + Row After
-          </button>
-          <button onClick={() => editor?.chain().focus().deleteRow().run()}>
-            − Row
-          </button>
-
-          <button onClick={() => editor?.chain().focus().mergeCells().run()}>
-            Merge
-          </button>
-          <button onClick={() => editor?.chain().focus().splitCell().run()}>
-            Split
-          </button>
-
-          <button
-            onClick={() => editor?.chain().focus().toggleHeaderRow().run()}
-          >
-            Toggle header row
-          </button>
-          <button
-            onClick={() => editor?.chain().focus().toggleHeaderColumn().run()}
-          >
-            Toggle header col
-          </button>
-          <button
-            onClick={() => editor?.chain().focus().toggleHeaderCell().run()}
-          >
-            Toggle header cell
-          </button>
-
-          <button onClick={() => editor?.chain().focus().deleteTable().run()}>
-            Delete table
-          </button>
-        </div>
+        <TableControls editor={editor} />
       </div>
 
       <LinkDialog

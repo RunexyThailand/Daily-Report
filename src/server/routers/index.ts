@@ -1,5 +1,5 @@
 import { router, publicProcedure } from "@/server/trpc";
-import { Language, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { DateTime } from "luxon";
 import { reportInputSchema } from "./types";
 import * as z from "zod";
@@ -39,6 +39,13 @@ function parseDataUrl(dataUrl: string) {
   return { buffer, mime, ext };
 }
 
+function getUploadBaseDir() {
+  const fromEnv = process.env.UPLOAD_DIR?.trim();
+  return fromEnv && fromEnv.length > 0
+    ? fromEnv
+    : path.join(process.cwd(), "uploads");
+}
+
 export const appRouter = router({
   translate: translateRouter,
   uploadImageToLocal: publicProcedure
@@ -50,7 +57,8 @@ export const appRouter = router({
     )
     .mutation(async ({ input }) => {
       const { buffer, ext } = parseDataUrl(input.dataUrl);
-      const uploadsDir = path.join(process.cwd(), "public", "uploads");
+      const uploadsDir = getUploadBaseDir();
+
       await mkdir(uploadsDir, { recursive: true });
 
       const safe = sanitizeName(input.filename ?? `image.${ext}`);
@@ -58,7 +66,7 @@ export const appRouter = router({
       const filePath = path.join(uploadsDir, name);
 
       await writeFile(filePath, buffer);
-      return { url: `/uploads/${name}` }; // เสิร์ฟได้ทันที
+      return { url: `/uploads/${name}` };
     }),
   getUserReport: publicProcedure
     .input(
@@ -118,25 +126,12 @@ export const appRouter = router({
         email: u.email,
         image: u.image,
         reports: u.reports.map((r) => {
-          // const defaultTrans = r.report_trans.find((x) => x.language === "ja");
-          // const jp = r.report_trans.find(
-          //   (x: { title: string; detail: string; language: Language }) =>
-          //     x.language,
-          // );
           return {
             report_id: r.id,
             report_date: r.report_date,
             progress: r.progress ?? null,
             due_date: r.due_date ?? null,
             translates: r.report_trans,
-            // title:
-            //   input.lang === "JP"
-            //     ? (jp?.title ?? defaultTrans?.title ?? null)
-            //     : (defaultTrans?.title ?? null),
-            // detail:
-            //   input.lang === "JP"
-            //     ? (jp?.detail ?? defaultTrans?.detail ?? null)
-            //     : (defaultTrans?.detail ?? null),
             task_name: r.task?.name ?? null,
             project_name: r.project?.name ?? null,
             created_by: r.created_by,
@@ -239,28 +234,6 @@ export const appRouter = router({
         where: { id: reportId },
       });
     }),
-  // updateReport: publicProcedure
-  //   .input(reportInputSchema.extend({ id: z.string().min(1) }))
-  //   .mutation(async ({ ctx, input }) => {
-  //     const report = await ctx.prisma.report.update({
-  //       where: { id: input.id },
-  //       data: {
-  //         project_id: input.project_id,
-  //         task_id: input.task_id,
-  //         report_date: input.report_date,
-  //         progress: input.progress,
-  //         due_date: input.due_date,
-  //         updated_at: new Date().toISOString(),
-  //         report_trans: {
-  //           deleteMany: {
-  //             report_id: input.id,
-  //           },
-  //           create: input.report_trans,
-  //         },
-  //       },
-  //     });
-  //     return report;
-  //   }),
   createProject: publicProcedure
     .input(z.object({ name: z.string().min(1).max(255) }))
     .mutation(async ({ ctx, input }) => {

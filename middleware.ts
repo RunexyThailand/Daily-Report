@@ -29,6 +29,7 @@ export default withAuth(
 // ระบุเส้นทางที่ต้องการป้องกัน
 export const config = {
   matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|icons|images|assets|fonts|uploads|.*\\.(?:png|jpg|jpeg|gif|webp|svg|ico|css|js|map|txt)).*)",
     "/protected/:path*", // ป้องกัน /protected และ subpath
     "/admin/:path*", // ป้องกัน /admin
     "/settings/:path*", // ป้องกัน /settings
