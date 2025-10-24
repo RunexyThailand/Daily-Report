@@ -150,14 +150,28 @@ export const appRouter = router({
     }
   }),
 
-  getTasks: publicProcedure.query(async ({ ctx }) => {
-    try {
-      const tasks = await ctx.prisma.task.findMany();
-      return { tasks };
-    } catch (err) {
-      console.log("🚀 ~ err:", err);
-    }
-  }),
+  getTasks: publicProcedure
+    .input(
+      z
+        .object({
+          onlyActive: z.boolean(),
+        })
+        .default({ onlyActive: true })
+        .optional(),
+    )
+    .query(async ({ ctx, input }) => {
+      try {
+        const tasks = await ctx.prisma.task.findMany({
+          where: {
+            deleted_at: null,
+            ...(input?.onlyActive ? { is_active: true } : {}),
+          },
+        });
+        return { tasks };
+      } catch (err) {
+        console.log("🚀 ~ err:", err);
+      }
+    }),
 
   getProjects: publicProcedure
     .input(
@@ -169,16 +183,12 @@ export const appRouter = router({
         .optional(),
     )
     .query(async ({ ctx, input }) => {
-      const projectWhere = {
-        deleted_at: null,
-      };
-
-      if (input?.onlyActive) {
-        Object.assign(projectWhere, { is_active: true });
-      }
       try {
         const projects = await ctx.prisma.project.findMany({
-          where: projectWhere,
+          where: {
+            deleted_at: null,
+            ...(input?.onlyActive ? { is_active: true } : {}),
+          },
         });
         return { projects };
       } catch (err) {
@@ -205,6 +215,15 @@ export const appRouter = router({
       const projectId = input;
       const report = await ctx.prisma.report.findFirst({
         where: { project_id: projectId },
+      });
+      return report ? true : false;
+    }),
+  checkTaskIsUsed: publicProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      const taskId = input;
+      const report = await ctx.prisma.report.findFirst({
+        where: { task_id: taskId },
       });
       return report ? true : false;
     }),
@@ -275,6 +294,49 @@ export const appRouter = router({
       const { projectId } = input;
       await ctx.prisma.project.delete({
         where: { id: projectId },
+      });
+    }),
+  createTask: publicProcedure
+    .input(z.object({ name: z.string().min(1).max(255) }))
+    .mutation(async ({ ctx, input }) => {
+      const task = await ctx.prisma.task.create({
+        data: {
+          name: input.name,
+          created_by: ctx.session?.user.id || "",
+        },
+      });
+      return task;
+    }),
+  updateTask: publicProcedure
+    .input(
+      z.object({
+        id: z.string().min(1),
+        name: z.string().min(1).max(255).optional(),
+        is_active: z.boolean().optional(),
+        softDelete: z.boolean().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const data: Prisma.TaskUpdateInput = {};
+      if (typeof input.name !== "undefined") data.name = input.name;
+      if (typeof input.is_active !== "undefined")
+        data.is_active = input.is_active;
+      if (input.softDelete) {
+        data.deleted_at = new Date();
+        data.deleted_by = ctx.session?.user.id || "";
+      }
+      const task = await ctx.prisma.task.update({
+        where: { id: input.id },
+        data,
+      });
+      return task;
+    }),
+  deleteTask: publicProcedure
+    .input(z.object({ taskId: z.string().min(1) }))
+    .mutation(async ({ ctx, input }) => {
+      const { taskId } = input;
+      await ctx.prisma.task.delete({
+        where: { id: taskId },
       });
     }),
 });
