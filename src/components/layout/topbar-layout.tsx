@@ -92,7 +92,7 @@ export function Topbar({ className }: { className?: string }) {
             >
               Report
             </NavLink>
-            <NavLink
+            {/* <NavLink
               href="/calendar"
               className={clsx(
                 isActive("/calendar")
@@ -102,7 +102,7 @@ export function Topbar({ className }: { className?: string }) {
               )}
             >
               Calendar
-            </NavLink>
+            </NavLink> */}
             <NavLink
               href="/project"
               className={clsx(
