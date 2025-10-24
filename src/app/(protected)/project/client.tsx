@@ -17,8 +17,12 @@ const ProjectClient = () => {
     refetch,
     isFetching,
   } = trpc.getProjects.useQuery({ onlyActive: false });
+  const [flash, setFlash] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [projectId, setProjectId] = useState<string>("");
+  const [selectedProject, setSelectedProject] = useState<ProjectType | null>(
+    null,
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = async (projectId: string) => {
@@ -36,12 +40,21 @@ const ProjectClient = () => {
   };
 
   const handleEdit = (project: ProjectType) => {
-    // Implement edit functionality here
+    try {
+      setFlash(true);
+      setIsLoading(true);
+      setSelectedProject(project);
+      setTimeout(() => setFlash(false), 800);
+    } catch (err) {
+      toast.error("Error updating project");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleToggleActive = async (projectId: string, tobe: boolean) => {
-    setIsLoading(true);
     try {
+      setIsLoading(true);
       await updateProject({ id: projectId, is_active: tobe });
       await refetch();
     } catch (error) {
@@ -52,7 +65,15 @@ const ProjectClient = () => {
   };
   return (
     <div>
-      <ProjectForm onSuccess={refetch} />
+      <ProjectForm
+        flash={flash}
+        onSuccess={() => {
+          setSelectedProject(null);
+          refetch();
+        }}
+        project={selectedProject}
+        setProject={setSelectedProject}
+      />
       <div className="relative">
         {(isLoading || isFetching) && (
           <div className="absolute inset-0 z-[100] flex items-center justify-center bg-white/70">

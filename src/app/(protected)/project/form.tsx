@@ -1,34 +1,54 @@
 "use client";
 
-import { createProject } from "@/actions/project";
+import { createProject, updateProject } from "@/actions/project";
 import { Formik, Form, Field } from "formik";
 import { LoaderCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import * as Yup from "yup";
+import { Prisma } from "@prisma/client";
 
-const ProjectForm = ({ onSuccess }: { onSuccess: () => void }) => {
+type ProjectType = Prisma.ProjectGetPayload<{}>;
+
+const ProjectForm = ({
+  onSuccess,
+  project,
+  flash = false,
+  setProject,
+}: {
+  onSuccess: () => void;
+  project: ProjectType | null;
+  setProject: (project: ProjectType | null) => void;
+  flash?: boolean;
+}) => {
   const [isLoading, setIsLoading] = useState(false);
   const t = useTranslations();
 
   return (
     <div className="flex items-center justify-center mt-5">
-      <div className="bg-white p-8 rounded shadow-md w-[75vw] relative">
+      <div
+        className={`p-8 rounded shadow-md w-[75vw] relative transition-colors ${flash ? "bg-yellow-200/60 animate-pulse" : "bg-white"}`}
+      >
         {isLoading && (
           <div className="absolute inset-0 z-[100] flex items-center justify-center bg-white/70">
             <LoaderCircle className="animate-spin h-12 w-12 text-primary" />
           </div>
         )}
         <Formik
+          enableReinitialize={true}
           validationSchema={Yup.object({
             name: Yup.string().required(t("Validation.isRequired")),
           })}
-          initialValues={{ name: "" }}
+          initialValues={{ name: project ? project.name : "" }}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             setIsLoading(true);
             try {
-              await createProject(values);
+              if (project) {
+                await updateProject({ id: project.id, name: values.name });
+              } else {
+                await createProject(values);
+              }
               toast.success(
                 `${t(`Common.save`)} ${t(`ResponseStatus.success`)}`,
               );
@@ -61,10 +81,19 @@ const ProjectForm = ({ onSuccess }: { onSuccess: () => void }) => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-blue-600 text-white px-4 py-2 rounded"
+                className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer"
               >
                 {isSubmitting ? "Submitting..." : "Submit"}
               </button>
+              {project && (
+                <button
+                  type="button"
+                  className="bg-red-600 text-white px-4 py-2 rounded cursor-pointer"
+                  onClick={() => setProject(null)}
+                >
+                  Cancel edit
+                </button>
+              )}
             </Form>
           )}
         </Formik>
