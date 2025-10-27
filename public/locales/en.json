@@ -23,7 +23,9 @@
     "everyone": "Everyone"
   },
   "Validation": {
-    "isRequired": "is required"
+    "isRequired": "is required",
+    "titleRequired": "Title is required",
+    "detailRequired": "Detail is required (or insert an image)."
   },
   "Common": {
     "cancel": "Cancel",
@@ -48,7 +50,11 @@
     "EDIT_Report": "Edit Report",
     "VIEW_Report": "View Report",
     "Confirm_action": "Confirm Action",
-    "Confirm_description": "Are you sure you want to proceed with this action?"
+    "Confirm_description": "Are you sure you want to proceed with this action?",
+    "project": "Project",
+    "task": "Task",
+    "languages": "Languages",
+    "descriptionPlaceholder": "Type your message here…"
   },
   "ResponseStatus": {
     "success": "Success",

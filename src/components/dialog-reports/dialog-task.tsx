@@ -22,31 +22,68 @@ import { Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { ReportInput } from "@/server/routers/types";
 import { trpc } from "@/trpc/client";
+import { isNotEmptyHtml } from "@/lib/utils";
 
-const Schema = Yup.object({
-  reportDate: Yup.date(),
-  project_id: Yup.string().nullable().optional(),
-  task_id: Yup.string().nullable().optional(),
-  title: Yup.object({
-    default: Yup.string().required("Default title is required"),
-    en: Yup.string().optional(),
-    ja: Yup.string().optional(),
-    th: Yup.string().optional(),
-  }),
-  detail: Yup.object({
-    default: Yup.string().required("Default title is required"),
-    en: Yup.string().optional(),
-    ja: Yup.string().optional(),
-    th: Yup.string().optional(),
-  }),
-  progress: Yup.number()
-    .nullable()
-    .transform((v, o) => (o === "" ? null : v))
-    .min(0, "Min 0")
-    .max(100, "Max 100"),
-  dueDate: Yup.date().nullable(),
-  language_code: Yup.string().nullable(),
-});
+type IntlFormatFn = (opts: {
+  id: string;
+  defaultMessage?: string;
+  values?: Record<string, unknown>;
+}) => string;
+
+type NextIntlT = ReturnType<typeof useTranslations>;
+
+function toIntlFormatFn(t: NextIntlT): IntlFormatFn {
+  return ({ id, defaultMessage, values }) => {
+    try {
+      const out = t(id as any, values as any);
+      return typeof out === "string" ? out : String(out);
+    } catch {
+      return defaultMessage ?? id;
+    }
+  };
+}
+
+const optionalHtml = Yup.string()
+  .transform((v, o) =>
+    typeof o === "string" && o.trim() === "" ? undefined : v,
+  )
+  .test("html-non-empty-if-present", "Invalid html", (v) =>
+    v === undefined ? true : isNotEmptyHtml(v),
+  )
+  .notRequired();
+
+const buildValidationSchema = (fmt: IntlFormatFn) => {
+  return Yup.object({
+    reportDate: Yup.date(),
+    project_id: Yup.string().nullable().optional(),
+    task_id: Yup.string().nullable().optional(),
+    title: Yup.object({
+      default: Yup.string().required(fmt({ id: "Validation.titleRequired" })),
+      en: Yup.string().optional(),
+      ja: Yup.string().optional(),
+      th: Yup.string().optional(),
+    }),
+    detail: Yup.object({
+      default: Yup.string()
+        .required(fmt({ id: "Validation.detailRequired" }))
+        .test(
+          "html-not-empty-or-img",
+          fmt({ id: "Validation.detailRequired" }),
+          (v) => isNotEmptyHtml(v || ""),
+        ),
+      en: optionalHtml,
+      ja: optionalHtml,
+      th: optionalHtml,
+    }).required(),
+    progress: Yup.number()
+      .nullable()
+      .transform((v, o) => (o === "" ? null : v))
+      .min(0, "Min 0")
+      .max(100, "Max 100"),
+    dueDate: Yup.date().nullable(),
+    language_code: Yup.string().nullable(),
+  });
+};
 
 const getInitialValues = (
   reportData?: CreateReportInput | null,
@@ -76,6 +113,13 @@ export default function AddReportDialog({
 }: AddReportDialogProps) {
   const [isLoading, setIsLoading] = useState(false);
   const t = useTranslations();
+
+  const i18n = toIntlFormatFn(t);
+
+  const validationSchema = React.useMemo(
+    () => buildValidationSchema(i18n),
+    [i18n],
+  );
 
   const { data: reportQuery, isFetching: isFetchingReport } =
     trpc.getReportById.useQuery(reportId as string, {
@@ -132,7 +176,7 @@ export default function AddReportDialog({
     due_date: reportQuery?.due_date || null,
     title: title ?? { default: "" },
     detail: detail ?? { default: "" },
-    languageCode: languageCode || null,
+    languageCode: mode === formMode.EDIT ? languageCode : null,
   };
 
   const onSubmit = async (
@@ -183,11 +227,13 @@ export default function AddReportDialog({
             <DialogTitle>{t(`Common.${mode}_Report`)}</DialogTitle>
           </DialogHeader>
           {isFetchingReport ? (
-            <div>loading</div>
+            <div className="text-[30px] text-center w-full">
+              {t("Common.loading")}
+            </div>
           ) : (
             <Formik<FormValues>
               initialValues={getInitialValues(initialValues)}
-              validationSchema={Schema}
+              validationSchema={validationSchema}
               onSubmit={onSubmit}
             >
               <DialogReportForm

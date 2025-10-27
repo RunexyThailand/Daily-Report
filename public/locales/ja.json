@@ -22,6 +22,11 @@
     "allTasksLabel": "すべてのタスク",
     "everyone": "みんな"
   },
+  "Validation": {
+    "isRequired": "is required",
+    "titleRequired": "タイトルは必須です。",
+    "detailRequired": "詳細の入力（または画像の挿入）が必要です。"
+  },
   "Common": {
     "cancel": "キャンセル",
     "close": "閉じる",
@@ -45,7 +50,11 @@
     "EDIT_Report": "レポートを編集",
     "VIEW_Report": "レポートを表示",
     "Confirm_action": "アクションを確認",
-    "Confirm_description": "このアクションを実行してもよろしいですか？"
+    "Confirm_description": "このアクションを実行してもよろしいですか？",
+    "project": "プロジェクト",
+    "task": "タスク",
+    "languages": "言語",
+    "descriptionPlaceholder": "ここにメッセージを入力してください…"
   },
   "ResponseStatus": {
     "success": "成功",
