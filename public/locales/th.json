@@ -22,6 +22,11 @@
     "allTasksLabel": "ทุกงาน",
     "everyone": "ทุกคน"
   },
+  "Validation": {
+    "isRequired": "is required",
+    "titleRequired": "กรุณากรอกหัวข้อ",
+    "detailRequired": "จำเป็นต้องกรอกรายละเอียด (หรือแทรกรูปภาพ)"
+  },
   "Common": {
     "cancel": "ยกเลิก",
     "close": "ปิด",
@@ -45,7 +50,11 @@
     "EDIT_Report": "แก้ไขรายงาน",
     "VIEW_Report": "ดูรายงาน",
     "Confirm_action": "ยืนยันการดำเนินการ",
-    "Confirm_description": "คุณแน่ใจหรือไม่ว่าต้องการดำเนินการนี้?"
+    "Confirm_description": "คุณแน่ใจหรือไม่ว่าต้องการดำเนินการนี้?",
+    "project": "โครงการ",
+    "task": "งาน / ภารกิจ",
+    "languages": "ภาษา",
+    "descriptionPlaceholder": "พิมพ์ข้อความที่นี่…"
   },
   "ResponseStatus": {
     "success": "สำเร็จ",

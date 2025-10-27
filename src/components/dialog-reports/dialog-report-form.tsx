@@ -101,7 +101,7 @@ export default ({
       <div className="sm:flex justify-between space-x-5 space-y-3">
         <div className="space-y-1 w-full sm:w-1/2">
           <label className="block text-sm font-medium text-muted-foreground">
-            Project
+            {t("Common.project")}
           </label>
 
           <Selected
@@ -119,7 +119,7 @@ export default ({
         </div>
         <div className="space-y-1 w-full sm:w-1/2">
           <label className="block text-sm font-medium text-muted-foreground">
-            Task
+            {t("Common.task")}
           </label>
 
           <Selected
@@ -139,7 +139,7 @@ export default ({
       <div className="flex-col bg-[#f0f9fd] rounded-lg p-4">
         <div className="space-y-1 flex flex-col justify-self-end pb-4">
           <label className="block text-sm font-medium text-muted-foreground">
-            Languages
+            {t("Common.languages")}
           </label>
 
           <Selected
@@ -156,9 +156,9 @@ export default ({
             }}
           />
         </div>
-        <div className="space-y-1">
+        <div className="space-y-1 mb-4">
           <label className="block text-sm font-medium text-muted-foreground">
-            Title
+            {t("Common.title")}
           </label>
           <Field name="title">
             {({ field }: { field: FieldInputProps<LangValue> }) => (
@@ -167,7 +167,7 @@ export default ({
                   readOnly={mode === formMode.VIEW}
                   value={field.value[formik.values.language_code ?? "default"]}
                   placeholder={t("Common.title")}
-                  className={`w-full mb-4 bg-white ${mode === formMode.VIEW && "bg-gray-100"}`}
+                  className={`w-full bg-white ${mode === formMode.VIEW && "bg-gray-100"}`}
                   type="text"
                   onChange={(e) => {
                     let titleValue = { default: e.target.value };
@@ -197,13 +197,13 @@ export default ({
           </Field>
           {formik.touched.title && formik.errors.title && (
             <p className="text-sm text-destructive">
-              {String(formik.errors.title)}
+              {String(formik.errors.title.default)}
             </p>
           )}
         </div>
         <div className="space-y-1">
           <label className="block text-sm font-medium text-muted-foreground">
-            Description
+            {t("Common.description")}
           </label>
           <Field name="detail">
             {({ field }: { field: FieldInputProps<LangValue> }) => (
@@ -237,12 +237,17 @@ export default ({
               />
             )}
           </Field>
+          {formik.touched.detail && formik.errors.detail && (
+            <p className="text-sm text-destructive">
+              {String(formik.errors.detail.default)}
+            </p>
+          )}
         </div>
       </div>
       <div className="sm:flex justify-between space-x-5 space-y-2">
         <div className="w-full sm:w-1/2 space-y-1">
           <label className="block text-sm font-medium text-muted-foreground">
-            Progress
+            {t("Common.progress")}
           </label>
           <Field name="progress">
             {({ field }: { field: FieldInputProps<number | null> }) => (
@@ -277,7 +282,7 @@ export default ({
 
         <div className="w-full sm:w-1/2 space-y-1">
           <label className="block text-sm font-medium text-muted-foreground">
-            Due date
+            {t("Common.dueDate")}
           </label>
           <DatePicker
             className={
