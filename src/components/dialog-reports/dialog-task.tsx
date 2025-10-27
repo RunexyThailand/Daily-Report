@@ -132,7 +132,7 @@ export default function AddReportDialog({
     due_date: reportQuery?.due_date || null,
     title: title ?? { default: "" },
     detail: detail ?? { default: "" },
-    languageCode: languageCode || null,
+    languageCode: mode === formMode.EDIT ? languageCode : null,
   };
 
   const onSubmit = async (
