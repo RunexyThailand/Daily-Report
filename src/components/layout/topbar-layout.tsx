@@ -54,7 +54,10 @@ export function Topbar({ className }: { className?: string }) {
   return (
     <header className={cn("sticky top-0 z-40 w-full bg-[#234868]", className)}>
       <div className="flex justify-between items-center">
-        <div className="flex h-14 items-center gap-2 px-4">
+        <div
+          className="flex h-14 items-center gap-2 px-4"
+          data-testid="topbar-logo"
+        >
           {/* <Button
             variant="ghost"
             size="icon"
@@ -64,7 +67,7 @@ export function Topbar({ className }: { className?: string }) {
             <Menu className="h-5 w-5" />
             <span className="sr-only">Toggle sidebar</span>
           </Button> */}
-          <div className="font-semibold" data-test-id="logo">
+          <div className="font-semibold">
             <Image
               src="/logos/runexy-logo.png"
               alt="Runexy Logo"
