@@ -193,11 +193,14 @@ export function Topbar({ className }: { className?: string }) {
 
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuItem asChild>
+                <NavLink href="/profile">Profile</NavLink>
+              </DropdownMenuItem>
+              {/* <DropdownMenuItem asChild>
                 <NavLink href="/report">Report</NavLink>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <NavLink href="/calendar">Calendar</NavLink>
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => signOut({ callbackUrl: "/login" })}

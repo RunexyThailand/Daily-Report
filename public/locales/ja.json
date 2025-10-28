@@ -54,7 +54,8 @@
     "project": "プロジェクト",
     "task": "タスク",
     "languages": "言語",
-    "descriptionPlaceholder": "ここにメッセージを入力してください…"
+    "descriptionPlaceholder": "ここにメッセージを入力してください…",
+    "emptyOption": "空のオプション"
   },
   "ResponseStatus": {
     "success": "成功",

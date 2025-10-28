@@ -54,7 +54,8 @@
     "project": "Project",
     "task": "Task",
     "languages": "Languages",
-    "descriptionPlaceholder": "Type your message here…"
+    "descriptionPlaceholder": "Type your message here…",
+    "emptyOption": "Empty option"
   },
   "ResponseStatus": {
     "success": "Success",
