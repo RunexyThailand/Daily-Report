@@ -16,7 +16,7 @@ import {
   LangValue,
 } from "@/types/report-dialog-type";
 import { Lang, TranslateInput, useTranslator } from "@/lib/services/translates";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 
 const LanguageSchema = z.enum(["ja", "en", "th"]);
@@ -125,7 +125,7 @@ export default ({
           <Selected
             triggerClassName={`w-full ${mode === formMode.VIEW ? "pointer-events-none bg-gray-100" : ""}`}
             includeAll={false}
-            value={formik.values.task_id ?? ""}
+            value={formik.values.task_id ?? undefined}
             placeholder="Task"
             options={tasks}
             onChange={(id) =>

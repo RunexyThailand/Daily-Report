@@ -9,12 +9,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 export type optionType = { id: string; label: string };
 
 type IdSelectProps = {
   options: optionType[];
-  value: string | "all";
+  value: string | "all" | undefined;
   onChange: (id: string | "all") => void;
   includeAll?: boolean;
   allLabel?: string;
@@ -37,7 +38,7 @@ export default function Selected({
 }: IdSelectProps) {
   // Force value to a string for Select
   const currentValue = value ?? (includeAll ? "all" : "");
-
+  const t = useTranslations();
   return (
     <div className={className}>
       <Select
@@ -49,6 +50,9 @@ export default function Selected({
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
+          <SelectItem disabled value={"__CLEAR__"}>
+            {t("Common.emptyOption")}
+          </SelectItem>
           {includeAll && <SelectItem value="all">{allLabel}</SelectItem>}
           {options.map((opt) => (
             <SelectItem key={opt.id} value={opt.id}>
