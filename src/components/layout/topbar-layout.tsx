@@ -64,7 +64,7 @@ export function Topbar({ className }: { className?: string }) {
             <Menu className="h-5 w-5" />
             <span className="sr-only">Toggle sidebar</span>
           </Button> */}
-          <div className="font-semibold" data-test-id="logo">
+          <div className="font-semibold">
             <Image
               src="/logos/runexy-logo.png"
               alt="Runexy Logo"
