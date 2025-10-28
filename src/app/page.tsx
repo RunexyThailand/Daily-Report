@@ -14,7 +14,6 @@ export default function Home() {
     if (status === "loading") return;
 
     if (session) {
-
       router.replace("/protected/report");
     } else {
       router.replace("/login");
@@ -24,7 +23,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen items-center justify-center">
       <div className="text-center">
-        <p className="text-gray-600">{t('Common.loading')}</p>
+        <p className="text-gray-600">{t("Common.loading")}</p>
       </div>
     </main>
   );
