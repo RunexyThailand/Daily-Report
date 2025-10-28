@@ -4,6 +4,7 @@ import { LangValue } from "@/types/report-dialog-type";
 import { appRouter } from "@/server/routers";
 import { createTRPCContext } from "@/server/trpc";
 import { TRPCError } from "@trpc/server";
+import { DateTime } from "luxon";
 
 const ALL_LANGS = ["ja", "th", "en"] as const;
 type Lang = (typeof ALL_LANGS)[number];
@@ -126,11 +127,16 @@ export async function createReportService(
         });
     }
 
+    const reportDate = DateTime.fromJSDate(input.reportDate)
+      .startOf("day")
+      .toUTC()
+      .toString();
+
     const report = await tx.report.create({
       data: {
         project_id: input.project_id ?? null,
         task_id: input.task_id ?? null,
-        report_date: input.reportDate,
+        report_date: reportDate,
         progress: input.progress,
         due_date: input.dueDate ?? null,
         created_by: createdByUserId,

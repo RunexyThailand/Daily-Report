@@ -10,6 +10,7 @@ import {
   createReportService,
   updateReportService,
 } from "../services/report.service";
+import userRouter from "./user";
 
 function sanitizeName(name: string) {
   return name.replace(/[^a-z0-9.\-_]/gi, "_");
@@ -48,6 +49,7 @@ function getUploadBaseDir() {
 
 export const appRouter = router({
   translate: translateRouter,
+  userRouter: userRouter,
   uploadImageToLocal: publicProcedure
     .input(
       z.object({
@@ -81,8 +83,8 @@ export const appRouter = router({
     )
     .query(async ({ ctx, input }) => {
       const now = DateTime.now();
-      const startToday = now.startOf("day").toString();
-      const endToday = now.endOf("day").toString();
+      const startToday = now.startOf("day").toUTC().toString();
+      const endToday = now.endOf("day").toUTC().toString();
       const dateGte = input.from ? input.from : startToday;
       const dateLte = input.to ? input.to : endToday;
       const reportWhere: Prisma.ReportWhereInput = {

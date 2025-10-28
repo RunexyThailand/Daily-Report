@@ -69,6 +69,18 @@ export const authOptions: NextAuthOptions = {
         // เพิ่ม id ลงใน session.user
         (session.user as { id: string }).id = token.id as string;
       }
+
+      if (token?.sub) {
+        const user = await prisma.user.findUnique({ where: { id: token.sub } });
+        if (user) {
+          session.user = {
+            ...session.user,
+            id: user.id,
+            name: user.name,
+            email: user.email,
+          };
+        }
+      }
       return session;
     },
   },

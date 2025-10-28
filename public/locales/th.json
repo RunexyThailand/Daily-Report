@@ -54,7 +54,8 @@
     "project": "โครงการ",
     "task": "งาน / ภารกิจ",
     "languages": "ภาษา",
-    "descriptionPlaceholder": "พิมพ์ข้อความที่นี่…"
+    "descriptionPlaceholder": "พิมพ์ข้อความที่นี่…",
+    "emptyOption": "ยังไม่มีตัวเลือก"
   },
   "ResponseStatus": {
     "success": "สำเร็จ",
