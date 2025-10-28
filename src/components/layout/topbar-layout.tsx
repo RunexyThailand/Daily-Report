@@ -54,10 +54,7 @@ export function Topbar({ className }: { className?: string }) {
   return (
     <header className={cn("sticky top-0 z-40 w-full bg-[#234868]", className)}>
       <div className="flex justify-between items-center">
-        <div
-          className="flex h-14 items-center gap-2 px-4"
-          data-testid="topbar-logo"
-        >
+        <div className="flex h-14 items-center gap-2 px-4">
           {/* <Button
             variant="ghost"
             size="icon"
