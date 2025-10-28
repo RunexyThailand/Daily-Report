@@ -10,6 +10,7 @@ import {
   createReportService,
   updateReportService,
 } from "../services/report.service";
+import userRouter from "./user";
 
 function sanitizeName(name: string) {
   return name.replace(/[^a-z0-9.\-_]/gi, "_");
@@ -48,6 +49,7 @@ function getUploadBaseDir() {
 
 export const appRouter = router({
   translate: translateRouter,
+  userRouter: userRouter,
   uploadImageToLocal: publicProcedure
     .input(
       z.object({
