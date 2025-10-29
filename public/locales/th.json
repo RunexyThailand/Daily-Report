@@ -23,7 +23,7 @@
     "everyone": "ทุกคน"
   },
   "Validation": {
-    "isRequired": "is required",
+    "isRequired": "กรุณาลองอีกครั้ง",
     "titleRequired": "กรุณากรอกหัวข้อ",
     "detailRequired": "จำเป็นต้องกรอกรายละเอียด (หรือแทรกรูปภาพ)"
   },
@@ -60,5 +60,12 @@
   "ResponseStatus": {
     "success": "สำเร็จ",
     "error": "ข้อผิดพลาด"
+  },
+  "Project-Task": {
+    "name": "ชื่องาน",
+    "enterTaskName": "ใส่ชื่องาน",
+    "List": "รายการงาน",
+    "Canceledit": "ยกเลิกการแก้ไข",
+    "submit" : "ส่ง"
   }
 }

@@ -65,12 +65,14 @@ const TaskForm = ({
           {({ isSubmitting, errors, touched }) => (
             <Form className="flex items-center gap-4 relative">
               <label htmlFor="name" className="font-medium">
-                Task Name
+                
+                {t("Project-Task.name")}
+                
               </label>
               <Field
                 id="name"
                 name="name"
-                placeholder="Enter task name"
+                placeholder={t("Project-Task.enterTaskName")}
                 className="border rounded px-3 py-2"
               />
               {touched.name && errors.name && (
@@ -83,7 +85,8 @@ const TaskForm = ({
                 disabled={isSubmitting}
                 className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer"
               >
-                {isSubmitting ? "Submitting..." : "Submit"}
+                {t("Project-Task.submit")}
+                {isSubmitting ? "Submitting..." : ""}
               </button>
               {task && (
                 <button
@@ -91,7 +94,7 @@ const TaskForm = ({
                   className="bg-red-600 text-white px-4 py-2 rounded cursor-pointer"
                   onClick={() => setTask(null)}
                 >
-                  Cancel edit
+                  {t("Project-Task.Canceledit")}
                 </button>
               )}
             </Form>
