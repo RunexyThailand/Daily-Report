@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import * as Yup from "yup";
 import { Prisma } from "@prisma/client";
-import { title } from "process";
 
 type ProjectType = Prisma.ProjectGetPayload<{}>;
 
@@ -85,8 +84,7 @@ const ProjectForm = ({
                 disabled={isSubmitting}
                 className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer"
               >
-                {t("projectPage.submit")}
-                {isSubmitting ? "Submitting..." : ""}
+                {isSubmitting ? t("projectPage.submitting") : t("projectPage.submit")}
               </button>
               {project && (
                 <button
@@ -94,7 +92,6 @@ const ProjectForm = ({
                   className="bg-red-600 text-white px-4 py-2 rounded cursor-pointer"
                   onClick={() => setProject(null)}
                 >
-          
                   {t("projectPage.canceledit")}
                 </button>
               )}

@@ -74,7 +74,8 @@
     "submit": "送信",
     "canceledit": "編集をキャンセル",
     "profile": "プロフィール",
-    "logout": "ログアウト"
+    "logout": "ログアウト",
+    "submitting": "送信中..."
   }
 
 }
