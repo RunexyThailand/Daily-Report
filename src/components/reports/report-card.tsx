@@ -1,11 +1,18 @@
 "use client";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import type { $Enums } from "@prisma/client";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, LoaderCircle, Eye, Trash } from "lucide-react";
+import {
+  Calendar,
+  LoaderCircle,
+  Eye,
+  Trash,
+  Volume2,
+  CircleStop,
+} from "lucide-react";
 import { DateTime } from "luxon";
 import {
   Card,
@@ -21,6 +28,8 @@ import {
 } from "@/components/ui/tooltip";
 import { Lang } from "@/lib/services/translates";
 import { useSession } from "next-auth/react";
+import { useTTS } from "@/lib/useTts";
+import { stripHtml } from "@/utils/strip-html";
 
 export type ReportTranslate = {
   title: string;
@@ -31,6 +40,7 @@ export type ReportTranslate = {
 export type ReportProps = {
   lang: string;
   translates: ReportTranslate[];
+  reportDate: Date;
   reportId: string;
   dueDate: Date | null;
   projectName: string | null;
@@ -43,6 +53,7 @@ export type ReportProps = {
 
 export default ({
   translates,
+  reportDate,
   lang,
   reportId,
   dueDate,
@@ -56,10 +67,31 @@ export default ({
   const { data: session } = useSession();
 
   const [language, setLanguage] = useState<string>(lang);
+  // const target = "ja"
+
+  const speakTimer = useRef<number | null>(null);
+
+  // --- TTS ---
+  const { speak, cancel, speaking } = useTTS({
+    // ตั้งค่าเสียงตามภาษาปลายทาง
+    lang: language === "ja" ? "ja-JP" : language === "th" ? "th-TH" : "en-US",
+    rate: 1,
+    pitch: 1,
+    volume: 1,
+  });
 
   const translated = translates.find((translate) => {
     return translate.language === language;
   });
+
+  const onSpeak = () => {
+    speakTimer.current = window.setTimeout(() => {
+      if (translated?.title || translated?.detail) {
+        const newText = `${translated?.title} ${stripHtml(translated?.detail)}`;
+        speak(newText);
+      }
+    }, 200);
+  };
 
   return (
     <div>
@@ -102,8 +134,37 @@ export default ({
             English
           </Button>
         </div>
-        {session?.user?.id === creatorId && (
-          <div className="flex space-x-5">
+
+        <div className="flex space-x-5">
+          {speaking ? (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <CircleStop
+                  className="h-6 w-6 cursor-pointer text-red-500"
+                  aria-hidden="true"
+                  onClick={() => cancel()}
+                />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Stop</p>
+              </TooltipContent>
+            </Tooltip>
+          ) : (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Volume2
+                  className="h-6 w-6 cursor-pointer"
+                  aria-hidden="true"
+                  onClick={() => onSpeak()}
+                />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Speak</p>
+              </TooltipContent>
+            </Tooltip>
+          )}
+
+          {session?.user?.id === creatorId && (
             <Tooltip>
               <TooltipTrigger asChild>
                 <Eye
@@ -116,6 +177,8 @@ export default ({
                 <p>View</p>
               </TooltipContent>
             </Tooltip>
+          )}
+          {session?.user?.id === creatorId && (
             <Tooltip>
               <TooltipTrigger asChild>
                 <Trash
@@ -128,8 +191,8 @@ export default ({
                 <p>Delete</p>
               </TooltipContent>
             </Tooltip>
-          </div>
-        )}
+          )}
+        </div>
       </div>
       <Card
         className="overflow-hidden p-0 group transition-all rounded-t-none "
@@ -167,6 +230,11 @@ export default ({
                 )}
               </CardTitle>
               <CardDescription className="py-5">
+                <div className="w-full flex justify-end font-bold">
+                  {DateTime.fromJSDate(reportDate)
+                    .toFormat("yyyy-LL-dd")
+                    .toString()}
+                </div>
                 <div className="font-bold text-18 mb-2">
                   {translated?.title}
                 </div>
