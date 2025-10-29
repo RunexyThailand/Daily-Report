@@ -9,6 +9,8 @@
     "passwordRequired": "ต้องกรอกรหัสผ่าน",
     "InvalidCredentials": "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
     "logout"  : "ออกจากระบบ"
+   
+    
 
 
   },
@@ -37,6 +39,7 @@
     "task" : "งาน",
     "project" : "โครงการ",
     "profile" : "โปรไฟล์"
+
   },
 
 
@@ -75,7 +78,8 @@
     "task": "งาน / ภารกิจ",
     "languages": "ภาษา",
     "descriptionPlaceholder": "พิมพ์ข้อความที่นี่…",
-    "emptyOption": "ยังไม่มีตัวเลือก"
+    "emptyOption": "ยังไม่มีตัวเลือก",
+    "submitting" :  "กำลังโหลด.."
   },
 
 
