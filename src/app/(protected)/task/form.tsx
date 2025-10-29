@@ -65,7 +65,8 @@ const TaskForm = ({
           {({ isSubmitting, errors, touched }) => (
             <Form className="flex items-center gap-4 relative">
               <label htmlFor="name" className="font-medium">
-                Task Name
+                Task
+               
               </label>
               <Field
                 id="name"

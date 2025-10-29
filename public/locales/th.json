@@ -7,7 +7,8 @@
     "invalidEmailFormat": "รูปแบบอีเมลไม่ถูกต้อง",
     "emailRequired": "ต้องกรอกอีเมล",
     "passwordRequired": "ต้องกรอกรหัสผ่าน",
-    "InvalidCredentials": "อีเมลหรือรหัสผ่านไม่ถูกต้อง"
+    "InvalidCredentials": "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
+    "logout"  : "ออกจากระบบ"
   },
   "DailyReportPage": {
     "title": "รายงานประจำวัน",
@@ -22,11 +23,29 @@
     "allTasksLabel": "ทุกงาน",
     "everyone": "ทุกคน"
   },
+
+  
+  "ProjectPage": {
+    "name" : "ชื่อโครงงาน",
+     "list" : "รายการโครงงาน",
+    "Enter project name" : "ป้อนชื่อโครงการ",
+    "Submit" : "ส่ง",
+    "Canceledit" : "ยกเลิกการแก้ไข",
+    "report" : "รายงาน",
+    "task" : "งาน",
+    "Project" : "โครงการ",
+    "profile" : "โปรไฟล์"
+
+  },
+
+
   "Validation": {
-    "isRequired": "is required",
+    "isRequired": "เป็นสิ่งจำเป็น",
     "titleRequired": "กรุณากรอกหัวข้อ",
     "detailRequired": "จำเป็นต้องกรอกรายละเอียด (หรือแทรกรูปภาพ)"
   },
+
+
   "Common": {
     "cancel": "ยกเลิก",
     "close": "ปิด",
@@ -60,5 +79,6 @@
   "ResponseStatus": {
     "success": "สำเร็จ",
     "error": "ข้อผิดพลาด"
+
   }
 }
