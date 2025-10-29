@@ -83,8 +83,8 @@ export const appRouter = router({
     )
     .query(async ({ ctx, input }) => {
       const now = DateTime.now();
-      const startToday = now.startOf("day").toUTC().toString();
-      const endToday = now.endOf("day").toUTC().toString();
+      const startToday = now.startOf("day").toString();
+      const endToday = now.endOf("day").toString();
       const dateGte = input.from ? input.from : startToday;
       const dateLte = input.to ? input.to : endToday;
       const reportWhere: Prisma.ReportWhereInput = {
