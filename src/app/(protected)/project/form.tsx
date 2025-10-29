@@ -65,7 +65,7 @@ const ProjectForm = ({
           {({ isSubmitting, errors, touched }) => (
             <Form className="flex items-center gap-4 relative">
               <label htmlFor="name" className="font-medium">
-                Project Name
+                {t("ProjectPage.name")}
               </label>
               <Field
                 id="name"

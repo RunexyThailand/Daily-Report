@@ -23,9 +23,12 @@
     "everyone": "ทุกคน"
   },
   "Validation": {
-    "isRequired": "is required",
+    "isRequired": "ต้องระบุค่า",
     "titleRequired": "กรุณากรอกหัวข้อ",
     "detailRequired": "จำเป็นต้องกรอกรายละเอียด (หรือแทรกรูปภาพ)"
+  },
+  "ProjectPage": {
+    "name": "ชื่อโครงการ"
   },
   "Common": {
     "cancel": "ยกเลิก",
