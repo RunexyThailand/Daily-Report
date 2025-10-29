@@ -21,16 +21,7 @@
     "allProjectsLabel": "All projects",
     "allTasksLabel": "All tasks",
     "everyone": "Everyone"
-    
-  
   },
-
- "ProjectName" : {
-  "Project" : "Project name"
-
- },
-
-
   "Validation": {
     "isRequired": "is required",
     "titleRequired": "Title is required",
