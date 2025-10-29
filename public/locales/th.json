@@ -22,6 +22,12 @@
     "allTasksLabel": "ทุกงาน",
     "everyone": "ทุกคน"
   },
+  "projectPage": {
+    "name": "โครงการ",
+    "description": "หน้าแสดงโครงการ",
+    "loading": "กำลังโหลด...",
+    "projectEmpty": "ยังไม่มีโครงการที่สร้างขึ้น"
+  },
   "Validation": {
     "isRequired": "is required",
     "titleRequired": "กรุณากรอกหัวข้อ",

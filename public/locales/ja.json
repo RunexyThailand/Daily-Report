@@ -7,7 +7,8 @@
     "invalidEmailFormat": "無効なメール形式",
     "emailRequired": "メールは必須です",
     "passwordRequired": "パスワードは必須です",
-    "InvalidCredentials": "無効なメールまたはパスワード"
+    "InvalidCredentials": "無効なメールまたはパスワード",
+    "YourAccount" : "あなたのアカウント"
   },
   "DailyReportPage": {
     "title": "日次報告",
@@ -23,9 +24,11 @@
     "everyone": "みんな"
   },
   "Validation": {
-    "isRequired": "is required",
+    "isRequired": "が必要です",
     "titleRequired": "タイトルは必須です。",
-    "detailRequired": "詳細の入力（または画像の挿入）が必要です。"
+    "detailRequired": "詳細の入力（または画像の挿入）が必要です。",
+    "minLength" : "検証.最小長さ",
+    "passwordMatch" : "パスワード一致"
   },
   "Common": {
     "cancel": "キャンセル",
@@ -60,5 +63,18 @@
   "ResponseStatus": {
     "success": "成功",
     "error": "エラー"
+  },
+  "projectPage": {
+    "name": "プロジェクト",
+    "description": "プロジェクトページ",
+    "loading": "読み込み中...",
+    "projectEmpty": "プロジェクトが作成されていません",
+    "projectlist" : "プロジェクトリスト",
+    "enterProjectName": "プロジェクト名を入力してください",
+    "submit": "送信",
+    "canceledit": "編集をキャンセル",
+    "profile": "プロフィール",
+    "logout": "ログアウト"
   }
+
 }

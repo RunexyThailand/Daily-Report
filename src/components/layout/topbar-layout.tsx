@@ -20,6 +20,7 @@ import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Language } from "@prisma/client";
+import { useTranslations } from "next-intl";
 
 export function Topbar({ className }: { className?: string }) {
   const [locale, setLocale] = useState<Language>("en");
@@ -51,6 +52,7 @@ export function Topbar({ className }: { className?: string }) {
     document.cookie = `NEXT_LOCALE=${lng};`;
     router.refresh();
   };
+  const t = useTranslations();
   return (
     <header className={cn("sticky top-0 z-40 w-full bg-[#234868]", className)}>
       <div className="flex justify-between items-center">
@@ -193,7 +195,7 @@ export function Topbar({ className }: { className?: string }) {
 
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuItem asChild>
-                <NavLink href="/profile">Profile</NavLink>
+                <NavLink href="/profile">{t("projectPage.profile")}</NavLink>
               </DropdownMenuItem>
               {/* <DropdownMenuItem asChild>
                 <NavLink href="/report">Report</NavLink>
@@ -206,7 +208,7 @@ export function Topbar({ className }: { className?: string }) {
                 onClick={() => signOut({ callbackUrl: "/login" })}
                 className="text-destructive focus:text-destructive"
               >
-                Logout
+                {t("projectPage.logout")}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
