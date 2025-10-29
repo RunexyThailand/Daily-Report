@@ -17,7 +17,6 @@ const TaskList = ({
   toggleActive: (taskId: string, tobe: boolean) => void;
 }) => {
   const t = useTranslations();
-
   return (
     
     <div className="p-6">

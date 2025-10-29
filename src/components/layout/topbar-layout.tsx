@@ -115,7 +115,7 @@ export function Topbar({ className }: { className?: string }) {
                 "hover:bg-gray-200",
               )}
             >
-              {t("ProjectPage.Project")}
+              {t("ProjectPage.project")}
             </NavLink>
             <NavLink
               href="/task"
@@ -127,7 +127,6 @@ export function Topbar({ className }: { className?: string }) {
               )}
             >
               {t("ProjectPage.task")}
-
             </NavLink>
           </nav>
           <Separator
@@ -199,7 +198,6 @@ export function Topbar({ className }: { className?: string }) {
               <DropdownMenuItem asChild>
                 <NavLink href="/profile">{t("ProjectPage.profile")}</NavLink>
               </DropdownMenuItem>
-
               {/* <DropdownMenuItem asChild>
                 <NavLink href="/report">Report</NavLink>
               </DropdownMenuItem>

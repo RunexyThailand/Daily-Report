@@ -9,6 +9,8 @@
     "passwordRequired": "ต้องกรอกรหัสผ่าน",
     "InvalidCredentials": "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
     "logout"  : "ออกจากระบบ"
+
+
   },
   "DailyReportPage": {
     "title": "รายงานประจำวัน",
@@ -28,14 +30,13 @@
   "ProjectPage": {
     "name" : "ชื่อโครงงาน",
      "list" : "รายการโครงงาน",
-    "Enter project name" : "ป้อนชื่อโครงการ",
-    "Submit" : "ส่ง",
-    "Canceledit" : "ยกเลิกการแก้ไข",
+    "enterprojectname" : "ป้อนชื่อโครงการ",
+    "submit" : "ส่ง",
+    "canceledit" : "ยกเลิกการแก้ไข",
     "report" : "รายงาน",
     "task" : "งาน",
-    "Project" : "โครงการ",
+    "project" : "โครงการ",
     "profile" : "โปรไฟล์"
-
   },
 
 
@@ -76,9 +77,10 @@
     "descriptionPlaceholder": "พิมพ์ข้อความที่นี่…",
     "emptyOption": "ยังไม่มีตัวเลือก"
   },
+
+
   "ResponseStatus": {
     "success": "สำเร็จ",
     "error": "ข้อผิดพลาด"
-
   }
 }

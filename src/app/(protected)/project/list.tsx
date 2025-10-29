@@ -25,7 +25,6 @@ const ProjectList = ({
   return (
     <div className="p-6">
       <h2 className="text-xl font-bold mb-4">{t("ProjectPage.list")}</h2>
-
       <ul className="space-y-2">
         {projects.map((project) => (
           <li
