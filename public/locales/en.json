@@ -25,9 +25,7 @@
   "Validation": {
     "isRequired": "is required",
     "titleRequired": "Title is required",
-    "detailRequired": "Detail is required (or insert an image).",
-    "minLength" : "Please enter at least 8 characters.",
-    "passwordMatch" : "Please enter the correct password"
+    "detailRequired": "Detail is required (or insert an image)."
   },
   "Common": {
     "cancel": "Cancel",
@@ -62,10 +60,5 @@
   "ResponseStatus": {
     "success": "Success",
     "error": "Error"
-  },
-  "profile": {
-    "YourAccount": "Your Account"
-    ,"Saveprofile" : "Save",
-    "Saving" : "Saving..."
   }
 }

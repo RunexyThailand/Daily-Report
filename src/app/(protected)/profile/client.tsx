@@ -24,7 +24,7 @@ const ProfileClient = () => {
               <LoaderCircle className="animate-spin h-12 w-12 text-primary" />
             </div>
           )}
-          <h2 className="text-xl font-bold mb-4">{t("profile.YourAccount")}</h2>
+          <h2 className="text-xl font-bold mb-4">Your Account</h2>
           <Formik
             enableReinitialize={true}
             validationSchema={Yup.object({
@@ -190,8 +190,7 @@ const ProfileClient = () => {
                     disabled={isSubmitting}
                     className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
                   >
-  
-                    {isSubmitting ? t("profile.Saving") : t("profile.Saveprofile")}
+                    {isSubmitting ? "Saving..." : "Save"}
                   </button>
                 </div>
               </Form>
