@@ -18,14 +18,18 @@ import { Badge } from "@/components/ui/badge";
 import { signOut } from "next-auth/react";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { Language } from "@prisma/client";
+import { useTranslations } from "next-intl";
+
 
 export function Topbar({ className }: { className?: string }) {
   const [locale, setLocale] = useState<Language>("en");
   const router = useRouter();
   // const { toggleSidebar } = useLayout();
   const pathname = usePathname();
+
+  const t = useTranslations();
 
   // helper: เช็ค active
   const isActive = (href: string) =>
@@ -90,7 +94,7 @@ export function Topbar({ className }: { className?: string }) {
                 "hover:bg-gray-200",
               )}
             >
-              Report
+              {t("topbar.Report")}
             </NavLink>
             {/* <NavLink
               href="/calendar"
@@ -112,7 +116,7 @@ export function Topbar({ className }: { className?: string }) {
                 "hover:bg-gray-200",
               )}
             >
-              Project
+              {t("topbar.Project")}
             </NavLink>
             <NavLink
               href="/task"
@@ -122,8 +126,7 @@ export function Topbar({ className }: { className?: string }) {
                   : "text-white hover:text-black",
                 "hover:bg-gray-200",
               )}
-            >
-              Task
+            > {t("topbar.Task")}
             </NavLink>
           </nav>
           <Separator
@@ -193,7 +196,9 @@ export function Topbar({ className }: { className?: string }) {
 
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuItem asChild>
-                <NavLink href="/profile">Profile</NavLink>
+                <NavLink href="/profile">
+                {t("profile-btn.profile")}
+                </NavLink>
               </DropdownMenuItem>
               {/* <DropdownMenuItem asChild>
                 <NavLink href="/report">Report</NavLink>
@@ -206,7 +211,7 @@ export function Topbar({ className }: { className?: string }) {
                 onClick={() => signOut({ callbackUrl: "/login" })}
                 className="text-destructive focus:text-destructive"
               >
-                Logout
+                {t("profile-btn.logout")}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

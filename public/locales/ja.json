@@ -23,7 +23,7 @@
     "everyone": "みんな"
   },
   "Validation": {
-    "isRequired": "is required",
+    "isRequired":"が必要です",
     "titleRequired": "タイトルは必須です。",
     "detailRequired": "詳細の入力（または画像の挿入）が必要です。"
   },
@@ -60,5 +60,26 @@
   "ResponseStatus": {
     "success": "成功",
     "error": "エラー"
+  },
+  "project-header": {
+    "Task-Name" : "タスク名",
+    "Task-List": "タスクリスト",
+    "btn-sub":"提出する"
+  },
+  "input-phd": {
+    "enter-task-Name" : "タスク名を入力してください"
+  },
+  "btn": {
+    "btn-submit": "提出する",
+    "cancel-edit": "編集をキャンセルする"
+  },
+  "topbar": {
+    "Task" : "タスク",
+    "Report" : "報告",
+    "Project" : "プロジェクト"
+  },
+  "profile-btn": {
+    "profile": "プロフィール",
+    "logout": "ログアウト"
   }
 }

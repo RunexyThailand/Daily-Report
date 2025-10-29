@@ -29,6 +29,7 @@ const ProjectForm = ({
     <div className="flex items-center justify-center mt-5">
       <div
         className={`p-8 rounded shadow-md w-[75vw] relative transition-colors ${flash ? "bg-yellow-200/60 animate-pulse" : "bg-white"}`}
+      
       >
         {isLoading && (
           <div className="absolute inset-0 z-[100] flex items-center justify-center bg-white/70">
@@ -42,6 +43,7 @@ const ProjectForm = ({
           })}
           initialValues={{ name: project ? project.name : "" }}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
+            {t("project-header.btn-sub")}
             setIsLoading(true);
             try {
               if (project) {

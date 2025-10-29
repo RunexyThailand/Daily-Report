@@ -23,7 +23,7 @@
     "everyone": "ทุกคน"
   },
   "Validation": {
-    "isRequired": "is required",
+    "isRequired": "กรุณากรอกหัวข้อ",
     "titleRequired": "กรุณากรอกหัวข้อ",
     "detailRequired": "จำเป็นต้องกรอกรายละเอียด (หรือแทรกรูปภาพ)"
   },
@@ -60,5 +60,29 @@
   "ResponseStatus": {
     "success": "สำเร็จ",
     "error": "ข้อผิดพลาด"
+  },
+  "project": {
+  
+},
+"project-header": {
+    "Task-Name" : "ชื่องาน",
+    "Task-List": "รายการงาน",
+    "btn-sub":"ส่ง"
+  },
+  "input-phd": {
+    "enter-task-Name" : "กรุณาใส่ชื่องาน"
+  },
+  "btn": {
+    "btn-submit": "ตกลง",
+    "cancel-edit": "ยกเลิกการแก้ไข"
+  },
+  "topbar": {
+    "Task" : "งาน",
+    "Report" : "รายงาน",
+    "Project" : "โปรเจกต์"
+  },
+  "profile-btn": {
+    "profile": "โปรไฟล์",
+    "logout": "ลออกจากระบบ"
   }
 }
