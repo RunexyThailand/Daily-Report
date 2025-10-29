@@ -23,9 +23,11 @@
     "everyone": "ทุกคน"
   },
   "Validation": {
-    "isRequired": "is required",
+    "isRequired": "จำเป็น",
     "titleRequired": "กรุณากรอกหัวข้อ",
-    "detailRequired": "จำเป็นต้องกรอกรายละเอียด (หรือแทรกรูปภาพ)"
+    "detailRequired": "จำเป็นต้องกรอกรายละเอียด (หรือแทรกรูปภาพ)",
+    "minLength" : "ต้องมีอย่างน้อย 8 ตัวอักษร",
+    "passwordMatch" : "โปรดกรอกรหัสผ่านให้ถูกต้อง"
   },
   "Common": {
     "cancel": "ยกเลิก",
@@ -60,5 +62,12 @@
   "ResponseStatus": {
     "success": "สำเร็จ",
     "error": "ข้อผิดพลาด"
+  },
+  "profile": {
+    "YourAccount": "บัญชีของคุณ",
+    "Saveprofile" : "บันทึก",
+    "Saving" : "กำลังบันทึก..."
+
+    
   }
 }
