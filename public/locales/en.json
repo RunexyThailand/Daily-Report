@@ -57,15 +57,13 @@
     "task": "Task",
     "languages": "Languages",
     "descriptionPlaceholder": "Type your message here…",
-    "emptyOption": "Empty option"
+    "emptyOption": "Empty option",
+    "YourAccount": "Your Account",
+    "Saveprofile" : "Save",
+    "Saving" : "Saving..."
   },
   "ResponseStatus": {
     "success": "Success",
     "error": "Error"
-  },
-  "profile": {
-    "YourAccount": "Your Account",
-    "Saveprofile" : "Save",
-    "Saving" : "Saving..."
-}
+  }
 }

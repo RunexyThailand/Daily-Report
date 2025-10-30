@@ -57,17 +57,13 @@
     "task": "งาน / ภารกิจ",
     "languages": "ภาษา",
     "descriptionPlaceholder": "พิมพ์ข้อความที่นี่…",
-    "emptyOption": "ยังไม่มีตัวเลือก"
+    "emptyOption": "ยังไม่มีตัวเลือก",
+    "YourAccount": "บัญชีของคุณ",
+    "Saveprofile" : "บันทึก",
+    "Saving" : "กำลังบันทึก..."
   },
   "ResponseStatus": {
     "success": "สำเร็จ",
     "error": "ข้อผิดพลาด"
-  },
-  "profile": {
-    "YourAccount": "บัญชีของคุณ",
-    "Saveprofile" : "บันทึก",
-    "Saving" : "กำลังบันทึก..."
-
-    
   }
 }
