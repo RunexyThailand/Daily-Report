@@ -91,7 +91,6 @@ export function Topbar({ className }: { className?: string }) {
                   : "text-white hover:text-black",
                 "hover:bg-gray-200",
               )}
-              
             >
               {t("ProjectPage.report")}
             </NavLink>
