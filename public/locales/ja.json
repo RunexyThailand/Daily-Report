@@ -65,6 +65,28 @@
     "success": "成功",
     "error": "エラー"
   },
+  "title_page": {
+    "Task": "タスク",
+    "Report": "報告",
+    "Project": "プロジェクト"
+  },
+  "project_header": {
+    "TaskName": "タスク名",
+    "TaskList": "タスクリスト",
+    "btnSub": "提出する"
+  },
+  "input_phd": {
+    "enterTaskName": "タスク名を入力"
+  },
+  "topbar": {
+    "Task": "  タスク",
+    "Report": "報告",
+    "Project": "プロジェクト"
+  },
+  "profile_btn": {
+    "profile": "プロフィール",
+    "logout": "ログアウト"
+  },
   "ProjectPage": {
     "name": "プロジェクト",
     "description": "プロジェクトページ",
@@ -72,7 +94,7 @@
     "list": "プロジェクトリスト",
     "enterProjectName": "プロジェクト名を入力してください",
     "submit": "送信",
-    "canceledit": "編集をキャンセル",
+    "cancelEdit": "編集をキャンセル",
     "profile": "プロフィール",
     "logout": "ログアウト",
     "submitting": "送信中..."

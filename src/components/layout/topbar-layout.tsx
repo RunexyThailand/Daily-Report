@@ -28,6 +28,8 @@ export function Topbar({ className }: { className?: string }) {
   // const { toggleSidebar } = useLayout();
   const pathname = usePathname();
 
+  const t = useTranslations();
+
   // helper: เช็ค active
   const isActive = (href: string) =>
     pathname === href || pathname.startsWith(href + "/");
@@ -195,7 +197,7 @@ export function Topbar({ className }: { className?: string }) {
 
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuItem asChild>
-                <NavLink href="/profile">{t("ProjectPage.profile")}</NavLink>
+                <NavLink href="/profile">{t("profile_btn.profile")}</NavLink>
               </DropdownMenuItem>
               {/* <DropdownMenuItem asChild>
                 <NavLink href="/report">Report</NavLink>
@@ -208,7 +210,7 @@ export function Topbar({ className }: { className?: string }) {
                 onClick={() => signOut({ callbackUrl: "/login" })}
                 className="text-destructive focus:text-destructive"
               >
-                {t("LoginPage.logout")}
+                {t("profile_btn.logout")}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
