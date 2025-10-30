@@ -1,5 +1,6 @@
 import { getServerSession, type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { headers as nextHeaders } from "next/headers";
 
 // --- ถ้าใช้ Prisma + bcrypt ให้ปลดคอมเมนต์ด้านล่าง ---
 import { prisma } from "@/server/db";
@@ -87,3 +88,36 @@ export const authOptions: NextAuthOptions = {
 };
 
 export const getAuth = () => getServerSession(authOptions);
+
+// ใช้กับ HTTP (Route Handler / App Router server component เท่านั้น)
+export async function getAuthFromNext(): Promise<{
+  user?: { id: string; email?: string };
+} | null> {
+  const h = await nextHeaders(); // ⬅️ ต้องใส่ await
+  const token = h.get("authorization")?.replace(/^Bearer\s+/i, "");
+  // TODO: verify token -> return { user: ... } | null
+  return null;
+}
+
+// ใช้กับ HTTP (ถ้าอยู่ใน adapter ที่มี req)
+export async function getAuthFromRequest(
+  req: Request,
+): Promise<{ user?: { id: string; email?: string } } | null> {
+  const token = req.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
+  // TODO: verify token
+  return null;
+}
+
+// ใช้กับ WS (ไม่มี request scope)
+export async function getAuthFromToken(
+  token?: string,
+): Promise<{ user?: { id: string; email?: string } } | null> {
+  if (!token) return null;
+  // TODO: verify token
+  return null;
+}
+
+// Helper for tRPC, API routes, etc.
+export const getServerAuthSession = async (req: any, res: any) => {
+  return await getServerSession(req, res, authOptions);
+};

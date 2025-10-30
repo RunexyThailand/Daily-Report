@@ -11,6 +11,7 @@ import {
   updateReportService,
 } from "../services/report.service";
 import userRouter from "./user";
+import { meetingRouter } from "./meeting";
 
 function sanitizeName(name: string) {
   return name.replace(/[^a-z0-9.\-_]/gi, "_");
@@ -50,6 +51,7 @@ function getUploadBaseDir() {
 export const appRouter = router({
   translate: translateRouter,
   userRouter: userRouter,
+  meeting: meetingRouter,
   uploadImageToLocal: publicProcedure
     .input(
       z.object({
@@ -232,7 +234,7 @@ export const appRouter = router({
   createReport: publicProcedure
     .input(reportInputSchema)
     .mutation(async ({ ctx, input }) => {
-      const userId = ctx.session?.user.id ?? "";
+      const userId = ctx.session?.user?.id ?? "";
       return createReportService(ctx.prisma, input, userId);
     }),
   updateReport: publicProcedure
@@ -261,7 +263,7 @@ export const appRouter = router({
       const project = await ctx.prisma.project.create({
         data: {
           name: input.name,
-          created_by: ctx.session?.user.id || "",
+          created_by: ctx.session?.user?.id || "",
         },
       });
       return project;
@@ -282,7 +284,7 @@ export const appRouter = router({
         data.is_active = input.is_active;
       if (input.softDelete) {
         data.deleted_at = new Date();
-        data.deleted_by = ctx.session?.user.id || "";
+        data.deleted_by = ctx.session?.user?.id || "";
       }
       const project = await ctx.prisma.project.update({
         where: { id: input.id },
@@ -304,7 +306,7 @@ export const appRouter = router({
       const task = await ctx.prisma.task.create({
         data: {
           name: input.name,
-          created_by: ctx.session?.user.id || "",
+          created_by: ctx.session?.user?.id || "",
         },
       });
       return task;
@@ -325,7 +327,7 @@ export const appRouter = router({
         data.is_active = input.is_active;
       if (input.softDelete) {
         data.deleted_at = new Date();
-        data.deleted_by = ctx.session?.user.id || "";
+        data.deleted_by = ctx.session?.user?.id || "";
       }
       const task = await ctx.prisma.task.update({
         where: { id: input.id },
