@@ -8,7 +8,7 @@
     "emailRequired": "ต้องกรอกอีเมล",
     "passwordRequired": "ต้องกรอกรหัสผ่าน",
     "InvalidCredentials": "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
-    "logout"  : "ออกจากระบบ"
+    "logout": "ออกจากระบบ"
   },
   "DailyReportPage": {
     "title": "รายงานประจำวัน",
@@ -24,25 +24,25 @@
     "everyone": "ทุกคน"
   },
   "ProjectPage": {
-    "name" : "ชื่อโครงงาน",
-     "list" : "รายการโครงงาน",
-    "enterprojectname" : "ป้อนชื่อโครงการ",
-    "submit" : "ส่ง",
-    "canceledit" : "ยกเลิกการแก้ไข",
-    "report" : "รายงาน",
-    "task" : "งาน",
-    "project" : "โครงการ",
-    "profile" : "โปรไฟล์"
+    "name": "ชื่อโครงการ",
+    "list": "รายการโครงการ",
+    "description": "หน้าแสดงโครงการ",
+    "loading": "กำลังโหลด...",
+    "projectEmpty": "ยังไม่มีโครงการที่สร้างขึ้น",
+    "enterProjectName": "ระบุชื่อโครงการ"
   },
   "Validation": {
-    "isRequired": "เป็นสิ่งจำเป็น",
+    "isRequired": "กรุณาระบุ",
     "titleRequired": "กรุณากรอกหัวข้อ",
-    "detailRequired": "จำเป็นต้องกรอกรายละเอียด (หรือแทรกรูปภาพ)"
+    "detailRequired": "จำเป็นต้องกรอกรายละเอียด (หรือแทรกรูปภาพ)",
+    "minLength": "ต้องมีอย่างน้อย 8 ตัวอักษร",
+    "passwordMatch": "โปรดกรอกรหัสผ่านให้ถูกต้อง"
   },
   "Common": {
     "cancel": "ยกเลิก",
     "close": "ปิด",
     "save": "บันทึก",
+    "saving": "กำลังบันทึก",
     "edit": "แก้ไข",
     "delete": "ลบ",
     "confirm": "ยืนยัน",
@@ -68,10 +68,19 @@
     "languages": "ภาษา",
     "descriptionPlaceholder": "พิมพ์ข้อความที่นี่…",
     "emptyOption": "ยังไม่มีตัวเลือก",
-    "submitting" :  "กำลังโหลด.."
+    "YourAccount": "บัญชีของคุณ",
+    "Saveprofile": "บันทึก",
+    "Saving": "กำลังบันทึก..."
   },
   "ResponseStatus": {
     "success": "สำเร็จ",
     "error": "ข้อผิดพลาด"
+  },
+  "TaskPage": {
+    "Name": "ชื่องาน",
+    "EnterTaskName": "ใส่ชื่องาน",
+    "List": "รายการงาน",
+    "Canceledit": "ยกเลิกการแก้ไข",
+    "Submit": "ส่ง"
   }
 }

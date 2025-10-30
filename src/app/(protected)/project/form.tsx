@@ -64,13 +64,13 @@ const ProjectForm = ({
         >
           {({ isSubmitting, errors, touched }) => (
             <Form className="flex items-center gap-4 relative">
-              <label htmlFor="name" className="font-medium"> 
+              <label htmlFor="name" className="font-medium">
                 {t("ProjectPage.name")}
               </label>
               <Field
                 id="name"
                 name="name"
-                placeholder={t("ProjectPage.enterprojectname")}
+                placeholder={t("projectPage.enterProjectName")}
                 className="border rounded px-3 py-2"
               />
               {touched.name && errors.name && (
@@ -83,13 +83,13 @@ const ProjectForm = ({
                 disabled={isSubmitting}
                 className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer"
               >
-                {isSubmitting ? t("Common.submitting") : t("ProjectPage.submit")}
+                {isSubmitting ? t("Common.saving") : t("Common.save")}
               </button>
               {project && (
                 <button
                   type="button"
                   className="bg-red-600 text-white px-4 py-2 rounded cursor-pointer"
-                  onClick={() => setProject(null)}   
+                  onClick={() => setProject(null)}
                 >
                   {t("ProjectPage.canceledit")}
                 </button>
