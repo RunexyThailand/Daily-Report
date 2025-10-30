@@ -16,7 +16,7 @@ import {
   LangValue,
 } from "@/types/report-dialog-type";
 import { Lang, TranslateInput, useTranslator } from "@/lib/services/translates";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 
 const LanguageSchema = z.enum(["ja", "en", "th"]);
