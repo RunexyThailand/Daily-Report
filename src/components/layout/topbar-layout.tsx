@@ -92,7 +92,7 @@ export function Topbar({ className }: { className?: string }) {
                 "hover:bg-gray-200",
               )}
             >
-              Report
+              {t("ProjectPage.report")}
             </NavLink>
             {/* <NavLink
               href="/calendar"
@@ -114,7 +114,7 @@ export function Topbar({ className }: { className?: string }) {
                 "hover:bg-gray-200",
               )}
             >
-              Project
+              {t("ProjectPage.project")}
             </NavLink>
             <NavLink
               href="/task"
@@ -125,7 +125,7 @@ export function Topbar({ className }: { className?: string }) {
                 "hover:bg-gray-200",
               )}
             >
-              Task
+              {t("ProjectPage.task")}
             </NavLink>
           </nav>
           <Separator
@@ -195,7 +195,7 @@ export function Topbar({ className }: { className?: string }) {
 
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuItem asChild>
-                <NavLink href="/profile">{t("projectPage.profile")}</NavLink>
+                <NavLink href="/profile">{t("ProjectPage.profile")}</NavLink>
               </DropdownMenuItem>
               {/* <DropdownMenuItem asChild>
                 <NavLink href="/report">Report</NavLink>
@@ -208,7 +208,7 @@ export function Topbar({ className }: { className?: string }) {
                 onClick={() => signOut({ callbackUrl: "/login" })}
                 className="text-destructive focus:text-destructive"
               >
-                {t("projectPage.logout")}
+                {t("LoginPage.logout")}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

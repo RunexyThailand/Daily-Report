@@ -7,7 +7,8 @@
     "invalidEmailFormat": "รูปแบบอีเมลไม่ถูกต้อง",
     "emailRequired": "ต้องกรอกอีเมล",
     "passwordRequired": "ต้องกรอกรหัสผ่าน",
-    "InvalidCredentials": "อีเมลหรือรหัสผ่านไม่ถูกต้อง"
+    "InvalidCredentials": "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
+    "logout": "ออกจากระบบ"
   },
   "DailyReportPage": {
     "title": "รายงานประจำวัน",
@@ -22,11 +23,13 @@
     "allTasksLabel": "ทุกงาน",
     "everyone": "ทุกคน"
   },
-  "projectPage": {
-    "name": "โครงการ",
+  "ProjectPage": {
+    "name": "ชื่อโครงการ",
+    "list": "รายการโครงการ",
     "description": "หน้าแสดงโครงการ",
     "loading": "กำลังโหลด...",
-    "projectEmpty": "ยังไม่มีโครงการที่สร้างขึ้น"
+    "projectEmpty": "ยังไม่มีโครงการที่สร้างขึ้น",
+    "enterProjectName": "ระบุชื่อโครงการ"
   },
   "Validation": {
     "isRequired": "กรุณาระบุ",

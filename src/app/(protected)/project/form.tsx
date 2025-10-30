@@ -65,7 +65,7 @@ const ProjectForm = ({
           {({ isSubmitting, errors, touched }) => (
             <Form className="flex items-center gap-4 relative">
               <label htmlFor="name" className="font-medium">
-                {t("projectPage.name")}
+                {t("ProjectPage.name")}
               </label>
               <Field
                 id="name"
@@ -91,7 +91,7 @@ const ProjectForm = ({
                   className="bg-red-600 text-white px-4 py-2 rounded cursor-pointer"
                   onClick={() => setProject(null)}
                 >
-                  {t("projectPage.canceledit")}
+                  {t("ProjectPage.canceledit")}
                 </button>
               )}
             </Form>
