@@ -83,8 +83,7 @@ const TaskForm = ({
                 disabled={isSubmitting}
                 className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer"
               >
-                {t("TaskPage.Submit")}
-                {isSubmitting ? "กำลังส่ง..." : ""}
+                 {isSubmitting ? t("Common.saving") : t("Common.save")}
               </button>
               {task && (
                 <button
