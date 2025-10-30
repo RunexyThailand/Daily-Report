@@ -103,17 +103,13 @@ const ProfileClient = () => {
 
                 <div className="w-3/4">
                   <label className="block text-sm font-medium mb-1">Name</label>
-                  <Field name="name">
-                    {({ field }: any) => (
-                      <input
-                        {...field}
-                        type="text"
-                        className="w-full border rounded px-3 py-2 disabled:bg-gray-100"
-                        placeholder="Your name"
-                        disabled={status === "loading"}
-                      />
-                    )}
-                  </Field>
+                  <Field
+                    name="name"
+                    type="text"
+                    className="w-full border rounded px-3 py-2 disabled:bg-gray-100"
+                    placeholder="Your name"
+                    disabled={status === "loading"}
+                  />
                   {errors.name && touched.name && (
                     <div className="text-sm text-red-600 mt-1">
                       {errors.name}
@@ -125,16 +121,12 @@ const ProfileClient = () => {
                   <label className="block text-sm font-medium mb-1">
                     Current Password
                   </label>
-                  <Field name="currentPassword">
-                    {({ field }: any) => (
-                      <input
-                        {...field}
-                        type="password"
-                        className="w-full border rounded px-3 py-2"
-                        placeholder="Current password"
-                      />
-                    )}
-                  </Field>
+                  <Field
+                    name="currentPassword"
+                    type="password"
+                    className="w-full border rounded px-3 py-2"
+                    placeholder="Current password"
+                  />
                   {errors.currentPassword && touched.currentPassword && (
                     <div className="text-sm text-red-600 mt-1">
                       {errors.currentPassword}
@@ -146,16 +138,12 @@ const ProfileClient = () => {
                   <label className="block text-sm font-medium mb-1">
                     New Password
                   </label>
-                  <Field name="newPassword">
-                    {({ field }: any) => (
-                      <input
-                        {...field}
-                        type="password"
-                        className="w-full border rounded px-3 py-2"
-                        placeholder="New password"
-                      />
-                    )}
-                  </Field>
+                  <Field
+                    name="newPassword"
+                    type="password"
+                    className="w-full border rounded px-3 py-2"
+                    placeholder="New password"
+                  />
                   {errors.newPassword && touched.newPassword && (
                     <div className="text-sm text-red-600 mt-1">
                       {errors.newPassword}
@@ -167,16 +155,13 @@ const ProfileClient = () => {
                   <label className="block text-sm font-medium mb-1">
                     Confirm New Password
                   </label>
-                  <Field name="confirmPassword">
-                    {({ field }: any) => (
-                      <input
-                        {...field}
-                        type="password"
-                        className="w-full border rounded px-3 py-2"
-                        placeholder="Confirm new password"
-                      />
-                    )}
-                  </Field>
+                  <Field
+                    name="confirmPassword"
+                    type="password"
+                    className="w-full border rounded px-3 py-2"
+                    placeholder="Confirm new password"
+                  />
+
                   {errors.confirmPassword && touched.confirmPassword && (
                     <div className="text-sm text-red-600 mt-1">
                       {errors.confirmPassword}
@@ -190,7 +175,7 @@ const ProfileClient = () => {
                     disabled={isSubmitting}
                     className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
                   >
-                    {isSubmitting ? t("Common.Saving") : t("Common.save")}
+                    {isSubmitting ? t("Common.saving") : t("Common.save")}
                   </button>
                 </div>
               </Form>

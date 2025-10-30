@@ -3,7 +3,7 @@ import { Edit, Trash2, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 
-type TaskType = Prisma.TaskGetPayload<{}>;
+type TaskType = Prisma.TaskGetPayload<Prisma.TaskCreateArgs>;
 
 const TaskList = ({
   tasks,
@@ -19,7 +19,7 @@ const TaskList = ({
   const t = useTranslations();
   return (
     <div className="p-6">
-      <h2 className="text-xl font-bold mb-4">{t("TaskPage.List")}</h2>
+      <h2 className="text-xl font-bold mb-4">{t("TaskPage.list")}</h2>
       <ul className="space-y-2">
         {tasks.map((task) => (
           <li

@@ -54,7 +54,7 @@ export function Topbar({ className }: { className?: string }) {
     document.cookie = `NEXT_LOCALE=${lng};`;
     router.refresh();
   };
-  const t = useTranslations();
+
   return (
     <header className={cn("sticky top-0 z-40 w-full bg-[#234868]", className)}>
       <div className="flex justify-between items-center">
@@ -94,7 +94,7 @@ export function Topbar({ className }: { className?: string }) {
                 "hover:bg-gray-200",
               )}
             >
-              {t("ProjectPage.report")}
+              {t("Common.report")}
             </NavLink>
             {/* <NavLink
               href="/calendar"
@@ -116,7 +116,7 @@ export function Topbar({ className }: { className?: string }) {
                 "hover:bg-gray-200",
               )}
             >
-              {t("ProjectPage.project")}
+              {t("Common.project")}
             </NavLink>
             <NavLink
               href="/task"
@@ -127,7 +127,7 @@ export function Topbar({ className }: { className?: string }) {
                 "hover:bg-gray-200",
               )}
             >
-              {t("ProjectPage.task")}
+              {t("Common.task")}
             </NavLink>
           </nav>
           <Separator

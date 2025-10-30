@@ -43,13 +43,13 @@ const checkTranslation = async (input: ReportInput) => {
       targets: langNotTranslation,
     });
 
-    let titleTrans: {
+    const titleTrans: {
       en?: string | undefined;
       ja?: string | undefined;
       th?: string | undefined;
     } = {};
 
-    let detailTrans: {
+    const detailTrans: {
       en?: string | undefined;
       ja?: string | undefined;
       th?: string | undefined;

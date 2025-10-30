@@ -4,12 +4,12 @@ import { createProject, updateProject } from "@/actions/project";
 import { Formik, Form, Field } from "formik";
 import { LoaderCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import * as Yup from "yup";
 import { Prisma } from "@prisma/client";
 
-type ProjectType = Prisma.ProjectGetPayload<{}>;
+type ProjectType = Prisma.ProjectGetPayload<Prisma.ProjectCreateArgs>;
 
 const ProjectForm = ({
   onSuccess,
@@ -55,7 +55,10 @@ const ProjectForm = ({
               resetForm();
               onSuccess();
             } catch (err) {
-              toast.error(`${t(`Common.save`)} ${t(`ResponseStatus.error`)}`);
+              toast.error(`${t(`Common.save`)} ${t(`ResponseStatus.error`)}`, {
+                description:
+                  err instanceof Error ? err.message : "Unknown error",
+              });
             } finally {
               setIsLoading(false);
               setSubmitting(false);
@@ -70,7 +73,7 @@ const ProjectForm = ({
               <Field
                 id="name"
                 name="name"
-                placeholder={t("projectPage.enterProjectName")}
+                placeholder={t("ProjectPage.enterProjectName")}
                 className="border rounded px-3 py-2"
               />
               {touched.name && errors.name && (
@@ -91,7 +94,7 @@ const ProjectForm = ({
                   className="bg-red-600 text-white px-4 py-2 rounded cursor-pointer"
                   onClick={() => setProject(null)}
                 >
-                  {t("ProjectPage.cancelEdit")}
+                  {t("Common.cancelEdit")}
                 </button>
               )}
             </Form>

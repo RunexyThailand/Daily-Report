@@ -55,11 +55,13 @@
     "Confirm_description": "Are you sure you want to proceed with this action?",
     "project": "Project",
     "task": "Task",
+    "report": "Report",
     "languages": "Languages",
     "descriptionPlaceholder": "Type your message here…",
     "emptyOption": "Empty option",
     "YourAccount": "Your Account",
-    "Saving": "Saving..."
+    "saving": "Saving...",
+    "cancelEdit": "Cancel Edit"
   },
   "ResponseStatus": {
     "success": "Success",
@@ -86,5 +88,15 @@
   "profile_btn": {
     "profile": "Profile",
     "logout": "Logout"
+  },
+  "ProjectPage": {
+    "name": "Project name",
+    "list": "Project list",
+    "enterProjectName": "enter project name"
+  },
+  "TaskPage": {
+    "name": "Task name",
+    "enterTaskName": "enter task name",
+    "list": "Task list"
   }
 }

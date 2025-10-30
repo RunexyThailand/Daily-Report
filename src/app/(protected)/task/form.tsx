@@ -9,7 +9,7 @@ import * as Yup from "yup";
 import { Prisma } from "@prisma/client";
 import { createTask, updateTask } from "@/actions/task";
 
-type TaskType = Prisma.TaskGetPayload<{}>;
+type TaskType = Prisma.TaskGetPayload<Prisma.TaskCreateArgs>;
 
 const TaskForm = ({
   onSuccess,
@@ -55,7 +55,10 @@ const TaskForm = ({
               resetForm();
               onSuccess();
             } catch (err) {
-              toast.error(`${t(`Common.save`)} ${t(`ResponseStatus.error`)}`);
+              toast.error(`${t(`Common.save`)} ${t(`ResponseStatus.error`)}`, {
+                description:
+                  err instanceof Error ? err.message : "Unknown error",
+              });
             } finally {
               setIsLoading(false);
               setSubmitting(false);
@@ -65,12 +68,12 @@ const TaskForm = ({
           {({ isSubmitting, errors, touched }) => (
             <Form className="flex items-center gap-4 relative">
               <label htmlFor="name" className="font-medium">
-                {t("TaskPage.Name")}
+                {t("TaskPage.name")}
               </label>
               <Field
                 id="name"
                 name="name"
-                placeholder={t("TaskPage.EnterTaskName")}
+                placeholder={t("TaskPage.enterTaskName")}
                 className="border rounded px-3 py-2"
               />
               {touched.name && errors.name && (

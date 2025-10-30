@@ -3,7 +3,7 @@ import { Edit, Trash2, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 
-type ProjectType = Prisma.ProjectGetPayload<{}>;
+type ProjectType = Prisma.ProjectGetPayload<Prisma.ProjectCreateArgs>;
 
 const ProjectList = ({
   projects,
