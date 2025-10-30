@@ -24,6 +24,7 @@ const ProjectForm = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const t = useTranslations();
+
   return (
     <div className="flex items-center justify-center mt-5">
       <div
@@ -41,7 +42,6 @@ const ProjectForm = ({
           })}
           initialValues={{ name: project ? project.name : "" }}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
-            {t("project_header.TaskName")}
             setIsLoading(true);
             try {
               if (project) {
@@ -91,7 +91,7 @@ const ProjectForm = ({
                   className="bg-red-600 text-white px-4 py-2 rounded cursor-pointer"
                   onClick={() => setProject(null)}
                 >
-                  {t("ProjectPage.canceledit")}
+                  {t("ProjectPage.cancelEdit")}
                 </button>
               )}
             </Form>
