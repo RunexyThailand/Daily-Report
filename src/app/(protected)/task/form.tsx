@@ -83,7 +83,7 @@ const TaskForm = ({
                 disabled={isSubmitting}
                 className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer"
               >
-                 {isSubmitting ? t("Common.saving") : t("Common.save")}
+                {isSubmitting ? t("Common.saving") : t("Common.save")}
               </button>
               {task && (
                 <button
@@ -91,7 +91,7 @@ const TaskForm = ({
                   className="bg-red-600 text-white px-4 py-2 rounded cursor-pointer"
                   onClick={() => setTask(null)}
                 >
-                  {t("TaskPage.Canceledit")}
+                  {t("btn.cancelEdit")}
                 </button>
               )}
             </Form>

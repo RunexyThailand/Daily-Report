@@ -64,5 +64,27 @@
   "ResponseStatus": {
     "success": "Success",
     "error": "Error"
+  },
+  "title_page": {
+    "Task": "Task",
+    "Report": "Report",
+    "Project": "Project"
+  },
+  "project_header": {
+    "TaskName": "Task Name",
+    "TaskList": "Task list",
+    "btnSub": "submit"
+  },
+  "input_phd": {
+    "enterTaskName": "enter task name"
+  },
+  "topbar": {
+    "Task": "  Task",
+    "Report": "Report",
+    "Project": "Project"
+  },
+  "profile_btn": {
+    "profile": "Profile",
+    "logout": "Logout"
   }
 }

@@ -91,7 +91,7 @@ const ProjectForm = ({
                   className="bg-red-600 text-white px-4 py-2 rounded cursor-pointer"
                   onClick={() => setProject(null)}
                 >
-                  {t("ProjectPage.canceledit")}
+                  {t("ProjectPage.cancelEdit")}
                 </button>
               )}
             </Form>

@@ -19,9 +19,7 @@ const TaskList = ({
   const t = useTranslations();
   return (
     <div className="p-6">
-      <h2 className="text-xl font-bold mb-4">
-        {t("TaskPage.List")}
-      </h2>
+      <h2 className="text-xl font-bold mb-4">{t("TaskPage.List")}</h2>
       <ul className="space-y-2">
         {tasks.map((task) => (
           <li
