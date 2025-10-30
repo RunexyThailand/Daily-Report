@@ -129,7 +129,7 @@ export async function createReportService(
 
     const reportDate = DateTime.fromJSDate(input.reportDate)
       .startOf("day")
-      .toUTC()
+      .setZone("UTC", { keepLocalTime: true })
       .toString();
 
     const report = await tx.report.create({

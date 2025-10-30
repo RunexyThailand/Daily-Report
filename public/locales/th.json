@@ -22,16 +22,24 @@
     "allTasksLabel": "ทุกงาน",
     "everyone": "ทุกคน"
   },
+  "projectPage": {
+    "name": "โครงการ",
+    "description": "หน้าแสดงโครงการ",
+    "loading": "กำลังโหลด...",
+    "projectEmpty": "ยังไม่มีโครงการที่สร้างขึ้น"
+  },
   "Validation": {
-    "isRequired": "เป็นสิ่งจำเป็น",
+    "isRequired": "กรุณาระบุ",
     "titleRequired": "กรุณากรอกหัวข้อ",
-    "detailRequired": "จำเป็นต้องกรอกรายละเอียด (หรือแทรกรูปภาพ)"
+    "detailRequired": "จำเป็นต้องกรอกรายละเอียด (หรือแทรกรูปภาพ)",
+    "minLength": "ต้องมีอย่างน้อย 8 ตัวอักษร",
+    "passwordMatch": "โปรดกรอกรหัสผ่านให้ถูกต้อง"
   },
   "Common": {
     "cancel": "ยกเลิก",
     "close": "ปิด",
     "save": "บันทึก",
-    "saving" : "กำลังบันทึก",
+    "saving": "กำลังบันทึก",
     "edit": "แก้ไข",
     "delete": "ลบ",
     "confirm": "ยืนยัน",
@@ -56,7 +64,10 @@
     "task": "งาน / ภารกิจ",
     "languages": "ภาษา",
     "descriptionPlaceholder": "พิมพ์ข้อความที่นี่…",
-    "emptyOption": "ยังไม่มีตัวเลือก"
+    "emptyOption": "ยังไม่มีตัวเลือก",
+    "YourAccount": "บัญชีของคุณ",
+    "Saveprofile": "บันทึก",
+    "Saving": "กำลังบันทึก..."
   },
   "ResponseStatus": {
     "success": "สำเร็จ",
@@ -67,6 +78,6 @@
     "EnterTaskName": "ใส่ชื่องาน",
     "List": "รายการงาน",
     "Canceledit": "ยกเลิกการแก้ไข",
-    "Submit" : "ส่ง"
+    "Submit": "ส่ง"
   }
 }

@@ -24,7 +24,7 @@ const ProfileClient = () => {
               <LoaderCircle className="animate-spin h-12 w-12 text-primary" />
             </div>
           )}
-          <h2 className="text-xl font-bold mb-4">Your Account</h2>
+          <h2 className="text-xl font-bold mb-4">{t("Common.YourAccount")}</h2>
           <Formik
             enableReinitialize={true}
             validationSchema={Yup.object({
@@ -68,12 +68,12 @@ const ProfileClient = () => {
               try {
                 await updateUser(values);
                 toast.success(
-                  `${t(`Common.save`)} ${t(`ResponseStatus.success`)}`,
+                  `${t("Common.save")} ${t("ResponseStatus.success")}`,
                 );
                 window.location.reload();
               } catch (err) {
                 toast.error(
-                  `${t(`Common.save`)} ${t(`ResponseStatus.error`)}`,
+                  `${t("Common.save")} ${t("ResponseStatus.error")}`,
                   {
                     description:
                       err instanceof Error ? err.message : "Unknown error",
@@ -190,7 +190,7 @@ const ProfileClient = () => {
                     disabled={isSubmitting}
                     className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
                   >
-                    {isSubmitting ? "Saving..." : "Save"}
+                    {isSubmitting ? t("Common.Saving") : t("Common.save")}
                   </button>
                 </div>
               </Form>
