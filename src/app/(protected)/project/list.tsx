@@ -3,10 +3,7 @@ import { Edit, Trash2, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 
-
 type ProjectType = Prisma.ProjectGetPayload<{}>;
-
-
 
 const ProjectList = ({
   projects,
@@ -18,8 +15,6 @@ const ProjectList = ({
   onEdit: (project: ProjectType) => void;
   onDelete: (projectId: string) => void;
   toggleActive: (projectId: string, tobe: boolean) => void;
-
-  
 }) => {
   const t = useTranslations();
   return (
