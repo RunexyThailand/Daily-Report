@@ -29,9 +29,11 @@
     "projectEmpty": "ยังไม่มีโครงการที่สร้างขึ้น"
   },
   "Validation": {
-    "isRequired": "is required",
+     "isRequired": "จำเป็น",
     "titleRequired": "กรุณากรอกหัวข้อ",
-    "detailRequired": "จำเป็นต้องกรอกรายละเอียด (หรือแทรกรูปภาพ)"
+    "detailRequired": "จำเป็นต้องกรอกรายละเอียด (หรือแทรกรูปภาพ)",
+    "minLength" : "ต้องมีอย่างน้อย 8 ตัวอักษร",
+    "passwordMatch" : "โปรดกรอกรหัสผ่านให้ถูกต้อง"
   },
   "Common": {
     "cancel": "ยกเลิก",
@@ -61,7 +63,10 @@
     "task": "งาน / ภารกิจ",
     "languages": "ภาษา",
     "descriptionPlaceholder": "พิมพ์ข้อความที่นี่…",
-    "emptyOption": "ยังไม่มีตัวเลือก"
+    "emptyOption": "ยังไม่มีตัวเลือก",
+    "YourAccount": "บัญชีของคุณ",
+    "Saveprofile" : "บันทึก",
+    "Saving" : "กำลังบันทึก..."
   },
   "ResponseStatus": {
     "success": "สำเร็จ",
