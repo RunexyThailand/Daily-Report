@@ -18,7 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { signOut } from "next-auth/react";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Language } from "@prisma/client";
 import { useTranslations } from "next-intl";
 
