@@ -22,7 +22,6 @@ import { use, useEffect, useState } from "react";
 import { Language } from "@prisma/client";
 import { useTranslations } from "next-intl";
 
-
 export function Topbar({ className }: { className?: string }) {
   const [locale, setLocale] = useState<Language>("en");
   const router = useRouter();
@@ -126,7 +125,8 @@ export function Topbar({ className }: { className?: string }) {
                   : "text-white hover:text-black",
                 "hover:bg-gray-200",
               )}
-            > {t("topbar.Task")}
+            >
+              {t("topbar.Task")}
             </NavLink>
           </nav>
           <Separator
@@ -196,9 +196,7 @@ export function Topbar({ className }: { className?: string }) {
 
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuItem asChild>
-                <NavLink href="/profile">
-                {t("profile_btn.profile")}
-                </NavLink>
+                <NavLink href="/profile">{t("profile_btn.profile")}</NavLink>
               </DropdownMenuItem>
               {/* <DropdownMenuItem asChild>
                 <NavLink href="/report">Report</NavLink>

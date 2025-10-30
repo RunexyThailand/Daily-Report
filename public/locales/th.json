@@ -23,7 +23,7 @@
     "everyone": "ทุกคน"
   },
   "Validation": {
-    "isRequired": "กรุณากรอกหัวข้อ",
+    "isRequired": "is required",
     "titleRequired": "กรุณากรอกหัวข้อ",
     "detailRequired": "จำเป็นต้องกรอกรายละเอียด (หรือแทรกรูปภาพ)"
   },
@@ -61,27 +61,23 @@
     "success": "สำเร็จ",
     "error": "ข้อผิดพลาด"
   },
-"title_page": {
-    "Task" : "งาน",
-    "Report" : "รายงาน",
-    "Project" : "โปรเจกต์"
+  "title_page": {
+    "Task": "งาน",
+    "Report": "รายงาน",
+    "Project": "โปรเจกต์"
   },
   "project_header": {
-    "TaskName" : "ชื่องาน",
+    "TaskName": "ชื่องาน",
     "TaskList": "รายการงาน",
-    "btnSub":"ตกลง"
+    "btnSub": "ตกลง"
   },
   "input_phd": {
-    "enterTaskName" : "กรอกชื่องาน"
-  },
-  "btn": {
-    "btnSubmit": "ตกลง",
-    "cancelEdit": "ยกเลิกการแก้ไข"
+    "enterTaskName": "กรอกชื่องาน"
   },
   "topbar": {
-    "Task" : "  งาน",
-    "Report" : "รายงาน",
-    "Project" : "โปรเจกต์"
+    "Task": "  งาน",
+    "Report": "รายงาน",
+    "Project": "โปรเจกต์"
   },
   "profile_btn": {
     "profile": "โปรไฟล์",
