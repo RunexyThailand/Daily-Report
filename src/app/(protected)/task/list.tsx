@@ -16,13 +16,10 @@ const TaskList = ({
   onDelete: (taskId: string) => void;
   toggleActive: (taskId: string, tobe: boolean) => void;
 }) => {
-   const t = useTranslations();
-
+  const t = useTranslations();
   return (
     <div className="p-6">
-      <h2 className="text-xl font-bold mb-4">
-      {t("project_header.TaskList")}
-      </h2>
+      <h2 className="text-xl font-bold mb-4">{t("TaskPage.List")}</h2>
       <ul className="space-y-2">
         {tasks.map((task) => (
           <li
