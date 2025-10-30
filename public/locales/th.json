@@ -61,28 +61,30 @@
     "success": "สำเร็จ",
     "error": "ข้อผิดพลาด"
   },
-  "project": {
-  
-},
-"project-header": {
-    "Task-Name" : "ชื่องาน",
-    "Task-List": "รายการงาน",
-    "btn-sub":"ส่ง"
-  },
-  "input-phd": {
-    "enter-task-Name" : "กรุณาใส่ชื่องาน"
-  },
-  "btn": {
-    "btn-submit": "ตกลง",
-    "cancel-edit": "ยกเลิกการแก้ไข"
-  },
-  "topbar": {
+"title_page": {
     "Task" : "งาน",
     "Report" : "รายงาน",
     "Project" : "โปรเจกต์"
   },
-  "profile-btn": {
+  "project_header": {
+    "TaskName" : "ชื่องาน",
+    "TaskList": "รายการงาน",
+    "btnSub":"ตกลง"
+  },
+  "input_phd": {
+    "enterTaskName" : "กรอกชื่องาน"
+  },
+  "btn": {
+    "btnSubmit": "ตกลง",
+    "cancelEdit": "ยกเลิกการแก้ไข"
+  },
+  "topbar": {
+    "Task" : "  งาน",
+    "Report" : "รายงาน",
+    "Project" : "โปรเจกต์"
+  },
+  "profile_btn": {
     "profile": "โปรไฟล์",
-    "logout": "ลออกจากระบบ"
+    "logout": "ออกจากระบบ"
   }
 }

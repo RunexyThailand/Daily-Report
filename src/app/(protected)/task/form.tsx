@@ -27,9 +27,7 @@ const TaskForm = ({
 
   return (
     <div className="flex items-center justify-center mt-5">
-      <div
-        className={`p-8 rounded shadow-md w-[75vw] relative transition-colors ${flash ? "bg-yellow-200/60 animate-pulse" : "bg-white"}`}
-      >
+      <div className={`p-8 rounded shadow-md w-[75vw] relative transition-colors ${flash ? "bg-yellow-200/60 animate-pulse" : "bg-white"}`}>
         {isLoading && (
           <div className="absolute inset-0 z-[100] flex items-center justify-center bg-white/70">
             <LoaderCircle className="animate-spin h-12 w-12 text-primary" />
@@ -65,13 +63,12 @@ const TaskForm = ({
           {({ isSubmitting, errors, touched }) => (
             <Form className="flex items-center gap-4 relative">
               <label htmlFor="name" className="font-medium">
-               
-                {t("project-header.Task-Name")}
+                {t("project_header.TaskName")}
               </label>
               <Field
                 id="name"
                 name="name"
-                placeholder= {t("input-phd.enter-task-Name")}
+                placeholder= {t("input_phd.enterTaskName")}
                 className="border rounded px-3 py-2"
               />
               {touched.name && errors.name && (
@@ -82,18 +79,15 @@ const TaskForm = ({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer"
-              >
-                {t("btn.btn-submit")}
-                {isSubmitting ? "Submitting..." : ""}
+                className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer">
+                {isSubmitting ? t("Common.loading") : t("Common.save")} 
               </button>
               {task && (
                 <button
                   type="button"
                   className="bg-red-600 text-white px-4 py-2 rounded cursor-pointer"
-                  onClick={() => setTask(null)}
-                >
-                  {t("btn.cancel-edit")}
+                  onClick={() => setTask(null)}>
+                  {t("btn.cancelEdit")}
                 </button>
               )}
             </Form>

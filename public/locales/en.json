@@ -61,29 +61,28 @@
     "success": "Success",
     "error": "Error"
   },
-  "title-page": {
+  "title_page": {
     "Task" : "Task",
     "Report" : "Report",
     "Project" : "Project"
   },
-  "project-header": {
-    "Task-Name" : "Task Name",
-    "Task-List": "Task list",
-    "btn-sub":"submit"
+  "project_header": {
+    "TaskName" : "Task Name",
+    "TaskList": "Task list",
+    "btnSub":"submit"
   },
-  "input-phd": {
-    "enter-task-Name" : "enter task name"
+  "input_phd": {
+    "enterTaskName" : "enter task name"
   },
   "btn": {
-    "btn-submit": "submit",
-    "cancel-edit": "Calcel edit"
+    "btnSubmit": "submit"
   },
   "topbar": {
     "Task" : "  Task",
     "Report" : "Report",
     "Project" : "Project"
   },
-  "profile-btn": {
+  "profile_btn": {
     "profile": "Profile",
     "logout": "Logout"
   }

@@ -21,7 +21,7 @@ const TaskList = ({
   return (
     <div className="p-6">
       <h2 className="text-xl font-bold mb-4">
-      {t("project-header.Task-List")}
+      {t("project_header.TaskList")}
       </h2>
       <ul className="space-y-2">
         {tasks.map((task) => (
