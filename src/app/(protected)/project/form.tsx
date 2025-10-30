@@ -66,7 +66,6 @@ const ProjectForm = ({
             <Form className="flex items-center gap-4 relative">
               <label htmlFor="name" className="font-medium">
                 {t("projectPage.name")}
-            
               </label>
               <Field
                 id="name"
