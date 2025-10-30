@@ -125,6 +125,7 @@ export default function ReportClient({
                       <ReportCard
                         creatorId={report.created_by}
                         translates={report.translates}
+                        reportDate={report.report_date}
                         lang={currentLang}
                         reportId={report.report_id}
                         key={report.report_id}
@@ -182,7 +183,6 @@ export default function ReportClient({
         onClose={() => setShowConfirmDialog(false)}
         onConfirm={() => {
           handleDelete(reportId as string);
-          // setShowConfirmDialog(false);
         }}
       />
     </>
