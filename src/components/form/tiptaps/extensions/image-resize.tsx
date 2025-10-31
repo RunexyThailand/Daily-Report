@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Image from "@tiptap/extension-image";
+import NextImage from "next/image";
 import {
   ReactNodeViewRenderer,
   type NodeViewProps,
@@ -159,7 +160,7 @@ function ResizableImageInlineView({
       className={wrapperClass}
       contentEditable={false}
     >
-      <img
+      <NextImage
         ref={imgRef}
         src={node.attrs.src}
         alt={node.attrs.alt || ""}

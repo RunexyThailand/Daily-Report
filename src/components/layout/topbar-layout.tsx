@@ -20,12 +20,15 @@ import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Language } from "@prisma/client";
+import { useTranslations } from "next-intl";
 
 export function Topbar({ className }: { className?: string }) {
   const [locale, setLocale] = useState<Language>("en");
   const router = useRouter();
   // const { toggleSidebar } = useLayout();
   const pathname = usePathname();
+
+  const t = useTranslations();
 
   // helper: เช็ค active
   const isActive = (href: string) =>
@@ -51,6 +54,7 @@ export function Topbar({ className }: { className?: string }) {
     document.cookie = `NEXT_LOCALE=${lng};`;
     router.refresh();
   };
+
   return (
     <header className={cn("sticky top-0 z-40 w-full bg-[#234868]", className)}>
       <div className="flex justify-between items-center">
@@ -90,7 +94,7 @@ export function Topbar({ className }: { className?: string }) {
                 "hover:bg-gray-200",
               )}
             >
-              Report
+              {t("Common.report")}
             </NavLink>
             {/* <NavLink
               href="/calendar"
@@ -112,7 +116,7 @@ export function Topbar({ className }: { className?: string }) {
                 "hover:bg-gray-200",
               )}
             >
-              Project
+              {t("Common.project")}
             </NavLink>
             <NavLink
               href="/task"
@@ -123,7 +127,7 @@ export function Topbar({ className }: { className?: string }) {
                 "hover:bg-gray-200",
               )}
             >
-              Task
+              {t("Common.task")}
             </NavLink>
           </nav>
           <Separator
@@ -193,7 +197,7 @@ export function Topbar({ className }: { className?: string }) {
 
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuItem asChild>
-                <NavLink href="/profile">Profile</NavLink>
+                <NavLink href="/profile">{t("TopBar.profile")}</NavLink>
               </DropdownMenuItem>
               {/* <DropdownMenuItem asChild>
                 <NavLink href="/report">Report</NavLink>
@@ -206,7 +210,7 @@ export function Topbar({ className }: { className?: string }) {
                 onClick={() => signOut({ callbackUrl: "/login" })}
                 className="text-destructive focus:text-destructive"
               >
-                Logout
+                {t("TopBar.logout")}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

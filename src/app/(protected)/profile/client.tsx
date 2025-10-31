@@ -24,7 +24,7 @@ const ProfileClient = () => {
               <LoaderCircle className="animate-spin h-12 w-12 text-primary" />
             </div>
           )}
-          <h2 className="text-xl font-bold mb-4">Your Account</h2>
+          <h2 className="text-xl font-bold mb-4">{t("Common.yourAccount")}</h2>
           <Formik
             enableReinitialize={true}
             validationSchema={Yup.object({
@@ -68,12 +68,12 @@ const ProfileClient = () => {
               try {
                 await updateUser(values);
                 toast.success(
-                  `${t(`Common.save`)} ${t(`ResponseStatus.success`)}`,
+                  `${t("Common.save")} ${t("ResponseStatus.success")}`,
                 );
                 window.location.reload();
               } catch (err) {
                 toast.error(
-                  `${t(`Common.save`)} ${t(`ResponseStatus.error`)}`,
+                  `${t("Common.save")} ${t("ResponseStatus.error")}`,
                   {
                     description:
                       err instanceof Error ? err.message : "Unknown error",
@@ -90,7 +90,7 @@ const ProfileClient = () => {
                 {/* Each field on its own line, width 75% of the card */}
                 <div className="w-3/4">
                   <label className="block text-sm font-medium mb-1">
-                    Email
+                    {t("ProfilePage.email")}
                   </label>
                   <Field
                     disabled
@@ -102,18 +102,16 @@ const ProfileClient = () => {
                 </div>
 
                 <div className="w-3/4">
-                  <label className="block text-sm font-medium mb-1">Name</label>
-                  <Field name="name">
-                    {({ field }: any) => (
-                      <input
-                        {...field}
-                        type="text"
-                        className="w-full border rounded px-3 py-2 disabled:bg-gray-100"
-                        placeholder="Your name"
-                        disabled={status === "loading"}
-                      />
-                    )}
-                  </Field>
+                  <label className="block text-sm font-medium mb-1">
+                    {t("ProfilePage.name")}
+                  </label>
+                  <Field
+                    name="name"
+                    type="text"
+                    className="w-full border rounded px-3 py-2 disabled:bg-gray-100"
+                    placeholder={t("ProfilePage.yourName")}
+                    disabled={status === "loading"}
+                  />
                   {errors.name && touched.name && (
                     <div className="text-sm text-red-600 mt-1">
                       {errors.name}
@@ -123,18 +121,14 @@ const ProfileClient = () => {
 
                 <div className="w-3/4">
                   <label className="block text-sm font-medium mb-1">
-                    Current Password
+                    {t("ProfilePage.currentPassword")}
                   </label>
-                  <Field name="currentPassword">
-                    {({ field }: any) => (
-                      <input
-                        {...field}
-                        type="password"
-                        className="w-full border rounded px-3 py-2"
-                        placeholder="Current password"
-                      />
-                    )}
-                  </Field>
+                  <Field
+                    name="currentPassword"
+                    type="password"
+                    className="w-full border rounded px-3 py-2"
+                    placeholder={t("ProfilePage.currentPassword")}
+                  />
                   {errors.currentPassword && touched.currentPassword && (
                     <div className="text-sm text-red-600 mt-1">
                       {errors.currentPassword}
@@ -144,18 +138,14 @@ const ProfileClient = () => {
 
                 <div className="w-3/4">
                   <label className="block text-sm font-medium mb-1">
-                    New Password
+                    {t("ProfilePage.newPassword")}
                   </label>
-                  <Field name="newPassword">
-                    {({ field }: any) => (
-                      <input
-                        {...field}
-                        type="password"
-                        className="w-full border rounded px-3 py-2"
-                        placeholder="New password"
-                      />
-                    )}
-                  </Field>
+                  <Field
+                    name="newPassword"
+                    type="password"
+                    className="w-full border rounded px-3 py-2"
+                    placeholder={t("ProfilePage.newPassword")}
+                  />
                   {errors.newPassword && touched.newPassword && (
                     <div className="text-sm text-red-600 mt-1">
                       {errors.newPassword}
@@ -165,18 +155,15 @@ const ProfileClient = () => {
 
                 <div className="w-3/4">
                   <label className="block text-sm font-medium mb-1">
-                    Confirm New Password
+                    {t("ProfilePage.confirmNewPassword")}
                   </label>
-                  <Field name="confirmPassword">
-                    {({ field }: any) => (
-                      <input
-                        {...field}
-                        type="password"
-                        className="w-full border rounded px-3 py-2"
-                        placeholder="Confirm new password"
-                      />
-                    )}
-                  </Field>
+                  <Field
+                    name="confirmPassword"
+                    type="password"
+                    className="w-full border rounded px-3 py-2"
+                    placeholder={t("ProfilePage.confirmNewPassword")}
+                  />
+
                   {errors.confirmPassword && touched.confirmPassword && (
                     <div className="text-sm text-red-600 mt-1">
                       {errors.confirmPassword}
@@ -190,7 +177,7 @@ const ProfileClient = () => {
                     disabled={isSubmitting}
                     className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
                   >
-                    {isSubmitting ? "Saving..." : "Save"}
+                    {isSubmitting ? t("Common.saving") : t("Common.save")}
                   </button>
                 </div>
               </Form>

@@ -8,8 +8,9 @@ import { Prisma } from "@prisma/client";
 import DialogConfirm from "@/components/dialog/dialog-confirm";
 import { toast } from "sonner";
 import { LoaderCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 
-type ProjectType = Prisma.ProjectGetPayload<{}>;
+type ProjectType = Prisma.ProjectGetPayload<Prisma.ProjectCreateArgs>;
 
 const ProjectClient = () => {
   const {
@@ -17,6 +18,7 @@ const ProjectClient = () => {
     refetch,
     isFetching,
   } = trpc.getProjects.useQuery({ onlyActive: false });
+  const t = useTranslations();
   const [flash, setFlash] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [projectId, setProjectId] = useState<string>("");
@@ -31,8 +33,10 @@ const ProjectClient = () => {
       await deleteProject(projectId);
       toast.success("Project deleted successfully");
       await refetch();
-    } catch (error) {
-      toast.error("Error deleting project");
+    } catch (err) {
+      toast.error(`${t(`Common.delete`)} ${t(`ResponseStatus.error`)}`, {
+        description: err instanceof Error ? err.message : "Unknown error",
+      });
     } finally {
       setIsLoading(false);
       setShowConfirm(false);
@@ -46,7 +50,9 @@ const ProjectClient = () => {
       setSelectedProject(project);
       setTimeout(() => setFlash(false), 800);
     } catch (err) {
-      toast.error("Error updating project");
+      toast.error(`${t(`Common.update`)} ${t(`ResponseStatus.error`)}`, {
+        description: err instanceof Error ? err.message : "Unknown error",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -57,8 +63,10 @@ const ProjectClient = () => {
       setIsLoading(true);
       await updateProject({ id: projectId, is_active: tobe });
       await refetch();
-    } catch (error) {
-      toast.error("Error updating project");
+    } catch (err) {
+      toast.error(`${t(`Common.update`)} ${t(`ResponseStatus.error`)}`, {
+        description: err instanceof Error ? err.message : "Unknown error",
+      });
     } finally {
       setIsLoading(false);
     }

@@ -4,12 +4,12 @@ import { createProject, updateProject } from "@/actions/project";
 import { Formik, Form, Field } from "formik";
 import { LoaderCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import * as Yup from "yup";
 import { Prisma } from "@prisma/client";
 
-type ProjectType = Prisma.ProjectGetPayload<{}>;
+type ProjectType = Prisma.ProjectGetPayload<Prisma.ProjectCreateArgs>;
 
 const ProjectForm = ({
   onSuccess,
@@ -55,7 +55,10 @@ const ProjectForm = ({
               resetForm();
               onSuccess();
             } catch (err) {
-              toast.error(`${t(`Common.save`)} ${t(`ResponseStatus.error`)}`);
+              toast.error(`${t(`Common.save`)} ${t(`ResponseStatus.error`)}`, {
+                description:
+                  err instanceof Error ? err.message : "Unknown error",
+              });
             } finally {
               setIsLoading(false);
               setSubmitting(false);
@@ -65,12 +68,12 @@ const ProjectForm = ({
           {({ isSubmitting, errors, touched }) => (
             <Form className="flex items-center gap-4 relative">
               <label htmlFor="name" className="font-medium">
-                Project Name
+                {t("ProjectPage.name")}
               </label>
               <Field
                 id="name"
                 name="name"
-                placeholder="Enter project name"
+                placeholder={t("ProjectPage.enterProjectName")}
                 className="border rounded px-3 py-2"
               />
               {touched.name && errors.name && (
@@ -83,7 +86,7 @@ const ProjectForm = ({
                 disabled={isSubmitting}
                 className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer"
               >
-                {isSubmitting ? "Submitting..." : "Submit"}
+                {isSubmitting ? t("Common.saving") : t("Common.save")}
               </button>
               {project && (
                 <button
@@ -91,7 +94,7 @@ const ProjectForm = ({
                   className="bg-red-600 text-white px-4 py-2 rounded cursor-pointer"
                   onClick={() => setProject(null)}
                 >
-                  Cancel edit
+                  {t("Common.cancelEdit")}
                 </button>
               )}
             </Form>

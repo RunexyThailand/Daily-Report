@@ -8,8 +8,9 @@ import { toast } from "sonner";
 import { LoaderCircle } from "lucide-react";
 import TaskList from "./list";
 import TaskForm from "./form";
+import { useTranslations } from "next-intl";
 
-type TaskType = Prisma.TaskGetPayload<{}>;
+type TaskType = Prisma.TaskGetPayload<Prisma.TaskCreateArgs>;
 
 const TaskClient = () => {
   const {
@@ -22,6 +23,7 @@ const TaskClient = () => {
   const [taskId, setTaskId] = useState<string>("");
   const [selectedTask, setSelectedTask] = useState<TaskType | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const t = useTranslations();
 
   const handleDelete = async (taskId: string) => {
     setIsLoading(true);
@@ -29,8 +31,10 @@ const TaskClient = () => {
       await deleteTask(taskId);
       toast.success("Task deleted successfully");
       await refetch();
-    } catch (error) {
-      toast.error("Error deleting task");
+    } catch (err) {
+      toast.error(`${t(`Common.delete`)} ${t(`ResponseStatus.error`)}`, {
+        description: err instanceof Error ? err.message : "Unknown error",
+      });
     } finally {
       setIsLoading(false);
       setShowConfirm(false);
@@ -44,7 +48,9 @@ const TaskClient = () => {
       setSelectedTask(task);
       setTimeout(() => setFlash(false), 800);
     } catch (err) {
-      toast.error("Error updating task");
+      toast.error(`${t(`Common.update`)} ${t(`ResponseStatus.error`)}`, {
+        description: err instanceof Error ? err.message : "Unknown error",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -55,8 +61,10 @@ const TaskClient = () => {
       setIsLoading(true);
       await updateTask({ id: taskId, is_active: tobe });
       await refetch();
-    } catch (error) {
-      toast.error("Error updating task");
+    } catch (err) {
+      toast.error(`${t(`Common.update`)} ${t(`ResponseStatus.error`)}`, {
+        description: err instanceof Error ? err.message : "Unknown error",
+      });
     } finally {
       setIsLoading(false);
     }
