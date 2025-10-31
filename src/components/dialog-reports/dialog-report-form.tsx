@@ -67,7 +67,7 @@ const DialogReportForm = ({
         [result.source.languageCode]: result.original.description,
       });
     }
-  }, [isTranslating, formik, result]);
+  }, [isTranslating]);
 
   useEffect(checkTranslationDiable, [
     formik.values.title.default,
