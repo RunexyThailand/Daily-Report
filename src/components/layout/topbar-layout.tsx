@@ -197,7 +197,7 @@ export function Topbar({ className }: { className?: string }) {
 
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuItem asChild>
-                <NavLink href="/profile">{t("profile_btn.profile")}</NavLink>
+                <NavLink href="/profile">{t("TopBar.profile")}</NavLink>
               </DropdownMenuItem>
               {/* <DropdownMenuItem asChild>
                 <NavLink href="/report">Report</NavLink>
@@ -210,7 +210,7 @@ export function Topbar({ className }: { className?: string }) {
                 onClick={() => signOut({ callbackUrl: "/login" })}
                 className="text-destructive focus:text-destructive"
               >
-                {t("profile_btn.logout")}
+                {t("TopBar.logout")}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

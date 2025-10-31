@@ -7,8 +7,7 @@
     "invalidEmailFormat": "無効なメール形式",
     "emailRequired": "メールは必須です",
     "passwordRequired": "パスワードは必須です",
-    "InvalidCredentials": "無効なメールまたはパスワード",
-    "YourAccount": "あなたのアカウント"
+    "InvalidCredentials": "無効なメールまたはパスワード"
   },
   "DailyReportPage": {
     "title": "日次報告",
@@ -59,31 +58,19 @@
     "task": "タスク",
     "languages": "言語",
     "descriptionPlaceholder": "ここにメッセージを入力してください…",
-    "emptyOption": "空のオプション"
+    "emptyOption": "空のオプション",
+    "report": "報告",
+    "cancelEdit": "編集をキャンセル",
+    "yourAccount": "あなたのアカウント"
   },
   "ResponseStatus": {
     "success": "成功",
     "error": "エラー"
   },
-  "title_page": {
-    "Task": "タスク",
-    "Report": "報告",
-    "Project": "プロジェクト"
-  },
-  "project_header": {
-    "TaskName": "タスク名",
-    "TaskList": "タスクリスト",
-    "btnSub": "提出する"
-  },
-  "input_phd": {
-    "enterTaskName": "タスク名を入力"
-  },
-  "topbar": {
-    "Task": "  タスク",
-    "Report": "報告",
-    "Project": "プロジェクト"
-  },
-  "profile_btn": {
+  "TopBar": {
+    "task": "  タスク",
+    "report": "報告",
+    "project": "プロジェクト",
     "profile": "プロフィール",
     "logout": "ログアウト"
   },
@@ -98,5 +85,18 @@
     "profile": "プロフィール",
     "logout": "ログアウト",
     "submitting": "送信中..."
+  },
+  "TaskPage": {
+    "name": "タスク名",
+    "enterTaskName": "タスク名を入力してください",
+    "list": "タスクリスト"
+  },
+  "ProfilePage": {
+    "name": "名前",
+    "yourName": "あなたの名前",
+    "email": "メール",
+    "currentPassword": "現在のパスワード",
+    "newPassword": "新しいパスワード",
+    "confirmNewPassword": "新しいパスワードを確認"
   }
 }

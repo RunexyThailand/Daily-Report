@@ -78,7 +78,7 @@ const DialogReportForm = ({
     return () => {
       formik.resetForm();
     };
-  }, [formik]);
+  }, []);
 
   return (
     <Form className="flex-col space-y-4">

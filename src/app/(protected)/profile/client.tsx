@@ -24,7 +24,7 @@ const ProfileClient = () => {
               <LoaderCircle className="animate-spin h-12 w-12 text-primary" />
             </div>
           )}
-          <h2 className="text-xl font-bold mb-4">{t("Common.YourAccount")}</h2>
+          <h2 className="text-xl font-bold mb-4">{t("Common.yourAccount")}</h2>
           <Formik
             enableReinitialize={true}
             validationSchema={Yup.object({
@@ -90,7 +90,7 @@ const ProfileClient = () => {
                 {/* Each field on its own line, width 75% of the card */}
                 <div className="w-3/4">
                   <label className="block text-sm font-medium mb-1">
-                    Email
+                    {t("ProfilePage.email")}
                   </label>
                   <Field
                     disabled
@@ -102,12 +102,14 @@ const ProfileClient = () => {
                 </div>
 
                 <div className="w-3/4">
-                  <label className="block text-sm font-medium mb-1">Name</label>
+                  <label className="block text-sm font-medium mb-1">
+                    {t("ProfilePage.name")}
+                  </label>
                   <Field
                     name="name"
                     type="text"
                     className="w-full border rounded px-3 py-2 disabled:bg-gray-100"
-                    placeholder="Your name"
+                    placeholder={t("ProfilePage.yourName")}
                     disabled={status === "loading"}
                   />
                   {errors.name && touched.name && (
@@ -119,13 +121,13 @@ const ProfileClient = () => {
 
                 <div className="w-3/4">
                   <label className="block text-sm font-medium mb-1">
-                    Current Password
+                    {t("ProfilePage.currentPassword")}
                   </label>
                   <Field
                     name="currentPassword"
                     type="password"
                     className="w-full border rounded px-3 py-2"
-                    placeholder="Current password"
+                    placeholder={t("ProfilePage.currentPassword")}
                   />
                   {errors.currentPassword && touched.currentPassword && (
                     <div className="text-sm text-red-600 mt-1">
@@ -136,13 +138,13 @@ const ProfileClient = () => {
 
                 <div className="w-3/4">
                   <label className="block text-sm font-medium mb-1">
-                    New Password
+                    {t("ProfilePage.newPassword")}
                   </label>
                   <Field
                     name="newPassword"
                     type="password"
                     className="w-full border rounded px-3 py-2"
-                    placeholder="New password"
+                    placeholder={t("ProfilePage.newPassword")}
                   />
                   {errors.newPassword && touched.newPassword && (
                     <div className="text-sm text-red-600 mt-1">
@@ -153,13 +155,13 @@ const ProfileClient = () => {
 
                 <div className="w-3/4">
                   <label className="block text-sm font-medium mb-1">
-                    Confirm New Password
+                    {t("ProfilePage.confirmNewPassword")}
                   </label>
                   <Field
                     name="confirmPassword"
                     type="password"
                     className="w-full border rounded px-3 py-2"
-                    placeholder="Confirm new password"
+                    placeholder={t("ProfilePage.confirmNewPassword")}
                   />
 
                   {errors.confirmPassword && touched.confirmPassword && (

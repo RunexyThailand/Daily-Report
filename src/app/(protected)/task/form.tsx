@@ -94,7 +94,7 @@ const TaskForm = ({
                   className="bg-red-600 text-white px-4 py-2 rounded cursor-pointer"
                   onClick={() => setTask(null)}
                 >
-                  {t("btn.cancelEdit")}
+                  {t("Common.cancelEdit")}
                 </button>
               )}
             </Form>

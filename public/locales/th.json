@@ -68,41 +68,32 @@
     "languages": "ภาษา",
     "descriptionPlaceholder": "พิมพ์ข้อความที่นี่…",
     "emptyOption": "ยังไม่มีตัวเลือก",
-    "YourAccount": "บัญชีของคุณ",
-    "Saveprofile": "บันทึก",
-    "Saving": "กำลังบันทึก..."
+    "yourAccount": "บัญชีของคุณ",
+    "report": "รายงาน",
+    "cancelEdit": "ยกเลิกการแก้ไข"
   },
   "ResponseStatus": {
     "success": "สำเร็จ",
     "error": "ข้อผิดพลาด"
   },
-  "title_page": {
-    "Task": "งาน",
-    "Report": "รายงาน",
-    "Project": "โปรเจกต์"
-  },
-  "project_header": {
-    "TaskName": "ชื่องาน",
-    "TaskList": "รายการงาน",
-    "btnSub": "ตกลง"
-  },
-  "input_phd": {
-    "enterTaskName": "กรอกชื่องาน"
-  },
-  "topbar": {
-    "Task": "  งาน",
-    "Report": "รายงาน",
-    "Project": "โปรเจกต์"
-  },
-  "profile_btn": {
+  "TopBar": {
+    "task": "  งาน",
+    "report": "รายงาน",
+    "project": "โปรเจกต์",
     "profile": "โปรไฟล์",
     "logout": "ออกจากระบบ"
   },
   "TaskPage": {
-    "Name": "ชื่องาน",
-    "EnterTaskName": "ใส่ชื่องาน",
-    "List": "รายการงาน",
-    "cancelEdit": "ยกเลิกการแก้ไข",
-    "Submit": "ส่ง"
+    "name": "ชื่องาน",
+    "enterTaskName": "ใส่ชื่องาน",
+    "list": "รายการงาน"
+  },
+  "ProfilePage": {
+    "name": "ชื่อ",
+    "yourName": "ชื่อของคุณ",
+    "email": "อีเมล",
+    "currentPassword": "รหัสผ่านปัจจุบัน",
+    "newPassword": "รหัสผ่านใหม่",
+    "confirmNewPassword": "ยืนยันรหัสผ่านใหม่"
   }
 }

@@ -59,33 +59,19 @@
     "languages": "Languages",
     "descriptionPlaceholder": "Type your message here…",
     "emptyOption": "Empty option",
-    "YourAccount": "Your Account",
+    "yourAccount": "Your Account",
     "saving": "Saving...",
-    "cancelEdit": "Cancel Edit"
+    "cancelEdit": "Cancel Edit",
+    "name": "Name"
   },
   "ResponseStatus": {
     "success": "Success",
     "error": "Error"
   },
-  "title_page": {
-    "Task": "Task",
-    "Report": "Report",
-    "Project": "Project"
-  },
-  "project_header": {
-    "TaskName": "Task Name",
-    "TaskList": "Task list",
-    "btnSub": "submit"
-  },
-  "input_phd": {
-    "enterTaskName": "enter task name"
-  },
-  "topbar": {
-    "Task": "  Task",
-    "Report": "Report",
-    "Project": "Project"
-  },
-  "profile_btn": {
+  "TopBar": {
+    "task": "Task",
+    "report": "Report",
+    "project": "Project",
     "profile": "Profile",
     "logout": "Logout"
   },
@@ -98,5 +84,13 @@
     "name": "Task name",
     "enterTaskName": "enter task name",
     "list": "Task list"
+  },
+  "ProfilePage": {
+    "name": "Name",
+    "yourName": "Your Name",
+    "email": "Email",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password"
   }
 }
