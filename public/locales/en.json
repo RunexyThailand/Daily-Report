@@ -25,7 +25,9 @@
   "Validation": {
     "isRequired": "is required",
     "titleRequired": "Title is required",
-    "detailRequired": "Detail is required (or insert an image)."
+    "detailRequired": "Detail is required (or insert an image).",
+    "minLength": "Please enter at least 8 characters.",
+    "passwordMatch": "Please enter the correct password"
   },
   "Common": {
     "cancel": "Cancel",
@@ -53,12 +55,42 @@
     "Confirm_description": "Are you sure you want to proceed with this action?",
     "project": "Project",
     "task": "Task",
+    "report": "Report",
     "languages": "Languages",
     "descriptionPlaceholder": "Type your message here…",
-    "emptyOption": "Empty option"
+    "emptyOption": "Empty option",
+    "yourAccount": "Your Account",
+    "saving": "Saving...",
+    "cancelEdit": "Cancel Edit",
+    "name": "Name"
   },
   "ResponseStatus": {
     "success": "Success",
     "error": "Error"
+  },
+  "TopBar": {
+    "task": "Task",
+    "report": "Report",
+    "project": "Project",
+    "profile": "Profile",
+    "logout": "Logout"
+  },
+  "ProjectPage": {
+    "name": "Project name",
+    "list": "Project list",
+    "enterProjectName": "enter project name"
+  },
+  "TaskPage": {
+    "name": "Task name",
+    "enterTaskName": "enter task name",
+    "list": "Task list"
+  },
+  "ProfilePage": {
+    "name": "Name",
+    "yourName": "Your Name",
+    "email": "Email",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password"
   }
 }

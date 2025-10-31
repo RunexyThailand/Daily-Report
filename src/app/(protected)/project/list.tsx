@@ -1,8 +1,9 @@
 import { Prisma } from "@prisma/client";
 import { Edit, Trash2, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 
-type ProjectType = Prisma.ProjectGetPayload<{}>;
+type ProjectType = Prisma.ProjectGetPayload<Prisma.ProjectCreateArgs>;
 
 const ProjectList = ({
   projects,
@@ -15,9 +16,10 @@ const ProjectList = ({
   onDelete: (projectId: string) => void;
   toggleActive: (projectId: string, tobe: boolean) => void;
 }) => {
+  const t = useTranslations();
   return (
     <div className="p-6">
-      <h2 className="text-xl font-bold mb-4">Project List</h2>
+      <h2 className="text-xl font-bold mb-4">{t("ProjectPage.list")}</h2>
       <ul className="space-y-2">
         {projects.map((project) => (
           <li

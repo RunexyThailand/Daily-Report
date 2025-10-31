@@ -21,7 +21,7 @@ import { z } from "zod";
 
 const LanguageSchema = z.enum(["ja", "en", "th"]);
 
-export default ({
+const DialogReportForm = ({
   mode,
   projects,
   tasks,
@@ -67,7 +67,7 @@ export default ({
         [result.source.languageCode]: result.original.description,
       });
     }
-  }, [isTranslating]);
+  }, [isTranslating, formik, result]);
 
   useEffect(checkTranslationDiable, [
     formik.values.title.default,
@@ -322,3 +322,5 @@ export default ({
     </Form>
   );
 };
+
+export default DialogReportForm;

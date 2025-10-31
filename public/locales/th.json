@@ -7,7 +7,8 @@
     "invalidEmailFormat": "รูปแบบอีเมลไม่ถูกต้อง",
     "emailRequired": "ต้องกรอกอีเมล",
     "passwordRequired": "ต้องกรอกรหัสผ่าน",
-    "InvalidCredentials": "อีเมลหรือรหัสผ่านไม่ถูกต้อง"
+    "InvalidCredentials": "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
+    "logout": "ออกจากระบบ"
   },
   "DailyReportPage": {
     "title": "รายงานประจำวัน",
@@ -22,15 +23,26 @@
     "allTasksLabel": "ทุกงาน",
     "everyone": "ทุกคน"
   },
+  "ProjectPage": {
+    "name": "ชื่อโครงการ",
+    "list": "รายการโครงการ",
+    "description": "หน้าแสดงโครงการ",
+    "loading": "กำลังโหลด...",
+    "projectEmpty": "ยังไม่มีโครงการที่สร้างขึ้น",
+    "enterProjectName": "ระบุชื่อโครงการ"
+  },
   "Validation": {
-    "isRequired": "is required",
+    "isRequired": "กรุณาระบุ",
     "titleRequired": "กรุณากรอกหัวข้อ",
-    "detailRequired": "จำเป็นต้องกรอกรายละเอียด (หรือแทรกรูปภาพ)"
+    "detailRequired": "จำเป็นต้องกรอกรายละเอียด (หรือแทรกรูปภาพ)",
+    "minLength": "ต้องมีอย่างน้อย 8 ตัวอักษร",
+    "passwordMatch": "โปรดกรอกรหัสผ่านให้ถูกต้อง"
   },
   "Common": {
     "cancel": "ยกเลิก",
     "close": "ปิด",
     "save": "บันทึก",
+    "saving": "กำลังบันทึก",
     "edit": "แก้ไข",
     "delete": "ลบ",
     "confirm": "ยืนยัน",
@@ -55,10 +67,33 @@
     "task": "งาน / ภารกิจ",
     "languages": "ภาษา",
     "descriptionPlaceholder": "พิมพ์ข้อความที่นี่…",
-    "emptyOption": "ยังไม่มีตัวเลือก"
+    "emptyOption": "ยังไม่มีตัวเลือก",
+    "yourAccount": "บัญชีของคุณ",
+    "report": "รายงาน",
+    "cancelEdit": "ยกเลิกการแก้ไข"
   },
   "ResponseStatus": {
     "success": "สำเร็จ",
     "error": "ข้อผิดพลาด"
+  },
+  "TopBar": {
+    "task": "  งาน",
+    "report": "รายงาน",
+    "project": "โปรเจกต์",
+    "profile": "โปรไฟล์",
+    "logout": "ออกจากระบบ"
+  },
+  "TaskPage": {
+    "name": "ชื่องาน",
+    "enterTaskName": "ใส่ชื่องาน",
+    "list": "รายการงาน"
+  },
+  "ProfilePage": {
+    "name": "ชื่อ",
+    "yourName": "ชื่อของคุณ",
+    "email": "อีเมล",
+    "currentPassword": "รหัสผ่านปัจจุบัน",
+    "newPassword": "รหัสผ่านใหม่",
+    "confirmNewPassword": "ยืนยันรหัสผ่านใหม่"
   }
 }

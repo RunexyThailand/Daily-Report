@@ -30,12 +30,18 @@ export function createAxios(
     (res) => res,
     (error: AxiosError) => {
       const status = error.response?.status ?? 0;
-      const data = error.response?.data as any;
-      const message =
-        (typeof data === "string" && data) ||
-        data?.message ||
-        error.message ||
-        "Network error";
+      const data = error.response?.data as unknown;
+      let message =
+        error.message && typeof error.message === "string"
+          ? error.message
+          : "Network error";
+
+      if (typeof data === "string") {
+        message = data;
+      } else if (data && typeof data === "object") {
+        const maybeMessage = (data as Record<string, unknown>)["message"];
+        if (typeof maybeMessage === "string") message = maybeMessage;
+      }
       return Promise.reject({ status, message, raw: error });
     },
   );

@@ -35,7 +35,10 @@ type NextIntlT = ReturnType<typeof useTranslations>;
 function toIntlFormatFn(t: NextIntlT): IntlFormatFn {
   return ({ id, defaultMessage, values }) => {
     try {
-      const out = t(id as any, values as any);
+      const out = t(
+        id as string,
+        values as Record<string, string | number | Date> | undefined,
+      );
       return typeof out === "string" ? out : String(out);
     } catch {
       return defaultMessage ?? id;

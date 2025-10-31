@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import type { $Enums } from "@prisma/client";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -51,7 +51,7 @@ export type ReportProps = {
   onDelete: () => void;
 };
 
-export default ({
+const ReportCard = ({
   translates,
   reportDate,
   lang,
@@ -272,3 +272,5 @@ export default ({
     </div>
   );
 };
+
+export default ReportCard;
