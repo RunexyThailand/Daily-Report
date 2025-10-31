@@ -71,7 +71,7 @@
     "task": "  タスク",
     "report": "報告",
     "project": "プロジェクト",
-    "profile": "プロフィール",
+    "profile": "プロファイル",
     "logout": "ログアウト"
   },
   "ProjectPage": {
@@ -82,7 +82,6 @@
     "enterProjectName": "プロジェクト名を入力してください",
     "submit": "送信",
     "cancelEdit": "編集をキャンセル",
-    "profile": "プロフィール",
     "logout": "ログアウト",
     "submitting": "送信中..."
   },
