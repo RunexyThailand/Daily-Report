@@ -23,6 +23,7 @@ import * as Yup from "yup";
 import { ReportInput } from "@/server/routers/types";
 import { trpc } from "@/trpc/client";
 import { isNotEmptyHtml } from "@/lib/utils";
+import { DateTime } from "luxon";
 
 type IntlFormatFn = (opts: {
   id: string;
@@ -189,16 +190,21 @@ export default function AddReportDialog({
     setSubmitting(false);
     setIsLoading(true);
     try {
+      const reportDateToUtc = DateTime.fromJSDate(values.reportDate)
+        .startOf("day")
+        .setZone("UTC", { keepLocalTime: true }).toJSDate()
+
       const payload: ReportInput = {
         project_id: values.project_id,
         task_id: values.task_id,
-        reportDate: values.reportDate,
+        reportDate: reportDateToUtc,
         progress: values.progress ?? null,
         dueDate: values.dueDate ?? null,
         title: values.title,
         detail: values.detail,
         language_code: values.language_code,
       };
+      
       if (mode === formMode.EDIT) {
         payload.id = reportId || null;
         await updateReport(payload as ReportInput & { id: string });
