@@ -31,7 +31,7 @@ const ProjectClient = () => {
     setIsLoading(true);
     try {
       await deleteProject(projectId);
-      toast.success("Project deleted successfully");
+      toast.success(`${t(`Common.delete`)} ${t(`ResponseStatus.success`)}`);
       await refetch();
     } catch (err) {
       toast.error(`${t(`Common.delete`)} ${t(`ResponseStatus.error`)}`, {

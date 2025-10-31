@@ -29,7 +29,7 @@ const TaskClient = () => {
     setIsLoading(true);
     try {
       await deleteTask(taskId);
-      toast.success("Task deleted successfully");
+      toast.success(`${t(`Common.delete`)} ${t(`ResponseStatus.success`)}`);
       await refetch();
     } catch (err) {
       toast.error(`${t(`Common.delete`)} ${t(`ResponseStatus.error`)}`, {
